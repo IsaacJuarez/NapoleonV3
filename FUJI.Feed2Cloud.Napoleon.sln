@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.FUJI.Napoleon.Entidades", "1.FUJI.Napoleon.Entidades\1.FUJI.Napoleon.Entidades.csproj", "{BA57ED2D-A073-4586-A374-CD0E776BB148}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.FUJI.Napoleon.AccesoDatos", "2.FUJI.Napoleon.AccesoDatos\2.FUJI.Napoleon.AccesoDatos.csproj", "{C0932A20-55A0-4E7B-934F-711353BD60EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.FUJI.Napoleon.Site", "3.FUJI.Napoleon.Site\3.FUJI.Napoleon.Site.csproj", "{495BDD87-BD9F-4967-88D3-C5DAF0743325}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA57ED2D-A073-4586-A374-CD0E776BB148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA57ED2D-A073-4586-A374-CD0E776BB148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA57ED2D-A073-4586-A374-CD0E776BB148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA57ED2D-A073-4586-A374-CD0E776BB148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0932A20-55A0-4E7B-934F-711353BD60EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0932A20-55A0-4E7B-934F-711353BD60EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0932A20-55A0-4E7B-934F-711353BD60EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0932A20-55A0-4E7B-934F-711353BD60EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495BDD87-BD9F-4967-88D3-C5DAF0743325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495BDD87-BD9F-4967-88D3-C5DAF0743325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495BDD87-BD9F-4967-88D3-C5DAF0743325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495BDD87-BD9F-4967-88D3-C5DAF0743325}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

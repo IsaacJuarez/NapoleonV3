@@ -1,0 +1,196 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="_3.FUJI.Napoleon.Site.Site" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <!-- Site -->
+    <link href="<%= ResolveClientUrl("~/Content/Site.css")%>" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="<%= ResolveClientUrl("~/vendors/bootstrap/dist/css/bootstrap.min.css")%>" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="<%= ResolveClientUrl("~/vendors/bootstrap/dist/css/bootstrap-dialog.min.css")%>" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="<%= ResolveClientUrl("~/vendors/font-awesome/css/font-awesome.min.css")%>" rel="stylesheet" />
+    <!-- Custom Theme Style -->
+    <link href="<%= ResolveClientUrl("~/build/css/custom.min.css")%>" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="Content/daterangepicker.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="vendors/jquery/dist/jquery.min.js"></script>
+    <!-- external libs from cdnjs -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css"/>
+    <!-- PivotTable.js libs from ../dist -->
+    <link rel="stylesheet" type="text/css" href="vendors/pivot/dist/pivot.css"/>
+
+    <!-- ECharts -->
+    <script src="vendors/echarts/dist/echarts.min.js"></script>
+    <script src="vendors/echarts/map/js/world.js"></script>
+
+
+</head>
+<body class="nav-md">
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" EnablePageMethods="true" runat="server"/>  
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="Default.aspx" class="site_title"><i class="fa"><img src="Images/horsehead.png" class="fa" width="24px" height="30px"/></i><span>Napoleón</span></a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <!-- menu profile quick info -->
+                        <div class="profile">
+                            <div class="profile_pic">
+                                <img src="images/user.png" alt="..." class="img-circle profile_img"/>
+                            </div>
+                            <div class="profile_info">
+                                <span>Bienvenido,</span>
+                                <asp:UpdatePanel runat="server">
+                                    <ContentTemplate>
+                                        <h2><asp:Label runat="server" Text="" ID="lblUser" ></asp:Label></h2>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <h3>General</h3>
+                                <ul class="nav side-menu">
+                                    <li>
+                                        <a href="frmGeneral.aspx"><i class="fa fa-home"></i> Inicio <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="frmAdministracion.aspx"><i class="fa fa-database"></i> Administración <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="frmDashBoardService.aspx"><i class="fa fa-cogs"></i> Dashboard Servicios <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="frmConfigSites.aspx"><i class="fa fa-cubes"></i> Configuración de Sitios <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /sidebar menu -->
+
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" data-placement="top" title="Configuraciones" href="frmConfiguraciones.aspx">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Salir">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true" onclick="return cerrarpagina();"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                
+                                </asp:ContentPlaceHolder>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /page content -->
+
+                <!-- footer content -->
+                <footer>
+                    <div class="pull-right">
+                        <p>&copy; <%: DateTime.Now.Year %> -Feed2Cloud - Versión 1</p>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+                    <div>
+                    
+                    </div>
+            </div>
+        </div>
+
+
+        <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+            <ProgressTemplate>
+                <div class="contCenter" style="width: 100%; height: 100%; position: absolute; top: 0;
+                    clear: left; background-image: url(~/Images/overlay.png)">
+                    <div class="updateProgress">
+                        <span class="updateProgressMessage">Procesando...</span>
+                        <asp:Image ID="idLoading" runat="server" ImageUrl="~/Images/quiz-loading.gif" />
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+        <asp:HiddenField runat="server" ID="hfURL" Value="" ClientIDMode="Static" />
+        <asp:Button runat="server"  style="display:none;" ID="btnCerrar" OnClick="btnCerrar_Click" ClientIDMode="Static"/>
+    </form>
+    <!-- jQuery -->
+    <script src="<%= ResolveClientUrl("~/vendors/jquery/dist/jquery.min.js")%>"></script>
+    <!-- Bootstrap -->
+    <script src="<%= ResolveClientUrl("~/vendors/bootstrap/dist/js/bootstrap.min.js")%>"></script>
+    <!-- Bootstrap -->
+    <script src="<%= ResolveClientUrl("~/vendors/bootstrap/dist/js/bootstrap-dialog.min.js")%>"></script>
+    <!-- Chart.js -->
+    <script src="<%= ResolveClientUrl("~/vendors/Chart.js/dist/Chart.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/build/js/custom.min.js")%>"></script>
+    <!-- Datatables -->
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net/js/jquery.dataTables.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-buttons/js/dataTables.buttons.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-buttons/js/buttons.flash.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-buttons/js/buttons.html5.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-buttons/js/buttons.print.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-responsive/js/dataTables.responsive.min.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js")%>"></script>
+    <script src="<%= ResolveClientUrl("~/vendors/datatables.net-scroller/js/datatables.scroller.min.js")%>"></script>
+    <script src="Content/moment.js"></script>
+    <script src="Content/daterangepicker.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+
+    
+    <script type="text/javascript" src="vendors/pivot/dist/pivot.js"></script>
+    <script type="text/javascript" src="vendors/pivot/dist/c3_renderers.js"></script>
+    <script type="text/javascript" >
+
+        function cerrarpagina() {
+            document.getElementById("btnCerrar").click();
+        }
+
+</script>
+</body>
+</html>
