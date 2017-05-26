@@ -108,7 +108,6 @@
                                                 <asp:BoundField DataField="vchPatientBirthDate" HeaderText="Fecha Nacimiento" ReadOnly="true" ItemStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs" />
                                                 <asp:BoundField DataField="PatientID" HeaderText="Folio Paciente" ReadOnly="true" HeaderStyle-CssClass="visible-md" ItemStyle-CssClass="visible-md"/>
                                                 <asp:BoundField DataField="PatientName" HeaderText="Nombre" ReadOnly="true" />
-                                                <asp:BoundField DataField="PacienteGenero" HeaderText="Genero" ReadOnly="true" HeaderStyle-CssClass="visible-md" ItemStyle-CssClass="visible-md"/>
                                                 <asp:BoundField DataField="intNumeroArchivo" HeaderText="Num. de Archivos" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                 <asp:BoundField DataField="intTamanoTotal" HeaderText="Tamaño Total Arc." ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                 

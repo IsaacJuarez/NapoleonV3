@@ -111,6 +111,7 @@
           <Property Name="intSizeFile" Type="int" />
           <Property Name="vchPathFile" Type="varchar" MaxLength="200" />
           <Property Name="datFecha" Type="datetime" />
+          <Property Name="vchStudyInstanceUID" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_DET_Estudio_AUD">
           <Key>
@@ -124,6 +125,7 @@
           <Property Name="vchNameFile" Type="varchar" MaxLength="200" />
           <Property Name="intSizeFile" Type="int" />
           <Property Name="vchPathFile" Type="varchar" MaxLength="200" />
+          <Property Name="vchStudyInstanceUID" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_DET_ServicioSitio">
           <Key>
@@ -145,7 +147,6 @@
           <Property Name="vchPatientBirthDate" Type="varchar" MaxLength="200" />
           <Property Name="PatientID" Type="varchar" MaxLength="200" />
           <Property Name="PatientName" Type="varchar" MaxLength="200" />
-          <Property Name="vchStudyInstanceUID" Type="varchar" MaxLength="200" />
           <Property Name="datFecha" Type="datetime" />
           <Property Name="intNumeroArchivo" Type="int" />
           <Property Name="intTamanoTotal" Type="int" />
@@ -568,6 +569,7 @@
           <NavigationProperty Name="tbl_CAT_Estatus" Relationship="Self.FK_CAT_Estudio_DET_Estudio" FromRole="tbl_DET_Estudio" ToRole="tbl_CAT_Estatus" />
           <NavigationProperty Name="tbl_DET_Estudio_AUD" Relationship="Self.FK_DET_Estudio_DET_Estudio_AUD" FromRole="tbl_DET_Estudio" ToRole="tbl_DET_Estudio_AUD" />
           <NavigationProperty Name="tbl_MST_Estudio" Relationship="Self.FK_MST_Estudio_DET_Estudio" FromRole="tbl_DET_Estudio" ToRole="tbl_MST_Estudio" />
+          <Property Name="vchStudyInstanceUID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_DET_Estudio_AUD">
           <Key>
@@ -582,6 +584,7 @@
           <Property Name="intSizeFile" Type="Int32" />
           <Property Name="vchPathFile" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="tbl_DET_Estudio" Relationship="Self.FK_DET_Estudio_DET_Estudio_AUD" FromRole="tbl_DET_Estudio_AUD" ToRole="tbl_DET_Estudio" />
+          <Property Name="vchStudyInstanceUID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_MST_Estudio">
           <Key>
@@ -594,7 +597,6 @@
           <Property Name="vchPatientBirthDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="PatientID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="PatientName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchStudyInstanceUID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="datFecha" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbl_CAT_Modalidad" Relationship="Self.FK_CAT_Modalidad_MST_Estudio" FromRole="tbl_MST_Estudio" ToRole="tbl_CAT_Modalidad" />
           <NavigationProperty Name="tbl_ConfigSitio" Relationship="Self.FK_ConfigSitio_MST_Estudio" FromRole="tbl_MST_Estudio" ToRole="tbl_ConfigSitio" />
@@ -975,12 +977,12 @@
           <Property Type="String" Name="vchPatientBirthDate" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="PatientID" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="PatientName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="vchStudyInstanceUID" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="intNumeroArchivo" Nullable="true" />
           <Property Type="Int32" Name="intTamanoTotal" Nullable="true" />
           <Property Type="DateTime" Name="datFecha" Nullable="true" Precision="23" />
           <Property Type="Int32" Name="intEstatusID" Nullable="true" />
           <Property Type="String" Name="vchEstatusDesc" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="intProyectoID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1072,6 +1074,7 @@
           <EntitySetMapping Name="tbl_DET_Estudio">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_DET_Estudio">
               <MappingFragment StoreEntitySet="tbl_DET_Estudio">
+                <ScalarProperty Name="vchStudyInstanceUID" ColumnName="vchStudyInstanceUID" />
                 <ScalarProperty Name="intDetEstudioID" ColumnName="intDetEstudioID" />
                 <ScalarProperty Name="intEstudioID" ColumnName="intEstudioID" />
                 <ScalarProperty Name="intEstatusID" ColumnName="intEstatusID" />
@@ -1085,6 +1088,7 @@
           <EntitySetMapping Name="tbl_DET_Estudio_AUD">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_DET_Estudio_AUD">
               <MappingFragment StoreEntitySet="tbl_DET_Estudio_AUD">
+                <ScalarProperty Name="vchStudyInstanceUID" ColumnName="vchStudyInstanceUID" />
                 <ScalarProperty Name="intDetAUD_EstudioID" ColumnName="intDetAUD_EstudioID" />
                 <ScalarProperty Name="intDetEstudioID" ColumnName="intDetEstudioID" />
                 <ScalarProperty Name="TIPOMOV_ID" ColumnName="TIPOMOV_ID" />
@@ -1108,7 +1112,6 @@
                 <ScalarProperty Name="vchPatientBirthDate" ColumnName="vchPatientBirthDate" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="PatientName" ColumnName="PatientName" />
-                <ScalarProperty Name="vchStudyInstanceUID" ColumnName="vchStudyInstanceUID" />
                 <ScalarProperty Name="datFecha" ColumnName="datFecha" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1207,12 +1210,12 @@
                 <ScalarProperty Name="vchPatientBirthDate" ColumnName="vchPatientBirthDate" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="PatientName" ColumnName="PatientName" />
-                <ScalarProperty Name="vchStudyInstanceUID" ColumnName="vchStudyInstanceUID" />
                 <ScalarProperty Name="intNumeroArchivo" ColumnName="intNumeroArchivo" />
                 <ScalarProperty Name="intTamanoTotal" ColumnName="intTamanoTotal" />
                 <ScalarProperty Name="datFecha" ColumnName="datFecha" />
                 <ScalarProperty Name="intEstatusID" ColumnName="intEstatusID" />
                 <ScalarProperty Name="vchEstatusDesc" ColumnName="vchEstatusDesc" />
+                <ScalarProperty Name="intProyectoID" ColumnName="intProyectoID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

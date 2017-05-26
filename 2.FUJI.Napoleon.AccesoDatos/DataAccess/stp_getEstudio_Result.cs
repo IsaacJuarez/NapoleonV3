@@ -22,11 +22,11 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public string vchPatientBirthDate { get; set; }
         public string PatientID { get; set; }
         public string PatientName { get; set; }
-        public string vchStudyInstanceUID { get; set; }
         public Nullable<int> intNumeroArchivo { get; set; }
         public Nullable<int> intTamanoTotal { get; set; }
         public Nullable<System.DateTime> datFecha { get; set; }
         public Nullable<int> intEstatusID { get; set; }
         public string vchEstatusDesc { get; set; }
+        public int intProyectoID { get; set; }
     }
 }

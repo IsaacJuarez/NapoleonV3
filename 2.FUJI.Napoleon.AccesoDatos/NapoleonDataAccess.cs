@@ -668,12 +668,12 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                                 mdl.vchPatientBirthDate = item.vchPatientBirthDate;
                                 mdl.PatientID = item.PatientID;
                                 mdl.PatientName = item.PatientName;
-                                mdl.vchStudyInstanceUID = item.vchStudyInstanceUID;
                                 mdl.intNumeroArchivo = (int)item.intNumeroArchivo;
                                 mdl.intTamanoTotal = (int)item.intTamanoTotal;
                                 mdl.datFecha = (DateTime)item.datFecha;
                                 mdl.intEstatusID = (int)item.intEstatusID;
                                 mdl.vchEstatusID = item.vchEstatusDesc;
+                                mdl.intProyectoID = (int)item.intProyectoID;
                                 _lstEst.Add(mdl);
                             }
                         }

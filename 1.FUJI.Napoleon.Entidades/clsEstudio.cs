@@ -8,6 +8,7 @@ namespace _1.FUJI.Napoleon.Entidades
     public class clsEstudio
     {
         public int intEstudioID { get; set; }
+        public int intProyectoID { get; set; }
         public int id_Sitio { get; set; }
         public string vchClaveSitio { get; set; }
         public int intModalidadID { get; set; }
@@ -16,7 +17,6 @@ namespace _1.FUJI.Napoleon.Entidades
         public string vchPatientBirthDate { get; set; }
         public string PatientID { get; set; }
         public string PatientName { get; set; }
-        public string vchStudyInstanceUID { get; set; }
         public int intNumeroArchivo { get; set; }
         public int intTamanoTotal { get; set; }
         public DateTime datFecha { get; set; }
@@ -27,6 +27,7 @@ namespace _1.FUJI.Napoleon.Entidades
         public clsEstudio()
         {
             intEstudioID = int.MinValue;
+            intProyectoID = int.MinValue;
             id_Sitio = int.MinValue;
             vchClaveSitio = string.Empty;
             intModalidadID = int.MinValue;
@@ -35,7 +36,6 @@ namespace _1.FUJI.Napoleon.Entidades
             vchPatientBirthDate = string.Empty;
             PatientID = string.Empty;
             PatientName = string.Empty;
-            vchStudyInstanceUID = string.Empty;
             intTamanoTotal = int.MinValue;
             intNumeroArchivo = int.MinValue;
             datFecha = DateTime.MinValue;

@@ -22,6 +22,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public string vchNameFile { get; set; }
         public Nullable<int> intSizeFile { get; set; }
         public string vchPathFile { get; set; }
+        public string vchStudyInstanceUID { get; set; }
     
         public virtual tbl_DET_Estudio tbl_DET_Estudio { get; set; }
     }

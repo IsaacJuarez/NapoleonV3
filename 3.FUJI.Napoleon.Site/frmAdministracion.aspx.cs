@@ -96,9 +96,9 @@ namespace _3.FUJI.Napoleon.Site
             {
                 List<clsEstudio> _lstGrid = new List<clsEstudio>();
                 string mensaje = "";
-                int intModalidadID = 0;
-                int intEstatusID = 0;
-                int id_Sitio = 0;
+                int intModalidadID = Convert.ToInt32(ddlBusModalidad.SelectedValue);
+                int intEstatusID = Convert.ToInt32(ddlBusEstatus.SelectedValue);
+                int id_Sitio = Convert.ToInt32(ddlBusSucursal.SelectedValue);
                 _lstGrid = NapoleonDA.getListEstudios(intEstatusID,id_Sitio, intModalidadID,ref mensaje);
                 if (_lstGrid.Count > 0)
                 {
@@ -111,20 +111,20 @@ namespace _3.FUJI.Napoleon.Site
                     //    if (Convert.ToInt32(ddlBusPrioridad.SelectedValue) > 0)
                     //        _lstGlo = _lstGlo.Where(z => z.priUrgente == (ddlBusPrioridad.SelectedValue == "1" ? false : true)).ToList();
 
-                    //Estatus
-                    if (ddlBusEstatus.SelectedValue != "")
-                        if (Convert.ToInt32(ddlBusEstatus.SelectedValue) > 0)
-                            _lstGlo = _lstGlo.Where(z => z.intEstatusID == Convert.ToInt32(ddlBusEstatus.SelectedValue)).ToList();
+                    ////Estatus
+                    //if (ddlBusEstatus.SelectedValue != "")
+                    //    if (Convert.ToInt32(ddlBusEstatus.SelectedValue) > 0)
+                    //        _lstGlo = _lstGlo.Where(z => z.intEstatusID == Convert.ToInt32(ddlBusEstatus.SelectedValue)).ToList();
 
-                    // Sucursal
-                    if (ddlBusSucursal.SelectedValue != "")
-                        if (Convert.ToInt32(ddlBusSucursal.SelectedValue) > 0)
-                            _lstGlo = _lstGlo.Where(z => z.id_Sitio == Convert.ToInt32(ddlBusSucursal.SelectedValue)).ToList();
+                    //// Sucursal
+                    //if (ddlBusSucursal.SelectedValue != "")
+                    //    if (Convert.ToInt32(ddlBusSucursal.SelectedValue) > 0)
+                    //        _lstGlo = _lstGlo.Where(z => z.id_Sitio == Convert.ToInt32(ddlBusSucursal.SelectedValue)).ToList();
 
-                    // Modalidad
-                    if (ddlBusModalidad.SelectedValue != "")
-                        if (Convert.ToInt32(ddlBusModalidad.SelectedValue) > 0)
-                            _lstGlo = _lstGlo.Where(z => z.intModalidadID == Convert.ToInt32(ddlBusModalidad.SelectedValue)).ToList();
+                    //// Modalidad
+                    //if (ddlBusModalidad.SelectedValue != "")
+                    //    if (Convert.ToInt32(ddlBusModalidad.SelectedValue) > 0)
+                    //        _lstGlo = _lstGlo.Where(z => z.intModalidadID == Convert.ToInt32(ddlBusModalidad.SelectedValue)).ToList();
 
                     List<clsEstudio> _lstGridOrder = new List<clsEstudio>();
                     //int order = 0;

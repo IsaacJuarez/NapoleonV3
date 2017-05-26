@@ -29,7 +29,7 @@
                                     <asp:Panel runat="server" ID="pnlGrid">
                                         <asp:GridView ID="grvServicios" runat="server" AllowPaging="true" CssClass="table table-striped table-bordered"
                                             PageSize="20" AutoGenerateColumns="false" OnRowDataBound="grvServicios_RowDataBound" Font-Size="10px"
-                                            OnPageIndexChanging="grvServicios_PageIndexChanging" DataKeyNames="sucOID"
+                                            OnPageIndexChanging="grvServicios_PageIndexChanging"
                                             EmptyDataText="No hay resultado bajo el criterio de búsqueda.">
                                             <Columns>
                                                 <asp:BoundField DataField="id_sitio"  HeaderText="ID" ReadOnly="true" />
