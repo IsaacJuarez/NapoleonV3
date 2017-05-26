@@ -75,6 +75,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AgregarSitio.aspx" />
     <Content Include="build\css\custom.css" />
     <Content Include="build\css\custom.min.css" />
     <Content Include="build\js\custom.js" />
@@ -83,6 +84,9 @@
     <Content Include="Content\daterangepicker.js" />
     <Content Include="Content\moment.js" />
     <Content Include="Content\moment.min.js" />
+    <Content Include="frmAdministracion.aspx" />
+    <Content Include="frmConfigSites.aspx" />
+    <Content Include="frmDashBoardService.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2111,6 +2115,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgregarSitio.aspx.cs">
+      <DependentUpon>AgregarSitio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarSitio.aspx.designer.cs">
+      <DependentUpon>AgregarSitio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2118,12 +2129,33 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmAdministracion.aspx.cs">
+      <DependentUpon>frmAdministracion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAdministracion.aspx.designer.cs">
+      <DependentUpon>frmAdministracion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfigSites.aspx.cs">
+      <DependentUpon>frmConfigSites.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmConfigSites.aspx.designer.cs">
+      <DependentUpon>frmConfigSites.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmConfiguraciones.aspx.cs">
       <DependentUpon>frmConfiguraciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="frmConfiguraciones.aspx.designer.cs">
       <DependentUpon>frmConfiguraciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmDashBoardService.aspx.cs">
+      <DependentUpon>frmDashBoardService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmDashBoardService.aspx.designer.cs">
+      <DependentUpon>frmDashBoardService.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmLogin.aspx.cs">
       <DependentUpon>frmLogin.aspx</DependentUpon>

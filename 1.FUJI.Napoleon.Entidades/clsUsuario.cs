@@ -13,6 +13,7 @@ namespace _1.FUJI.Napoleon.Entidades
 
         public int intTipoUsuarioID { get; set; }
         public int intProyectoID { get; set; }
+        public int id_Sitio { get; set; }
         public string vchProyectoID { get; set; }
         public string vchNombre { get; set; }
 
@@ -34,6 +35,7 @@ namespace _1.FUJI.Napoleon.Entidades
             intUsuarioID = int.MinValue;
             intTipoUsuarioID = int.MinValue;
             intProyectoID = int.MinValue;
+            id_Sitio = int.MinValue;
             vchProyectoID = string.Empty;
             vchNombre = string.Empty;
             vchApellido = string.Empty;

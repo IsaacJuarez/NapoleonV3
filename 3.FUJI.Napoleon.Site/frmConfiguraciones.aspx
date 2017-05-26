@@ -327,11 +327,11 @@
                                                                     <asp:BoundField DataField="vchProyectoID" HeaderText="Proyecto" ReadOnly="true" />
                                                                     <asp:TemplateField HeaderText="Editar">
                                                                         <ItemTemplate>
-                                                                            <center>
-                                                                                <asp:LinkButton ID="btnVisualizar"  CommandName="viewEditar" CommandArgument='<%# Bind("intUsuarioID") %>' runat="server">
+                                                                           
+                                                                                <asp:LinkButton ID="btnVisualizar" CausesValidation="false" CommandName="viewEditar" CommandArgument='<%# Bind("intUsuarioID") %>' runat="server">
                                                                                     <asp:Image ID="ImageVisializa" runat="server" ImageUrl="~/images/ic_action_edit.png" Height="25px" Width="25px" ToolTip="Editar"/>
                                                                                 </asp:LinkButton>
-                                                                            </center>
+                                                                            
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
                                                                     <asp:TemplateField HeaderText="Estatus" ItemStyle-HorizontalAlign="Center">
@@ -391,7 +391,7 @@
                                                     <ContentTemplate>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <div class="row">
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server" class="control-label  col-md-3" AssociatedControlID="txtNombre" Text="Nombre"></asp:Label>
@@ -401,10 +401,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                                     <asp:TextBox runat="server" type="text" id="txtNombre" class="form-control" TabIndex="1" ></asp:TextBox>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server" class="control-label col-md-4" AssociatedControlID="txtApePat" Text="Apellidos"></asp:Label>
@@ -414,28 +414,28 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                                     <asp:Textbox type="text" ID="txtApePat" name="txtApePat" runat="server" class="form-control" TabIndex="2"></asp:Textbox>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server"  class="control-label col-md-12" Text="Tipo de Usuario" AssociatedControlID="ddlTipoUsuario"></asp:Label>
                                                                         </div>
                                                                         <div class="col-md-2">
-                                                                            <asp:RequiredFieldValidator ID="rfvTipUser" runat="server" ControlToValidate="ddlTipoUsuario"
+                                                                            <asp:RequiredFieldValidator ID="rfvTipUser" runat="server" ControlToValidate="ddlTipoUsuario" Enabled="false"
                                                                             InitialValue="0" Text="*" ForeColor="Red" ErrorMessage="Seleccione un Tipo de Usuario"
                                                                             ValidationGroup="vdgUserCaptura">
                                                                             </asp:RequiredFieldValidator>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                                                    <asp:DropDownList ID="ddlTipoUsuario" runat="server" CssClass="form-control col-md-12" TabIndex="3"></asp:DropDownList>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                                    <asp:DropDownList ID="ddlTipoUsuario" runat="server" CssClass="form-control col-md-12" AutoPostBack="true" TabIndex="3" OnSelectedIndexChanged="ddlTipoUsuario_SelectedIndexChanged"></asp:DropDownList>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server"  class="control-label col-md-12" Text="Proyecto" AssociatedControlID="ddlProyecto"></asp:Label>
@@ -448,12 +448,34 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                                                    <asp:DropDownList ID="ddlProyecto" runat="server" CssClass="form-control col-md-12" TabIndex="4"></asp:DropDownList>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                                    <asp:DropDownList ID="ddlProyecto" runat="server" CssClass="form-control col-md-12" TabIndex="4" Enabled="false"></asp:DropDownList>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                                </div>
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                                    <div class="row">
+                                                                        <div class="col-md-10">
+                                                                            <asp:Label runat="server"  class="control-label col-md-12" Text="Sitio" AssociatedControlID="ddlSitio"></asp:Label>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <asp:RequiredFieldValidator ID="rfvSitio" runat="server" ControlToValidate="ddlSitio"
+                                                                            InitialValue="0" Text="*" ForeColor="Red" ErrorMessage="Seleccione un Proyecto" Enabled="false"
+                                                                            ValidationGroup="vdgUserCaptura">
+                                                                            </asp:RequiredFieldValidator>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                                    <asp:DropDownList ID="ddlSitio" runat="server" CssClass="form-control col-md-12" TabIndex="4" Enabled="false"></asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server"  class="control-label col-md-12" Text="Usuario" AssociatedControlID="txtUsuario"></asp:Label> 
@@ -463,10 +485,10 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                                     <asp:TextBox id="txtUsuario" class="date-picker form-control col-md-12" runat="server" type="text" TabIndex="5"></asp:TextBox>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                                                     <div class="row">
                                                                         <div class="col-md-10">
                                                                             <asp:Label runat="server" class="control-label col-md-12" Text="Contraseña" AssociatedControlID="txtPassword1" ></asp:Label>
@@ -477,18 +499,18 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                                     <asp:TextBox ID="txtPassword1" TextMode="Password" class="form-control col-md-12" runat="server" type="text" MaxLength="20" TabIndex="6"></asp:TextBox>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
                                                                     <div class="row" >
-                                                                        <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" type="submit" Text="Cancelar" class="btn btn-primary"></asp:Button>
+                                                                        <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" type="submit" Text="Cancelar" class="btn btn-primary" CausesValidation="false"></asp:Button>
                                                                         <asp:Button runat="server" ID="btnAddUser" OnClick="btnAddUser_Click" type="submit" Text="Agregar" ValidationGroup="vdgUserCaptura" class="btn btn-success"></asp:Button>
                                                                     </div>
                                                                 </div>

@@ -184,5 +184,113 @@ namespace _3.FUJI.Napoleon.Site.Services
             }
             return valido;
         }
+
+        public bool setUsuario(tbl_CAT_Usuarios user, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valido = controller.setUsuario(user,ref mensaje);
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return valido;
+        }
+
+        public bool updateUsuario(tbl_CAT_Usuarios user, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valido = controller.updateUsuario(user, ref mensaje);
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return valido;
+        }
+        
+        public List<clsDashboardService> getServicioSitio(int intProyectoID, int id_Sitio)
+        {
+            List<clsDashboardService> valido = new List<clsDashboardService>();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valido = controller.getServicioSitio(intProyectoID,id_Sitio);
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return valido;
+        }
+
+        public bool validarSitio(string vchClaveSitio)
+        {
+            bool valida;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valida = controller.validarSitio(vchClaveSitio);
+            }
+            catch (Exception egV)
+            {
+                throw egV;
+            }
+            return valida;
+        }
+
+        public bool setSitio(tbl_ConfigSitio mdlSitio, tbl_RegistroSitio mdlRegistro, ref string mensaje)
+        {
+            bool valida;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valida = controller.setSitio(mdlSitio, mdlRegistro, ref mensaje);
+            }
+            catch (Exception egV)
+            {
+                throw egV;
+            }
+            return valida;
+        }
+
+        public List<clsEstudio> getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, ref string mensaje)
+        {
+            List<clsEstudio> lst = new List<clsEstudio>();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                lst = controller.getListEstudios(intEstatusID, id_Sitio, intModalidadID,ref mensaje);
+            }
+            catch (Exception egV)
+            {
+                throw egV;
+            }
+            return lst;
+        }
+
+        public List<clsModeloCatalogo> getCatalogo(String _TipoCat)
+        {
+            List<clsModeloCatalogo> lst = new List<clsModeloCatalogo>();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                lst = controller.getCatalogo(_TipoCat);
+            }
+            catch (Exception egV)
+            {
+                throw egV;
+            }
+            return lst;
+        }
+        
+
+
     }
 }

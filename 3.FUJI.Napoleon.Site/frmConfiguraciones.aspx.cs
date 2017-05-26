@@ -40,11 +40,13 @@ namespace _3.FUJI.Napoleon.Site
                     if (!IsPostBack)
                     {
                         Session["intProyectoID"] = 0;
+                        Session["intUsuarioIDGrid"] = 0;
                         if (Session["intTipoUsuario"].ToString() == "1")
                         {
                             cargaSitios();
                             cargaProyectos();
                             cargaSitiosP();
+                            cargaSitiosCat();
                             inicializaCombos();
                             cargaGridUsuarios();
                             //cargaGridPrioridad();
@@ -133,24 +135,53 @@ namespace _3.FUJI.Napoleon.Site
             }
         }
 
-        private void cargaproyectosCat()
+        private void cargaSitiosCat()
         {
             try
             {
-                ddlProyecto.DataSource = null;
+                ddlSitio.DataSource = null;
                 List<tbl_ConfigSitio> _lstSitio = new List<tbl_ConfigSitio>();
                 _lstSitio = NapoleonDA.getSitios();
                 if (_lstSitio != null)
                 {
                     if (_lstSitio.Count > 0)
                     {
-                        //_lstSitio = _lstSitio.Where(x => x.vchClaveSitio.ToUpper().Contains(txtBusquedaSite.Text.ToString()) || x.vchnombreSitio.ToUpper().Contains(txtBusquedaSite.Text.ToString())).ToList();
+                        _lstSitio = _lstSitio.Where(x => (bool)x.bitActivo).ToList();
+                        ddlSitio.DataSource = _lstSitio;
+                        ddlSitio.DataTextField = "vchClaveSitio";
+                        ddlSitio.DataValueField = "id_Sitio";
+
+                    }
+                }
+                ddlSitio.DataBind();
+                ddlSitio.Items.Insert(0, new ListItem("Seleccionar...", "0"));
+            }
+            catch (Exception ecs)
+            {
+                Log.EscribeLog("Existe un error en cargarSitios: " + ecs.Message);
+            }
+        }
+
+        private void cargaproyectosCat()
+        {
+            try
+            {
+                ddlProyecto.DataSource = null;
+                List<tbl_CAT_Proyecto> _lstSitio = new List<tbl_CAT_Proyecto>();
+                _lstSitio = NapoleonDA.getProyectos();
+                if (_lstSitio != null)
+                {
+                    if (_lstSitio.Count > 0)
+                    {
+                        _lstSitio = _lstSitio.Where(x => (bool)x.bitActivo).ToList();
                         ddlProyecto.DataSource = _lstSitio;
-                        ddlProyecto.DataTextField = "vchClaveSitio";
-                        ddlProyecto.DataValueField = "id_Sitio";
+                        ddlProyecto.DataTextField = "vchProyectoDesc";
+                        ddlProyecto.DataValueField = "intProyectoID";
+
                     }
                 }
                 ddlProyecto.DataBind();
+                ddlProyecto.Items.Insert(0, new ListItem("Seleccionar...", "0"));
             }
             catch (Exception ecs)
             {
@@ -256,7 +287,14 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void txtBusqueda_TextChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                cargaGridUsuarios();
+            }
+            catch(Exception eTXB)
+            {
+                Log.EscribeLog("Existe un error en txtBusqueda_TextChanged: " + eTXB.Message);
+            }
         }
 
         protected void btnBusqueda_Click(object sender, EventArgs e)
@@ -362,11 +400,15 @@ namespace _3.FUJI.Napoleon.Site
                 txtNombre.Text = mdlUsuario.vchNombre;
                 txtApePat.Text = mdlUsuario.vchApellido;
                 ddlTipoUsuario.SelectedValue = mdlUsuario.intTipoUsuarioID.ToString();
-                ddlProyecto.SelectedValue = mdlUsuario.intProyectoID.ToString();
+                if(mdlUsuario.intTipoUsuarioID > 1)
+                {
+                    ddlProyecto.SelectedValue = mdlUsuario.intProyectoID.ToString();
+                }
                 txtUsuario.Text = mdlUsuario.vchUsuario;
                 txtPassword1.Text = Security.Decrypt(mdlUsuario.vchPassword);
+                Session["PasswordAntiguo"] = Security.Decrypt(mdlUsuario.vchPassword);
                 Session["intUsuarioIDGrid"] = mdlUsuario.intUsuarioID;
-
+                txtUsuario.Enabled = false;
             }
             catch(Exception eFU)
             {
@@ -376,22 +418,180 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void ddlBandeja_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                DropDownList dropDownList = (DropDownList)sender;
+                if (int.Parse(dropDownList.SelectedValue) != 0)
+                {
+                    this.grvBusqueda.AllowPaging = true;
+                    this.grvBusqueda.PageSize = int.Parse(dropDownList.SelectedValue);
+                }
+                else
+                    this.grvBusqueda.AllowPaging = false;
+                this.cargaGridUsuarios();
+            }
+            catch (Exception eddS)
+            {
+                ShowMessage("Existe un error: " + eddS.Message, MessageType.Error, "alert_container");
+            }
         }
 
         protected void txtBandeja_TextChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                TextBox txtBandejaAvaluosGoToPage = (TextBox)sender;
+                int numeroPagina;
+                if (int.TryParse(txtBandejaAvaluosGoToPage.Text.Trim(), out numeroPagina))
+                    this.grvBusqueda.PageIndex = numeroPagina - 1;
+                else
+                    this.grvBusqueda.PageIndex = 0;
+                this.cargaGridUsuarios();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_container");
+            }
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                limpiarUsuario();
+            }
+            catch(Exception eC)
+            {
+                Log.EscribeLog("Existe error en btnCancel_Click: " + eC.Message);
+                ShowMessage("Existe un error: " + eC.Message, MessageType.Error, "alert_container");
+            }
+        }
 
+        private void limpiarUsuario()
+        {
+            try
+            {
+                txtNombre.Text ="";
+                txtApePat.Text ="";
+                ddlTipoUsuario.SelectedValue = "1";
+                ddlProyecto.SelectedValue = "0";
+                ddlProyecto.Enabled = false;
+                txtUsuario.Text = "";
+                txtUsuario.Enabled = true;
+                txtPassword1.Text = "";
+                Session["PasswordAntiguo"] = "";
+                Session["intUsuarioIDGrid"] =0;
+            }
+            catch(Exception elu)
+            {
+                Log.EscribeLog("Existe un erro en LimpiarUsuario: " + elu.Message);
+                throw elu;
+            }
         }
 
         protected void btnAddUser_Click(object sender, EventArgs e)
         {
+            try
+            {
+                tbl_CAT_Usuarios mdl = new tbl_CAT_Usuarios();
+                string mensaje = "";
+                bool success = false;
+                if (Session["intUsuarioIDGrid"] != null)
+                {
+                    if (Convert.ToInt32(Session["intUsuarioIDGrid"].ToString()) > 0)
+                    {
+                        //Edicion
+                        mdl = obtenerUsuario();
+                        if (mdl != null)
+                        {
+                            success = NapoleonDA.updateUsuario(mdl, ref mensaje);
+                            if (success)
+                            {
+                                cargaGridUsuarios();
+                                limpiarUsuario();
+                                ShowMessage("Cambios correctos", MessageType.Success, "alert_container");
+                            }
+                            else
+                            {
+                                ShowMessage("Existe un error en: " + mensaje, MessageType.Error, "alert_container");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Nuevo
+                        mdl = obtenerUsuario();
+                        if (mdl != null)
+                        {
+                            success = NapoleonDA.setUsuario(mdl, ref mensaje);
+                            if (success)
+                            {
+                                cargaGridUsuarios();
+                                limpiarUsuario();
+                                ShowMessage("Cambios correctos", MessageType.Success, "alert_container");
+                            }
+                            else
+                            {
+                                ShowMessage("Existe un error en: " + mensaje, MessageType.Error, "alert_container");
 
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception eBA)
+            {
+                Log.EscribeLog("Existe un error en btnAddUser_Click: " + eBA.Message);
+                ShowMessage("Existe un error al guardar el usuario: " + eBA.Message, MessageType.Error, "alert_container");
+            }
+        }
+
+        private tbl_CAT_Usuarios obtenerUsuario()
+        {
+            tbl_CAT_Usuarios mdl = new tbl_CAT_Usuarios();
+            try
+            {
+                mdl.intUsuarioID = Convert.ToInt32(Session["intUsuarioIDGrid"].ToString());
+                mdl.vchNombre = txtNombre.Text;
+                mdl.vchApellido = txtApePat.Text;
+                mdl.intUsuarioID = Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString());
+                
+                if(mdl.intUsuarioID != 1)
+                {
+                    if(mdl.intUsuarioID == 2)
+                    {
+                        mdl.intProyectoID = Convert.ToInt32(ddlProyecto.SelectedValue.ToString());
+                    }
+                    if(mdl.intUsuarioID == 3)
+                    {
+                        mdl.id_Sitio = Convert.ToInt32(ddlSitio.SelectedValue.ToString());
+                    }
+                }
+                else
+                {
+                    mdl.intProyectoID = null;
+                    mdl.id_Sitio = null;
+                }
+                
+                mdl.vchUsuario = txtUsuario.Text;
+                if(txtPassword1.Text == "")
+                {
+                    mdl.vchPassword = Session["PasswordAntiguo"].ToString();
+                }
+                else
+                {
+                    mdl.vchPassword = txtPassword1.Text;
+                }
+                mdl.datFecha = DateTime.Now;
+                mdl.bitActivo = true;
+                mdl.vchUserAdmin = Session["UserID"].ToString();
+            }
+            catch(Exception eOU)
+            {
+                mdl = null;
+                Log.EscribeLog("Existe un error al obtenerUsuario: " + eOU.Message);
+            }
+            return mdl;
         }
 
         protected void ddlSitioPriridad_SelectedIndexChanged(object sender, EventArgs e)
@@ -536,6 +736,7 @@ namespace _3.FUJI.Napoleon.Site
                         {
                             cargaSitios();
                             cargaSitiosP();
+                            cargaSitiosCat();
                             ShowMessage("Cambios correctos", MessageType.Success, "alert_containerSites");
                         }
                         else
@@ -577,12 +778,40 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void ddlBandejaSitio_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                DropDownList dropDownList = (DropDownList)sender;
+                if (int.Parse(dropDownList.SelectedValue) != 0)
+                {
+                    this.grvSites.AllowPaging = true;
+                    this.grvSites.PageSize = int.Parse(dropDownList.SelectedValue);
+                }
+                else
+                    this.grvSites.AllowPaging = false;
+                this.cargaSitios();
+            }
+            catch (Exception eddS)
+            {
+                ShowMessage("Existe un error: " + eddS.Message, MessageType.Error, "alert_containerSites");
+            }
         }
 
         protected void txtBandejaSitio_TextChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                TextBox txtBandejaAvaluosGoToPage = (TextBox)sender;
+                int numeroPagina;
+                if (int.TryParse(txtBandejaAvaluosGoToPage.Text.Trim(), out numeroPagina))
+                    this.grvSites.PageIndex = numeroPagina - 1;
+                else
+                    this.grvSites.PageIndex = 0;
+                this.cargaSitios();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_containerSites");
+            }
         }
 
         protected void txtProeyct_TextChanged(object sender, EventArgs e)
@@ -609,11 +838,6 @@ namespace _3.FUJI.Napoleon.Site
                 Log.EscribeLog("Existe un error en btnProyect_Click: " + eP.Message);
                 ShowMessage("Existe un error al realizar la búsqueda: " + eP.Message, MessageType.Error, "alert_containerSites");
             }
-        }
-
-        protected void Unnamed_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-
         }
 
         protected void grvProyectos_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -820,22 +1044,78 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void ddlBandejaPS_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                DropDownList dropDownList = (DropDownList)sender;
+                if (int.Parse(dropDownList.SelectedValue) != 0)
+                {
+                    this.gridSitiosProyec.AllowPaging = true;
+                    this.gridSitiosProyec.PageSize = int.Parse(dropDownList.SelectedValue);
+                }
+                else
+                    this.gridSitiosProyec.AllowPaging = false;
+                this.cargaGridSitiosProyec();
+            }
+            catch (Exception eddS)
+            {
+                ShowMessage("Existe un error: " + eddS.Message, MessageType.Error, "alert_containerSites");
+            }
         }
 
         protected void txtBandejaPS_TextChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                TextBox txtBandejaAvaluosGoToPage = (TextBox)sender;
+                int numeroPagina;
+                if (int.TryParse(txtBandejaAvaluosGoToPage.Text.Trim(), out numeroPagina))
+                    this.gridSitiosProyec.PageIndex = numeroPagina - 1;
+                else
+                    this.gridSitiosProyec.PageIndex = 0;
+                this.cargaGridSitiosProyec();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_container");
+            }
         }
 
         protected void ddlBandejaProy_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                DropDownList dropDownList = (DropDownList)sender;
+                if (int.Parse(dropDownList.SelectedValue) != 0)
+                {
+                    this.grvProyectos.AllowPaging = true;
+                    this.grvProyectos.PageSize = int.Parse(dropDownList.SelectedValue);
+                }
+                else
+                    this.grvProyectos.AllowPaging = false;
+                this.cargaProyectos();
+            }
+            catch (Exception eddS)
+            {
+                ShowMessage("Existe un error: " + eddS.Message, MessageType.Error, "alert_containerSites");
+            }
         }
 
         protected void txtBandejaProyec_TextChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                TextBox txtBandejaAvaluosGoToPage = (TextBox)sender;
+                int numeroPagina;
+                if (int.TryParse(txtBandejaAvaluosGoToPage.Text.Trim(), out numeroPagina))
+                    this.grvProyectos.PageIndex = numeroPagina - 1;
+                else
+                    this.grvProyectos.PageIndex = 0;
+                this.cargaProyectos();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_containerSites");
+            }
         }
 
         public enum MessageType { Success, Error, Info, Warning };
@@ -951,7 +1231,8 @@ namespace _3.FUJI.Napoleon.Site
             }
             catch (Exception eOS)
             {
-
+                Log.EscribeLog("Existe un error en obtenerSitios: " + eOS.Message);
+                throw eOS;
             }
             return _lst;
         }
@@ -972,7 +1253,8 @@ namespace _3.FUJI.Napoleon.Site
             }
             catch (Exception eOS)
             {
-
+                Log.EscribeLog("Existe un erro en obtenerSitiosEdicion: " + eOS.Message);
+                throw eOS;
             }
             return _lst;
         }
@@ -1030,6 +1312,45 @@ namespace _3.FUJI.Napoleon.Site
             {
                 Log.EscribeLog("Existe un error en cancelar proyecto: " + eBL.Message);
                 ShowMessage("Existe un error al cancelar: " + eBL.Message, MessageType.Error, "alert_containerSites");
+            }
+        }
+
+        protected void ddlTipoUsuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ddlTipoUsuario.SelectedValue.ToString() != "")
+                {
+                    if (Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString()) != 1)
+                    {
+                        if (Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString()) == 2)
+                        {
+                            ddlProyecto.Enabled = true;
+                            rfvTipUser.Enabled = true;
+                            ddlSitio.Enabled = false;
+                            rfvSitio.Enabled = false;
+                        }
+                        if (Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString()) == 3)
+                        {
+                            ddlProyecto.Enabled = false;
+                            rfvTipUser.Enabled = false;
+                            ddlSitio.Enabled = true;
+                            rfvSitio.Enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        ddlProyecto.Enabled = false;
+                        rfvTipUser.Enabled = false;
+                        ddlSitio.Enabled = false;
+                        rfvSitio.Enabled = false;
+                    }
+                }
+            }
+            catch(Exception eddP)
+            {
+                Log.EscribeLog("Existe un error en ddlTipoUsuario_SelectedIndexChanged: " + eddP.Message);
+                ShowMessage("Existe un error: " + eddP.Message, MessageType.Error, "alert_containerSites");
             }
         }
     }

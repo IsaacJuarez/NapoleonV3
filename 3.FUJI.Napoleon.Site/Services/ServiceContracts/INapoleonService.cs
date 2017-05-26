@@ -44,5 +44,26 @@ namespace _3.FUJI.Napoleon.Site.Services
 
         [OperationContract]
         bool updateEstatusUsuario(int intUsuarioID, bool activo, ref string mensaje);
+
+        [OperationContract]
+        bool setUsuario(tbl_CAT_Usuarios user, ref string mensaje);
+
+        [OperationContract]
+        bool updateUsuario(tbl_CAT_Usuarios user, ref string mensaje);
+
+        [OperationContract]
+        List<clsDashboardService> getServicioSitio(int intProyectoID, int id_Sitio);
+
+        [OperationContract]
+        bool validarSitio(string vchClaveSitio);
+
+        [OperationContract]
+        bool setSitio(tbl_ConfigSitio mdlSitio, tbl_RegistroSitio mdlRegistro, ref string mensaje);
+
+        [OperationContract]
+        List<clsEstudio> getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, ref string mensaje);
+
+        [OperationContract]
+        List<clsModeloCatalogo> getCatalogo(String _TipoCat);
     }
 }

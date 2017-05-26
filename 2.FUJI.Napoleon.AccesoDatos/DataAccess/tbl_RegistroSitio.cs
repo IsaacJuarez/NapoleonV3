@@ -12,22 +12,17 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_CAT_Usuarios
+    public partial class tbl_RegistroSitio
     {
-        public int intUsuarioID { get; set; }
-        public Nullable<int> intTipoUsuarioID { get; set; }
-        public Nullable<int> intProyectoID { get; set; }
-        public string vchNombre { get; set; }
-        public string vchApellido { get; set; }
-        public string vchUsuario { get; set; }
-        public string vchPassword { get; set; }
-        public Nullable<bool> bitActivo { get; set; }
-        public Nullable<System.DateTime> datFecha { get; set; }
-        public string vchUserAdmin { get; set; }
+        public int id_RegistroSitio { get; set; }
         public Nullable<int> id_Sitio { get; set; }
+        public string vchNombreCliente { get; set; }
+        public string vchEmail { get; set; }
+        public string vchNumeroContacto { get; set; }
+        public string vchVendedor { get; set; }
+        public string vchClaveActivacion { get; set; }
+        public Nullable<bool> bitActivo { get; set; }
     
-        public virtual tbl_CAT_Proyecto tbl_CAT_Proyecto { get; set; }
-        public virtual tbl_CAT_TipoUsuario tbl_CAT_TipoUsuario { get; set; }
         public virtual tbl_ConfigSitio tbl_ConfigSitio { get; set; }
     }
 }

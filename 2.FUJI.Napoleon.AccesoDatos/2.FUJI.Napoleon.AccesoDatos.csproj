@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbNapoleon.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\stp_getEstudio_Result.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\tbl_CAT_Estatus.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
@@ -83,16 +86,25 @@
     <Compile Include="DataAccess\tbl_ConfigSitio.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\tbl_ConfigSitio_AUD.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\tbl_DET_Estudio.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_DET_Estudio_AUD.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\tbl_DET_ServicioSitio.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\tbl_MST_Estudio.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_MST_PrioridadEstudio.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\tbl_RegistroSitio.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_REL_ProyectoSitio.cs">

@@ -319,6 +319,24 @@ namespace _3.FUJI.Napoleon.Site {
         protected global::System.Web.UI.WebControls.DropDownList ddlProyecto;
         
         /// <summary>
+        /// Control rfvSitio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvSitio;
+        
+        /// <summary>
+        /// Control ddlSitio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSitio;
+        
+        /// <summary>
         /// Control RequiredFieldValidator1.
         /// </summary>
         /// <remarks>

@@ -12,6 +12,9 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class NAPOLEONEntities : DbContext
     {
@@ -37,5 +40,25 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public DbSet<tbl_MST_PrioridadEstudio> tbl_MST_PrioridadEstudio { get; set; }
         public DbSet<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
         public DbSet<tbl_REL_SitioModalidad> tbl_REL_SitioModalidad { get; set; }
+        public DbSet<tbl_ConfigSitio_AUD> tbl_ConfigSitio_AUD { get; set; }
+        public DbSet<tbl_DET_ServicioSitio> tbl_DET_ServicioSitio { get; set; }
+        public DbSet<tbl_RegistroSitio> tbl_RegistroSitio { get; set; }
+    
+        public virtual ObjectResult<stp_getEstudio_Result> stp_getEstudio(Nullable<int> intEstatusID, Nullable<int> id_Sitio, Nullable<int> intModalidadID)
+        {
+            var intEstatusIDParameter = intEstatusID.HasValue ?
+                new ObjectParameter("intEstatusID", intEstatusID) :
+                new ObjectParameter("intEstatusID", typeof(int));
+    
+            var id_SitioParameter = id_Sitio.HasValue ?
+                new ObjectParameter("id_Sitio", id_Sitio) :
+                new ObjectParameter("id_Sitio", typeof(int));
+    
+            var intModalidadIDParameter = intModalidadID.HasValue ?
+                new ObjectParameter("intModalidadID", intModalidadID) :
+                new ObjectParameter("intModalidadID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudio_Result>("stp_getEstudio", intEstatusIDParameter, id_SitioParameter, intModalidadIDParameter);
+        }
     }
 }

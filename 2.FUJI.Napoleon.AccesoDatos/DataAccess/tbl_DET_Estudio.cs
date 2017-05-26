@@ -23,7 +23,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<int> intEstudioID { get; set; }
         public Nullable<int> intEstatusID { get; set; }
         public string vchNameFile { get; set; }
-        public string intSizeFile { get; set; }
+        public Nullable<int> intSizeFile { get; set; }
         public string vchPathFile { get; set; }
         public Nullable<System.DateTime> datFecha { get; set; }
     
