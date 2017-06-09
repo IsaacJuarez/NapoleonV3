@@ -29,6 +29,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<System.DateTime> datFechaSitema { get; set; }
         public string vchUserAdmin { get; set; }
         public Nullable<bool> bitActivo { get; set; }
+        public Nullable<int> TIPOMOV_ID { get; set; }
     
         public virtual tbl_ConfigSitio tbl_ConfigSitio { get; set; }
     }

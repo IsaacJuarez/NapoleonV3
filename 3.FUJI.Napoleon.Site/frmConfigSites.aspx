@@ -49,19 +49,19 @@
                                                             <asp:BoundField DataField="vchNombreSitio" HeaderText="Nombre de Sitio" ReadOnly="true" />
                                                             <asp:BoundField DataField="vchIPCliente" HeaderText="IP Cliente" ReadOnly="true" />
                                                             <asp:BoundField DataField="vchMaskCliente" HeaderText="Mascara de Red" ReadOnly="true" />
-                                                            <asp:BoundField DataField="intPuertoCliente" HeaderText="Puerto" ReadOnly="true" />
-                                                            <asp:BoundField DataField="vchAETitle" HeaderText="AETitle" ReadOnly="true" />
-                                                            <asp:BoundField DataField="vchPathLocal" HeaderText="Folder Local" ReadOnly="true" />
-                                                            <asp:BoundField DataField="vchIPServidor" HeaderText="IP Servidor" ReadOnly="true" />
-                                                            <asp:BoundField DataField="in_tPuertoServer" HeaderText="Puerto Servidor" ReadOnly="true" />
-                                                            <asp:BoundField DataField="vchAETitleServer" HeaderText="AETitle Servidor" ReadOnly="true" />
-                                                            <asp:BoundField DataField="datFechaSistema" DataFormatString="{0:MM/dd/yyyy}" HeaderText="Fecha" ReadOnly="true" />
-                                                            <asp:BoundField DataField="vchUserAdmin" HeaderText="Usuario de Act." ReadOnly="true" />
-                                                            <asp:TemplateField HeaderText="Editar">
+                                                            <asp:BoundField DataField="intPuertoCliente" HeaderText="Puerto" ReadOnly="true" HeaderStyle-CssClass=" hidden-xs" ItemStyle-CssClass=" hidden-xs"/>
+                                                            <asp:BoundField DataField="vchAETitle" HeaderText="AETitle" ReadOnly="true" HeaderStyle-CssClass=" hidden-xs" ItemStyle-CssClass=" hidden-xs"/>
+                                                            <asp:BoundField DataField="vchPathLocal" HeaderText="Folder Local" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="vchIPServidor" HeaderText="IP Servidor" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="in_tPuertoServer" HeaderText="Puerto Servidor" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="vchAETitleServer" HeaderText="AETitle Servidor" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="datFechaSistema" DataFormatString="{0:MM/dd/yyyy}" HeaderText="Fecha" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="vchUserAdmin" HeaderText="Usuario de Act." ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:TemplateField HeaderText="Contacto">
                                                                 <ItemTemplate>
                                                                     <center>
                                                                         <asp:LinkButton ID="btnVisualizar"  CommandName="viewEditar" CommandArgument='<%# Bind("id_Sitio") %>' runat="server">
-                                                                            <asp:Image ID="ImageVisializa" runat="server" ImageUrl="~/images/ic_action_edit.png" Height="25px" Width="25px" ToolTip="Editar"/>
+                                                                            <asp:Image ID="ImageVisializa" runat="server" ImageUrl="~/images/ic_action_user.png" Height="25px" Width="25px" ToolTip="Editar"/>
                                                                         </asp:LinkButton>
                                                                     </center>
                                                                 </ItemTemplate>
@@ -102,6 +102,66 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal Dialog -->
+    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <asp:UpdatePanel ID="upModal" runat="server" ChildrenAsTriggers="false" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2><asp:Label Text="Sitio: " runat="server"></asp:Label><small><asp:Label runat="server" ID="lblIDSitio" ForeColor="Green"></asp:Label></small></h2>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <asp:Label runat="server" ID="lblClave" Text="Nombre Contacto" AssociatedControlID="txtNombreContacto"></asp:Label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 text-left">
+                                        <asp:Label runat="server" ForeColor="Green" Font-Bold="true"  Text="" id="txtNombreContacto" ></asp:Label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <asp:Label runat="server" Text="Correo Electrónico:"></asp:Label>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-left">
+                                        <asp:Label runat="server" ID="txtEmailContacto" ForeColor="Green" Font-Bold="true"  Width="100%" Text="" ></asp:Label>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <asp:Label runat="server" Text="Telefono:" ></asp:Label>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-left">
+                                        <asp:Label runat="server" ForeColor="Green" Font-Bold="true" Text="" Width="100%" ID="txtTelefono" ></asp:Label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <asp:Label runat="server" Text="Vendedor:"></asp:Label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 text-left">
+                                        <asp:Label runat="server" ID="txtVendedor" Text="" Width="100%" ForeColor="Green" Font-Bold="true" ></asp:Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
 </asp:Content>

@@ -13,6 +13,7 @@ namespace _1.FUJI.Napoleon.Entidades
         public int intProyectoID { get; set; }
         public DateTime datFechaSCP { get; set; }
         public DateTime datFechaSCU { get; set; }
+        public DateTime datFechaSync { get; set; }
         public clsDashboardService()
         {
             id_sitio = int.MinValue;
@@ -21,6 +22,7 @@ namespace _1.FUJI.Napoleon.Entidades
             vchNombreSitio = string.Empty;
             datFechaSCP = DateTime.MinValue;
             datFechaSCU = DateTime.MinValue;
+            datFechaSync = DateTime.MinValue;
         }
 
     }

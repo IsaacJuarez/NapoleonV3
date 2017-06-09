@@ -22,8 +22,8 @@
                       Monitor de Servicios.
                     </p>
                     <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                             <asp:UpdatePanel ID="updGrid" runat="server">
                                 <ContentTemplate>
                                     <asp:Panel runat="server" ID="pnlGrid">
@@ -61,6 +61,38 @@
                                                                 </td>
                                                                 <td>
                                                                     <asp:Label ID="lblTiempoTransL" runat="server" Text="" ForeColor="DarkGreen" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        </center>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Sync" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <center>
+                                                        <table style="width:100%" width="100%">
+                                                            <tr>
+                                                                <td>
+                                                                    <asp:LinkButton ID="btnSOn"  Enabled="false" runat="server">
+                                                                        <asp:Image ID="imgSActivo" runat="server" ImageUrl="~/Images/out.png" Height="25px" Width="25px" ToolTip="Activo"/>
+                                                                    </asp:LinkButton>
+                                                                </td>
+                                                                <td>
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <asp:Label runat="server" Text="Última actividad"></asp:Label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <asp:Label ID="lblFechaUltimaConS" runat="server" Text='<%# String.Format("{0}", Eval("datFechaSync")) %>' ForeColor="DarkGreen" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                                <td>
+                                                                    <asp:Label ID="lblTiempoTransS" runat="server" Text="" ForeColor="DarkGreen" />
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -127,7 +159,7 @@
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                     </div>
                 </div>
             </div>

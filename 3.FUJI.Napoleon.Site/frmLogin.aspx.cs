@@ -50,7 +50,14 @@ namespace _3.FUJI.Napoleon.Site
                         Session["tbl_CAT_Usuarios"] = access.CurrentUser;
                         Session["Token"] = access.CurrentUser.Token;
                         //Session["sucOID"] = access.CurrentUser.sucOID;
-                        Response.Redirect(URL + "/Default.aspx", false);
+                        if(access.CurrentUser.intTipoUsuarioID == 4)
+                        {
+                            Response.Redirect(URL + "/AgregarSitio.aspx", false);
+                        }
+                        else
+                        {
+                            Response.Redirect(URL + "/Default.aspx", false);
+                        }
                         lblLogin.Text = "Inicio de Sesion correcta";
                         Log.EscribeLog("Usuario correcto. " + access.CurrentUser.vchUsuario);
                         Log.EscribeLog(URL + "/Default.aspx");

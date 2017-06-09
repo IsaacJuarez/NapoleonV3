@@ -60,5 +60,95 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudio_Result>("stp_getEstudio", intEstatusIDParameter, id_SitioParameter, intModalidadIDParameter);
         }
+    
+        public virtual ObjectResult<stp_getPrioridadSucursalModalidad_Result> stp_getPrioridadSucursalModalidad(Nullable<int> id_sitio, Nullable<int> intProyecto)
+        {
+            var id_sitioParameter = id_sitio.HasValue ?
+                new ObjectParameter("id_sitio", id_sitio) :
+                new ObjectParameter("id_sitio", typeof(int));
+    
+            var intProyectoParameter = intProyecto.HasValue ?
+                new ObjectParameter("intProyecto", intProyecto) :
+                new ObjectParameter("intProyecto", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getPrioridadSucursalModalidad_Result>("stp_getPrioridadSucursalModalidad", id_sitioParameter, intProyectoParameter);
+        }
+    
+        public virtual int stp_setPrioridades(Nullable<int> idEstudio, Nullable<int> intDireccion, Nullable<int> intSecuenciaActual)
+        {
+            var idEstudioParameter = idEstudio.HasValue ?
+                new ObjectParameter("idEstudio", idEstudio) :
+                new ObjectParameter("idEstudio", typeof(int));
+    
+            var intDireccionParameter = intDireccion.HasValue ?
+                new ObjectParameter("intDireccion", intDireccion) :
+                new ObjectParameter("intDireccion", typeof(int));
+    
+            var intSecuenciaActualParameter = intSecuenciaActual.HasValue ?
+                new ObjectParameter("intSecuenciaActual", intSecuenciaActual) :
+                new ObjectParameter("intSecuenciaActual", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("stp_setPrioridades", idEstudioParameter, intDireccionParameter, intSecuenciaActualParameter);
+        }
+    
+        public virtual int stp_setPrioridadesSucMod(Nullable<int> intREL_SitioModID, Nullable<bool> activar)
+        {
+            var intREL_SitioModIDParameter = intREL_SitioModID.HasValue ?
+                new ObjectParameter("intREL_SitioModID", intREL_SitioModID) :
+                new ObjectParameter("intREL_SitioModID", typeof(int));
+    
+            var activarParameter = activar.HasValue ?
+                new ObjectParameter("Activar", activar) :
+                new ObjectParameter("Activar", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("stp_setPrioridadesSucMod", intREL_SitioModIDParameter, activarParameter);
+        }
+    
+        public virtual int stp_setPrioridadesSucModAcomodar(Nullable<int> intREL_SitioModID, Nullable<int> intDireccion, Nullable<int> intSecuenciaActual)
+        {
+            var intREL_SitioModIDParameter = intREL_SitioModID.HasValue ?
+                new ObjectParameter("intREL_SitioModID", intREL_SitioModID) :
+                new ObjectParameter("intREL_SitioModID", typeof(int));
+    
+            var intDireccionParameter = intDireccion.HasValue ?
+                new ObjectParameter("intDireccion", intDireccion) :
+                new ObjectParameter("intDireccion", typeof(int));
+    
+            var intSecuenciaActualParameter = intSecuenciaActual.HasValue ?
+                new ObjectParameter("intSecuenciaActual", intSecuenciaActual) :
+                new ObjectParameter("intSecuenciaActual", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("stp_setPrioridadesSucModAcomodar", intREL_SitioModIDParameter, intDireccionParameter, intSecuenciaActualParameter);
+        }
+    
+        public virtual int stp_updatePrioridadesSucMod(Nullable<int> intREL_SitioModID, Nullable<bool> activar)
+        {
+            var intREL_SitioModIDParameter = intREL_SitioModID.HasValue ?
+                new ObjectParameter("intREL_SitioModID", intREL_SitioModID) :
+                new ObjectParameter("intREL_SitioModID", typeof(int));
+    
+            var activarParameter = activar.HasValue ?
+                new ObjectParameter("Activar", activar) :
+                new ObjectParameter("Activar", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("stp_updatePrioridadesSucMod", intREL_SitioModIDParameter, activarParameter);
+        }
+    
+        public virtual ObjectResult<string> stp_getPromedioEnvio(Nullable<System.DateTime> fIni, Nullable<System.DateTime> fFin, Nullable<int> sucOID)
+        {
+            var fIniParameter = fIni.HasValue ?
+                new ObjectParameter("fIni", fIni) :
+                new ObjectParameter("fIni", typeof(System.DateTime));
+    
+            var fFinParameter = fFin.HasValue ?
+                new ObjectParameter("fFin", fFin) :
+                new ObjectParameter("fFin", typeof(System.DateTime));
+    
+            var sucOIDParameter = sucOID.HasValue ?
+                new ObjectParameter("sucOID", sucOID) :
+                new ObjectParameter("sucOID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("stp_getPromedioEnvio", fIniParameter, fFinParameter, sucOIDParameter);
+        }
     }
 }

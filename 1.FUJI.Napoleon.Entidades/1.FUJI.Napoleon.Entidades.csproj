@@ -43,8 +43,13 @@
   <ItemGroup>
     <Compile Include="clsConfigSitio.cs" />
     <Compile Include="clsDashboardService.cs" />
+    <Compile Include="clsEntidadTabla.cs" />
     <Compile Include="clsEstudio.cs" />
+    <Compile Include="clsGrafica.cs" />
+    <Compile Include="clsMensaje.cs" />
     <Compile Include="clsModeloCatalogo.cs" />
+    <Compile Include="clsPrioridadSucursal.cs" />
+    <Compile Include="clsTop.cs" />
     <Compile Include="clsUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

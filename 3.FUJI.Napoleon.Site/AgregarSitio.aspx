@@ -44,7 +44,22 @@
                 obj.value = "";
             }
         }
+        function quitaEspacio(v) {
+            v.value = v.value.replace(/^\s+/i, '').replace(/\s+$/i, '');
+        }
    </script>
+
+    <style type="text/css">
+         .imagenFuji{
+            -webkit-background-size: cover;
+           -moz-background-size: cover;
+           -o-background-size: cover;
+           background-size: cover;
+           height: 50%;
+           width: 50% ;
+           text-align: center;
+        }
+    </style>
 </head>
 <body >
     <div class="bg-bubblesSit">
@@ -55,6 +70,7 @@
                     <div class="messagealert" id="alert_container"></div>
                     <h1>Agregar Sitio</h1>
                     <div class="col-md-12 col-sm-12 col-xs-12">
+                        
                         <form id="form1" runat="server">
                             <div class="row">
                                 <div class="col-md-5  col-sm-5 col-xs-5 text-left">
@@ -71,7 +87,7 @@
                                     <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" Text="*" ForeColor="Red" ControlToValidate="txtClaveSitio" ValidationGroup="vgAgregarSitio"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <asp:TextBox runat="server" ID="txtClaveSitio" onkeyup="this.value=this.value.toUpperCase()" CssClass="form-control upper-case" MaxLength="5"  Width="100%"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="txtClaveSitio" onkeyup="this.value=this.value.toUpperCase()" onkeypress="return quitaEspacio(this)" CssClass="form-control upper-case" MaxLength="5"  Width="100%"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">
@@ -98,9 +114,19 @@
                                 <div class="col-md-5  col-sm-5 col-xs-5 text-left">
                                     <asp:Label runat="server" ID="lblNumContacto" Text="Numero de Contacto"></asp:Label>
                                     <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" Text="*" ForeColor="Red" ControlToValidate="txtNumContacto" ValidationGroup="vgAgregarSitio"></asp:RequiredFieldValidator>
+
                                 </div>
                                 <div class="col-md-7  col-sm-7 col-xs-7 text-left">
                                     <asp:TextBox runat="server" ID="txtNumContacto" onkeypress="return validarNum(event)" onchange="quitaNoNumero(this)" CssClass="form-control" MaxLength="12" Width="100%"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5  col-sm-5 col-xs-5 text-left">
+                                    <asp:Label runat="server" ID="lblPassword" Text="Password"></asp:Label>
+                                    <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator6" Text="*" ForeColor="Red" ControlToValidate="txtPassSitio" ValidationGroup="vgAgregarSitio"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-md-7  col-sm-7 col-xs-7 text-left">
+                                    <asp:TextBox runat="server" ID="txtPassSitio" TextMode="Password" CssClass="form-control" MaxLength="12" Width="100%"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">
@@ -122,6 +148,15 @@
                     <!-- footer content -->
                     <footer>
                         <div class="pull-center">
+                            
+                            <div class="row">
+
+                            </div>
+                            <div class="row" style="margin-top:50px; margin-bottom:0px;">
+                                <img src="Images/FEED2CJAV.png" width="100px" height="40px" />
+                                <img src="Images/header_taglinelogo.gif"/>
+                            </div>
+                            
                             <p><%: DateTime.Now.Year %> - FEED2CLOUD - Versión 1.0    </p>
                         </div>
                     </footer>

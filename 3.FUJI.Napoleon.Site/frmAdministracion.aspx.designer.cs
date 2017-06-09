@@ -22,22 +22,22 @@ namespace _3.FUJI.Napoleon.Site {
         protected global::System.Web.UI.Timer Timer1;
         
         /// <summary>
-        /// Control lblBusPrioridad.
+        /// Control lblModalidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBusPrioridad;
+        protected global::System.Web.UI.WebControls.Label lblModalidad;
         
         /// <summary>
-        /// Control ddlBusPrioridad.
+        /// Control ddlBusModalidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBusPrioridad;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBusModalidad;
         
         /// <summary>
         /// Control lblBusEstatus.
@@ -112,22 +112,22 @@ namespace _3.FUJI.Napoleon.Site {
         protected global::System.Web.UI.WebControls.TextBox txtBusNombre;
         
         /// <summary>
-        /// Control lblModalidad.
+        /// Control lblBusPrioridad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModalidad;
+        protected global::System.Web.UI.WebControls.Label lblBusPrioridad;
         
         /// <summary>
-        /// Control ddlBusModalidad.
+        /// Control ddlBusPrioridad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBusModalidad;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBusPrioridad;
         
         /// <summary>
         /// Control btnBusquedaEst.

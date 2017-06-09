@@ -3,11 +3,12 @@
     <center>
         <div class="row text-center" >
             <h1>Administración Napoleón</h1>
-            <p class="lead">Administración y Estadística proceso Napoleón.</p>
+            <p class="lead">Feed2Cloud 2017</p>
             <div class="row">
             <div class="col-md-12 text-center">
                 <center>
                     <asp:Image runat="server" ImageUrl="~/Images/Fujifilm-sqr.png" Width="200px" />
+                    <asp:Image runat="server" ImageUrl="~/Images/FEED2CJAV.png" Width="200px" />
                 </center>
             </div>
         </div>

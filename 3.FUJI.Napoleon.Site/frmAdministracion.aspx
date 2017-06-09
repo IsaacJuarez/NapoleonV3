@@ -31,8 +31,8 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <asp:Label runat="server" ID="lblBusPrioridad" Text="Prioridad" AssociatedControlID="ddlBusPrioridad"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusPrioridad" runat="server" CssClass="form-control " >
+                                            <asp:Label runat="server" ID="lblModalidad" Text="Modalidad" AssociatedControlID="ddlBusModalidad"></asp:Label>
+                                            <asp:DropDownList ID="ddlBusModalidad" runat="server" CssClass="form-control" >
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-4">
@@ -56,8 +56,8 @@
                                             <asp:TextBox ID="txtBusNombre" runat="server" Text="" CssClass="form-control"></asp:TextBox>
                                         </div>
                                         <div class="col-md-3">
-                                            <asp:Label runat="server" ID="lblModalidad" Text="Modalidad" AssociatedControlID="ddlBusModalidad"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusModalidad" runat="server" CssClass="form-control" >
+                                            <asp:Label runat="server" ID="lblBusPrioridad" Text="Prioridad" AssociatedControlID="ddlBusPrioridad"></asp:Label>
+                                            <asp:DropDownList ID="ddlBusPrioridad" runat="server" CssClass="form-control " >
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-1">
@@ -111,8 +111,8 @@
                                                 <asp:BoundField DataField="intNumeroArchivo" HeaderText="Num. de Archivos" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                 <asp:BoundField DataField="intTamanoTotal" HeaderText="Tamaño Total Arc." ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                 
-                                                <%--<asp:BoundField DataField="prioDescripcion" HeaderText="Prioridad" ReadOnly="true" HeaderStyle-CssClass="visible-lg" ItemStyle-CssClass="visible-lg" />
-                                                <asp:BoundField DataField="priSecuencia" HeaderText="Secuencia" ReadOnly="true" HeaderStyle-CssClass="visible-lg" ItemStyle-HorizontalAlign="Center" ItemStyle-CssClass="visible-lg" />
+                                                <asp:BoundField DataField="vchPrioridad" HeaderText="Prioridad" ReadOnly="true" HeaderStyle-CssClass="visible-lg" ItemStyle-CssClass="visible-lg" />
+                                                <asp:BoundField DataField="intSecuencia" HeaderText="Secuencia" ReadOnly="true" HeaderStyle-CssClass="visible-lg" ItemStyle-HorizontalAlign="Center" ItemStyle-CssClass="visible-lg" />
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                             <asp:LinkButton ID="btnUp"  CommandName="addPrioridad" CommandArgument='<%# Bind("intEstudioID") %>' runat="server">
@@ -122,10 +122,10 @@
                                                                 <asp:Image ID="imgDown" runat="server" ImageUrl="~/Images/ic_action_arrow_bottom.png" Height="20px" Width="20px" ToolTip="Disminuir Prioridad"/>
                                                             </asp:LinkButton>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>--%>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Estatus">
                                                     <ItemTemplate>
-                                                        <a runat="server" id="lblTooltip" title="Estatus Archivos" data-toggle="popover" data-trigger="hover" data-content="Some content" data-html="true"><asp:LinkButton CommandArgument='<%# Bind("vchAccessionNumber") %>' CommandName="EstatusArchivos" runat="server" ID="lblEstatus"></asp:LinkButton></a>
+                                                        <asp:LinkButton CommandArgument='<%# Bind("vchAccessionNumber") %>' CommandName="EstatusArchivos" runat="server" ID="lblEstatus"></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Urgente">

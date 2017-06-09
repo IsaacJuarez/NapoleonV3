@@ -68,6 +68,9 @@
     <Compile Include="DataAccess\stp_getEstudio_Result.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\stp_getPrioridadSucursalModalidad_Result.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\tbl_CAT_Estatus.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>

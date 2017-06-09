@@ -124,50 +124,87 @@ namespace _3.FUJI.Napoleon.Site
 
                 clsDashboardService _mdl = new clsDashboardService();
                 _mdl = e.Row.DataItem as clsDashboardService;
-                if (_mdl.datFechaSCP != null)
+                if (_mdl.datFechaSCP != null && _mdl.datFechaSCP != DateTime.MinValue)
                 {
+                    string leyenda = "";
                     if (_mdl.datFechaSCP < DateTime.Now)
                     {
                         DateTime datIni = (DateTime)_mdl.datFechaSCP;
                         Double dif = DateTime.Now.Subtract(datIni).TotalSeconds;
                         if (dif > (ParametroMinutos * 60))
                         {
-                            ((Image)e.Row.Cells[2].FindControl("imgLActivo")).ImageUrl = "~/Images/offline.png";
+                            ((Image)e.Row.FindControl("imgLActivo")).ImageUrl = "~/Images/offline.png";
                         }
                         else
                         {
-                            ((Image)e.Row.Cells[2].FindControl("imgLActivo")).ImageUrl = "~/Images/online.png";
+                            ((Image)e.Row.FindControl("imgLActivo")).ImageUrl = "~/Images/online.png";
                         }
-                        string leyenda = tiempo2String(dif);
-                        ((Label)e.Row.Cells[2].FindControl("lblTiempoTransL")).Text = "...hace " + leyenda;
-
+                        leyenda = tiempo2String(dif);
                     }
+                    else
+                    {
+                        ((Image)e.Row.FindControl("imgLActivo")).ImageUrl = "~/Images/online.png";
+                    }
+                    ((Label)e.Row.FindControl("lblTiempoTransL")).Text = "...hace " + leyenda;
                 }
                 else
                 {
-                    ((Label)e.Row.Cells[2].FindControl("lblTiempoTransL")).Text = "Sin información.";
+                    ((Label)e.Row.FindControl("lblTiempoTransL")).Text = "Sin información.";
                 }
-                if (_mdl.datFechaSCU != null)
+                if (_mdl.datFechaSync != null && _mdl.datFechaSync != DateTime.MinValue)
                 {
+                    string leyenda = "";
+                    if (_mdl.datFechaSync < DateTime.Now)
+                    {
+                        DateTime datIni = (DateTime)_mdl.datFechaSync;
+                        Double dif = DateTime.Now.Subtract(datIni).TotalSeconds;
+                        if (dif > (ParametroMinutos * 60))
+                        {
+                            ((Image)e.Row.FindControl("imgSActivo")).ImageUrl = "~/Images/offline.png";
+                        }
+                        else
+                        {
+                            ((Image)e.Row.FindControl("imgSActivo")).ImageUrl = "~/Images/online.png";
+                        }
+                        leyenda = tiempo2String(dif);
+                    }
+                    else
+                    {
+                        ((Image)e.Row.FindControl("imgSActivo")).ImageUrl = "~/Images/online.png";
+                    }
+                    ((Label)e.Row.FindControl("lblTiempoTransS")).Text = "...hace " + leyenda;
+                }
+                else
+                {
+                    ((Label)e.Row.FindControl("lblTiempoTransS")).Text = "Sin información.";
+                }
+                if (_mdl.datFechaSCU != null && _mdl.datFechaSCU != DateTime.MinValue)
+                {
+                    string leyenda = "";
                     if (_mdl.datFechaSCU < DateTime.Now)
                     {
                         DateTime datIni = (DateTime)_mdl.datFechaSCU;
                         Double dif = DateTime.Now.Subtract(datIni).TotalSeconds;
                         if (dif > (ParametroMinutos * 60))
                         {
-                            ((Image)e.Row.Cells[2].FindControl("imgHActivo")).ImageUrl = "~/Images/offline.png";
+                            ((Image)e.Row.FindControl("imgHActivo")).ImageUrl = "~/Images/offline.png";
                         }
                         else
                         {
-                            ((Image)e.Row.Cells[2].FindControl("imgHActivo")).ImageUrl = "~/Images/online.png";
+                            ((Image)e.Row.FindControl("imgHActivo")).ImageUrl = "~/Images/online.png";
                         }
-                        string leyenda = tiempo2String(dif);
-                        ((Label)e.Row.Cells[2].FindControl("lblTiempoTransH")).Text = "...hace " + leyenda;
+                        leyenda = "...hace " + tiempo2String(dif);
                     }
+                    else
+                    {
+                        ((Image)e.Row.FindControl("imgHActivo")).ImageUrl = "~/Images/online.png";
+                        leyenda = "...ahora";
+                    }
+                    ((Label)e.Row.FindControl("lblTiempoTransH")).Text = "...hace " + leyenda;
                 }
                 else
                 {
-                    ((Label)e.Row.Cells[2].FindControl("lblTiempoTransH")).Text = "Sin información.";
+                    ((Label)e.Row.FindControl("lblTiempoTransH")).Text = "Sin información.";
                 }
             }
             catch (Exception edb)

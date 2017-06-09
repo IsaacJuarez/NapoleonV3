@@ -22,6 +22,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public string vchVendedor { get; set; }
         public string vchClaveActivacion { get; set; }
         public Nullable<bool> bitActivo { get; set; }
+        public string vchpassword { get; set; }
     
         public virtual tbl_ConfigSitio tbl_ConfigSitio { get; set; }
     }

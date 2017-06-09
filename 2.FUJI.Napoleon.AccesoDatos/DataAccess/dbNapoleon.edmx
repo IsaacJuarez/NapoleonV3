@@ -99,6 +99,7 @@
           <Property Name="datFechaSitema" Type="datetime" />
           <Property Name="vchUserAdmin" Type="varchar" MaxLength="200" />
           <Property Name="bitActivo" Type="bit" />
+          <Property Name="TIPOMOV_ID" Type="int" />
         </EntityType>
         <EntityType Name="tbl_DET_Estudio">
           <Key>
@@ -135,6 +136,7 @@
           <Property Name="id_Sitio" Type="int" />
           <Property Name="datFechaSCP" Type="datetime" />
           <Property Name="datFechaSCU" Type="datetime" />
+          <Property Name="datFechaSync" Type="datetime" />
         </EntityType>
         <EntityType Name="tbl_MST_Estudio">
           <Key>
@@ -150,6 +152,7 @@
           <Property Name="datFecha" Type="datetime" />
           <Property Name="intNumeroArchivo" Type="int" />
           <Property Name="intTamanoTotal" Type="int" />
+          <Property Name="vchgenero" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_MST_PrioridadEstudio">
           <Key>
@@ -176,6 +179,7 @@
           <Property Name="vchVendedor" Type="varchar" MaxLength="200" />
           <Property Name="vchClaveActivacion" Type="varchar" MaxLength="200" />
           <Property Name="bitActivo" Type="bit" />
+          <Property Name="vchpassword" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_REL_ProyectoSitio">
           <Key>
@@ -382,6 +386,33 @@
           <Parameter Name="intEstatusID" Type="int" Mode="In" />
           <Parameter Name="id_Sitio" Type="int" Mode="In" />
           <Parameter Name="intModalidadID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="stp_getPrioridadSucursalModalidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_sitio" Type="int" Mode="In" />
+          <Parameter Name="intProyecto" Type="int" Mode="In" />
+        </Function>
+        <Function Name="stp_getPromedioEnvio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fIni" Type="date" Mode="In" />
+          <Parameter Name="fFin" Type="date" Mode="In" />
+          <Parameter Name="sucOID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="stp_setPrioridades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstudio" Type="int" Mode="In" />
+          <Parameter Name="intDireccion" Type="int" Mode="In" />
+          <Parameter Name="intSecuenciaActual" Type="int" Mode="In" />
+        </Function>
+        <Function Name="stp_setPrioridadesSucMod" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intREL_SitioModID" Type="int" Mode="In" />
+          <Parameter Name="Activar" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="stp_setPrioridadesSucModAcomodar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intREL_SitioModID" Type="int" Mode="In" />
+          <Parameter Name="intDireccion" Type="int" Mode="In" />
+          <Parameter Name="intSecuenciaActual" Type="int" Mode="In" />
+        </Function>
+        <Function Name="stp_updatePrioridadesSucMod" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="intREL_SitioModID" Type="int" Mode="In" />
+          <Parameter Name="Activar" Type="bit" Mode="In" />
         </Function>
         <EntityContainer Name="NAPOLEONModelStoreContainer">
           <EntitySet Name="tbl_CAT_Estatus" EntityType="Self.tbl_CAT_Estatus" Schema="dbo" store:Type="Tables" />
@@ -604,6 +635,7 @@
           <NavigationProperty Name="tbl_MST_PrioridadEstudio" Relationship="Self.FK_MST_Estudio_MST_PrioridadEstudio" FromRole="tbl_MST_Estudio" ToRole="tbl_MST_PrioridadEstudio" />
           <Property Name="intNumeroArchivo" Type="Int32" />
           <Property Name="intTamanoTotal" Type="Int32" />
+          <Property Name="vchgenero" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_MST_PrioridadEstudio">
           <Key>
@@ -873,6 +905,33 @@
             <Parameter Name="id_Sitio" Mode="In" Type="Int32" />
             <Parameter Name="intModalidadID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="stp_getPrioridadSucursalModalidad" ReturnType="Collection(NAPOLEONModel.stp_getPrioridadSucursalModalidad_Result)">
+            <Parameter Name="id_sitio" Mode="In" Type="Int32" />
+            <Parameter Name="intProyecto" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="stp_setPrioridades">
+            <Parameter Name="idEstudio" Mode="In" Type="Int32" />
+            <Parameter Name="intDireccion" Mode="In" Type="Int32" />
+            <Parameter Name="intSecuenciaActual" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="stp_setPrioridadesSucMod">
+            <Parameter Name="intREL_SitioModID" Mode="In" Type="Int32" />
+            <Parameter Name="Activar" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="stp_setPrioridadesSucModAcomodar">
+            <Parameter Name="intREL_SitioModID" Mode="In" Type="Int32" />
+            <Parameter Name="intDireccion" Mode="In" Type="Int32" />
+            <Parameter Name="intSecuenciaActual" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="stp_updatePrioridadesSucMod">
+            <Parameter Name="intREL_SitioModID" Mode="In" Type="Int32" />
+            <Parameter Name="Activar" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="stp_getPromedioEnvio" ReturnType="Collection(String)">
+            <Parameter Name="fIni" Mode="In" Type="DateTime" />
+            <Parameter Name="fFin" Mode="In" Type="DateTime" />
+            <Parameter Name="sucOID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <Association Name="FK_ConfigSitio_CAT_Usuario">
           <End Type="NAPOLEONModel.tbl_ConfigSitio" Role="tbl_ConfigSitio" Multiplicity="0..1" />
@@ -906,6 +965,7 @@
           <Property Name="vchUserAdmin" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="bitActivo" Type="Boolean" />
           <NavigationProperty Name="tbl_ConfigSitio" Relationship="NAPOLEONModel.FK_TBL_CONF_REFERENCE_TBL_CONF" FromRole="tbl_ConfigSitio_AUD" ToRole="tbl_ConfigSitio" />
+          <Property Name="TIPOMOV_ID" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_DET_ServicioSitio">
           <Key>
@@ -916,6 +976,7 @@
           <Property Name="datFechaSCP" Type="DateTime" Precision="3" />
           <Property Name="datFechaSCU" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbl_ConfigSitio" Relationship="NAPOLEONModel.FK_ConfigSitio_DET_ServicioSitio" FromRole="tbl_DET_ServicioSitio" ToRole="tbl_ConfigSitio" />
+          <Property Name="datFechaSync" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_ConfigSitio_DET_ServicioSitio">
           <End Type="NAPOLEONModel.tbl_ConfigSitio" Role="tbl_ConfigSitio" Multiplicity="0..1" />
@@ -954,6 +1015,7 @@
           <Property Name="vchClaveActivacion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="bitActivo" Type="Boolean" />
           <NavigationProperty Name="tbl_ConfigSitio" Relationship="NAPOLEONModel.FK_TBL_REGI_REFERENCE_TBL_CONF" FromRole="tbl_RegistroSitio" ToRole="tbl_ConfigSitio" />
+          <Property Name="vchpassword" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_TBL_REGI_REFERENCE_TBL_CONF">
           <End Type="NAPOLEONModel.tbl_ConfigSitio" Role="tbl_ConfigSitio" Multiplicity="0..1" />
@@ -983,6 +1045,21 @@
           <Property Type="Int32" Name="intEstatusID" Nullable="true" />
           <Property Type="String" Name="vchEstatusDesc" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="intProyectoID" Nullable="false" />
+          <Property Type="Int32" Name="intPrioridadID" Nullable="true" />
+          <Property Type="Int32" Name="intSecuencia" Nullable="true" />
+          <Property Type="Boolean" Name="bitUrgente" Nullable="true" />
+          <Property Type="Boolean" Name="bitAtendido" Nullable="true" />
+          <Property Type="DateTime" Name="datAtendido" Nullable="true" Precision="23" />
+          <Property Type="String" Name="vchusuarioSol" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="stp_getPrioridadSucursalModalidad_Result">
+          <Property Type="Int32" Name="intREL_SitioModID" Nullable="false" />
+          <Property Type="Int32" Name="id_Sitio" Nullable="true" />
+          <Property Type="String" Name="vchnombreSitio" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="intModalidadID" Nullable="true" />
+          <Property Type="String" Name="vchModalidadClave" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="intSecuencia" Nullable="false" />
+          <Property Type="Boolean" Name="bitActivo" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1103,6 +1180,7 @@
           <EntitySetMapping Name="tbl_MST_Estudio">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_MST_Estudio">
               <MappingFragment StoreEntitySet="tbl_MST_Estudio">
+                <ScalarProperty Name="vchgenero" ColumnName="vchgenero" />
                 <ScalarProperty Name="intTamanoTotal" ColumnName="intTamanoTotal" />
                 <ScalarProperty Name="intNumeroArchivo" ColumnName="intNumeroArchivo" />
                 <ScalarProperty Name="intEstudioID" ColumnName="intEstudioID" />
@@ -1156,6 +1234,7 @@
           <EntitySetMapping Name="tbl_ConfigSitio_AUD">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_ConfigSitio_AUD">
               <MappingFragment StoreEntitySet="tbl_ConfigSitio_AUD">
+                <ScalarProperty Name="TIPOMOV_ID" ColumnName="TIPOMOV_ID" />
                 <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
                 <ScalarProperty Name="vchUserAdmin" ColumnName="vchUserAdmin" />
                 <ScalarProperty Name="datFechaSitema" ColumnName="datFechaSitema" />
@@ -1177,6 +1256,7 @@
           <EntitySetMapping Name="tbl_DET_ServicioSitio">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_DET_ServicioSitio">
               <MappingFragment StoreEntitySet="tbl_DET_ServicioSitio">
+                <ScalarProperty Name="datFechaSync" ColumnName="datFechaSync" />
                 <ScalarProperty Name="datFechaSCU" ColumnName="datFechaSCU" />
                 <ScalarProperty Name="datFechaSCP" ColumnName="datFechaSCP" />
                 <ScalarProperty Name="id_Sitio" ColumnName="id_Sitio" />
@@ -1187,6 +1267,7 @@
           <EntitySetMapping Name="tbl_RegistroSitio">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_RegistroSitio">
               <MappingFragment StoreEntitySet="tbl_RegistroSitio">
+                <ScalarProperty Name="vchpassword" ColumnName="vchpassword" />
                 <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
                 <ScalarProperty Name="vchClaveActivacion" ColumnName="vchClaveActivacion" />
                 <ScalarProperty Name="vchVendedor" ColumnName="vchVendedor" />
@@ -1216,9 +1297,33 @@
                 <ScalarProperty Name="intEstatusID" ColumnName="intEstatusID" />
                 <ScalarProperty Name="vchEstatusDesc" ColumnName="vchEstatusDesc" />
                 <ScalarProperty Name="intProyectoID" ColumnName="intProyectoID" />
+                <ScalarProperty Name="intPrioridadID" ColumnName="intPrioridadID" />
+                <ScalarProperty Name="intSecuencia" ColumnName="intSecuencia" />
+                <ScalarProperty Name="bitUrgente" ColumnName="bitUrgente" />
+                <ScalarProperty Name="bitAtendido" ColumnName="bitAtendido" />
+                <ScalarProperty Name="datAtendido" ColumnName="datAtendido" />
+                <ScalarProperty Name="vchusuarioSol" ColumnName="vchusuarioSol" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="stp_getPrioridadSucursalModalidad" FunctionName="NAPOLEONModel.Store.stp_getPrioridadSucursalModalidad">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NAPOLEONModel.stp_getPrioridadSucursalModalidad_Result">
+                <ScalarProperty Name="intREL_SitioModID" ColumnName="intREL_SitioModID" />
+                <ScalarProperty Name="id_Sitio" ColumnName="id_Sitio" />
+                <ScalarProperty Name="vchnombreSitio" ColumnName="vchnombreSitio" />
+                <ScalarProperty Name="intModalidadID" ColumnName="intModalidadID" />
+                <ScalarProperty Name="vchModalidadClave" ColumnName="vchModalidadClave" />
+                <ScalarProperty Name="intSecuencia" ColumnName="intSecuencia" />
+                <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="stp_setPrioridades" FunctionName="NAPOLEONModel.Store.stp_setPrioridades" />
+          <FunctionImportMapping FunctionImportName="stp_setPrioridadesSucMod" FunctionName="NAPOLEONModel.Store.stp_setPrioridadesSucMod" />
+          <FunctionImportMapping FunctionImportName="stp_setPrioridadesSucModAcomodar" FunctionName="NAPOLEONModel.Store.stp_setPrioridadesSucModAcomodar" />
+          <FunctionImportMapping FunctionImportName="stp_updatePrioridadesSucMod" FunctionName="NAPOLEONModel.Store.stp_updatePrioridadesSucMod" />
+          <FunctionImportMapping FunctionImportName="stp_getPromedioEnvio" FunctionName="NAPOLEONModel.Store.stp_getPromedioEnvio" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

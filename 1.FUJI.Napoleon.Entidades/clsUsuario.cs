@@ -14,6 +14,7 @@ namespace _1.FUJI.Napoleon.Entidades
         public int intTipoUsuarioID { get; set; }
         public int intProyectoID { get; set; }
         public int id_Sitio { get; set; }
+        public string vchSitio { get; set; }
         public string vchProyectoID { get; set; }
         public string vchNombre { get; set; }
 
@@ -45,6 +46,7 @@ namespace _1.FUJI.Napoleon.Entidades
             datFecha = DateTime.MinValue;
             vchUserAdmin = string.Empty;
             Token = string.Empty;
+            vchSitio = string.Empty;
         }
     }
 }

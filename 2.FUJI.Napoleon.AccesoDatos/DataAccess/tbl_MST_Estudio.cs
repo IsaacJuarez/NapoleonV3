@@ -30,6 +30,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<System.DateTime> datFecha { get; set; }
         public Nullable<int> intNumeroArchivo { get; set; }
         public Nullable<int> intTamanoTotal { get; set; }
+        public string vchgenero { get; set; }
     
         public virtual tbl_CAT_Modalidad tbl_CAT_Modalidad { get; set; }
         public virtual tbl_ConfigSitio tbl_ConfigSitio { get; set; }

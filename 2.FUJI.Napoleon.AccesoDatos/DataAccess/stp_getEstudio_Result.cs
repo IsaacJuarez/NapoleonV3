@@ -28,5 +28,11 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<int> intEstatusID { get; set; }
         public string vchEstatusDesc { get; set; }
         public int intProyectoID { get; set; }
+        public Nullable<int> intPrioridadID { get; set; }
+        public Nullable<int> intSecuencia { get; set; }
+        public Nullable<bool> bitUrgente { get; set; }
+        public Nullable<bool> bitAtendido { get; set; }
+        public Nullable<System.DateTime> datAtendido { get; set; }
+        public string vchusuarioSol { get; set; }
     }
 }

@@ -1,8 +1,10 @@
-﻿using _2.FUJI.Napoleon.AccesoDatos.DataAccess;
+﻿using _1.FUJI.Napoleon.Entidades;
+using _2.FUJI.Napoleon.AccesoDatos.DataAccess;
 using _2.FUJI.Napoleon.AccesoDatos.Extensions;
 using _3.FUJI.Napoleon.Site.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,14 +14,34 @@ namespace _3.FUJI.Napoleon.Site
 {
     public partial class AgregarSitio : System.Web.UI.Page
     {
+        public string URL
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["URL"];
+            }
+        }
+
         NapoleonService NapoleonDA = new NapoleonService();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                if (!IsPostBack)
+                if (Session["UserID"] != null && Session["UserID"].ToString() != "" &&
+                Security.ValidateToken(Session["Token"].ToString(), Session["intUsuarioID"].ToString(), Session["UserID"].ToString(), Session["Password"].ToString()))
                 {
-                    enableClean(true);
+                    if (!IsPostBack)
+                    {
+                        enableClean(true);
+                        clsUsuario user = new clsUsuario();
+                        user = (clsUsuario)Session["tbl_CAT_Usuarios"];
+                        txtVendedor.Text = user.vchNombre;
+                        txtVendedor.Enabled = false;
+                    }
+                }
+                else
+                {
+                    Response.Redirect(URL + "/frmLogin.aspx");
                 }
             }
             catch (Exception ePL)
@@ -72,6 +94,7 @@ namespace _3.FUJI.Napoleon.Site
 
                 reg.vchNombreCliente = txtNombreContacto.Text;
                 reg.vchEmail = txtEmail.Text;
+                reg.vchpassword = Security.Decrypt(txtPassSitio.Text);
                 reg.vchNumeroContacto = txtNumContacto.Text;
                 reg.vchVendedor = txtVendedor.Text;
                 reg.bitActivo = true;
@@ -82,16 +105,16 @@ namespace _3.FUJI.Napoleon.Site
                 {
                     if (site != null && reg != null)
                     {
-                        string message = "";
-                        bool success = NapoleonDA.setSitio(site, reg, ref message);
-                        if (success)
+                        clsMensaje response = new clsMensaje();
+                        response = NapoleonDA.setSitio(site, reg);
+                        if (response.valido)
                         {
                             enableClean(false);
                             ShowMessage("El Sitio " + txtClaveSitio.Text + " se reservó correctamente", MessageType.Success, "alert_container");
                         }
                         else
                         {
-                            ShowMessage("Existe un error:" + message, MessageType.Info, "alert_container");
+                            ShowMessage("Existe un error:" + response.vchMensaje, MessageType.Info, "alert_container");
                         }
                     }
                     else

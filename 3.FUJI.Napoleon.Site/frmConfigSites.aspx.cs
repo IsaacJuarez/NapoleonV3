@@ -1,4 +1,5 @@
-﻿using _2.FUJI.Napoleon.AccesoDatos.DataAccess;
+﻿using _1.FUJI.Napoleon.Entidades;
+using _2.FUJI.Napoleon.AccesoDatos.DataAccess;
 using _2.FUJI.Napoleon.AccesoDatos.Extensions;
 using _3.FUJI.Napoleon.Site.Services;
 using System;
@@ -14,6 +15,8 @@ namespace _3.FUJI.Napoleon.Site
     public partial class frmConfigSites : System.Web.UI.Page
     {
         NapoleonService NapoleonDA = new NapoleonService();
+        public static int intTipoUsuario = 0;
+        public static clsUsuario user = new clsUsuario();
         public string URL
         {
             get
@@ -26,11 +29,13 @@ namespace _3.FUJI.Napoleon.Site
         {
             try
             {
-                if (Session["UserID"] != null && Session["UserID"].ToString() != "" &&
+                if (Session["UserID"] != null && Session["UserID"].ToString() != "" && Session["tbl_CAT_Usuarios"] != null &&
                 Security.ValidateToken(Session["Token"].ToString(), Session["intUsuarioID"].ToString(), Session["UserID"].ToString(), Session["Password"].ToString()))
                 {
                     if (!IsPostBack)
                     {
+                        intTipoUsuario = Convert.ToInt32(Session["intTipoUsuario"].ToString());
+                        user = (clsUsuario)Session["tbl_CAT_Usuarios"];
                         cargaSitiosConfig();
                         //inicializaCombos();
                     }
@@ -52,7 +57,23 @@ namespace _3.FUJI.Napoleon.Site
             try
             {
                 List<tbl_ConfigSitio> _lstGrid = new List<tbl_ConfigSitio>();
-                _lstGrid = NapoleonDA.getSitios();
+                if (intTipoUsuario == 1)
+                {
+                    user.intProyectoID = 0;
+                    user.id_Sitio = 0;
+                }
+                else
+                {
+                    if (intTipoUsuario == 2)
+                    {
+                        user.id_Sitio = 0;
+                    }
+                    if (intTipoUsuario == 3)
+                    {
+                        user.intProyectoID = 0;
+                    }
+                }
+                _lstGrid = NapoleonDA.getSitios(user.intProyectoID, user.id_Sitio);
                 if (_lstGrid.Count > 0)
                 {
                     if (txtBusqueda.Text != "")
@@ -163,7 +184,45 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void grvBusqueda_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            try
+            {
+                int id_Site = 0;
+                tbl_RegistroSitio mdlUsuario = new tbl_RegistroSitio();
+                switch (e.CommandName)
+                {
+                    case "viewEditar":
+                        id_Site = Convert.ToInt32(e.CommandArgument.ToString());
+                        tbl_RegistroSitio mdl = new tbl_RegistroSitio();
+                        mdl = NapoleonDA.getRegistroContacto(id_Site);
+                        if (mdl != null)
+                        {
+                            fillContacto(mdl);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModal", "$('#myModal').modal();", true);
+                            upModal.Update();
+                        }
+                        break;
+                }
+            }
+            catch (Exception eRC)
+            {
+                Log.EscribeLog("Existe un error en grvBusqueda_RowCommand: " + eRC.Message);
+            }
+        }
 
+        private void fillContacto(tbl_RegistroSitio mdl)
+        {
+            try
+            {
+                lblIDSitio.Text = mdl.id_Sitio == null ? "" : mdl.id_Sitio.ToString();
+                txtNombreContacto.Text = mdl.vchNombreCliente == null ? "" : mdl.vchNombreCliente.ToString();
+                txtEmailContacto.Text = mdl.vchEmail == null ? "" : mdl.vchEmail;
+                txtTelefono.Text = mdl.vchNumeroContacto == null ? "" : mdl.vchNumeroContacto;
+                txtVendedor.Text = mdl.vchVendedor == null ? "" : mdl.vchVendedor;
+            }
+            catch (Exception efC)
+            {
+                Log.EscribeLog("Existe un error en fillContacto: " + efC.Message);
+            }
         }
 
         protected void ddlBandeja_SelectedIndexChanged(object sender, EventArgs e)

@@ -16,10 +16,15 @@ namespace _3.FUJI.Napoleon.Site
     public partial class frmConfiguraciones : System.Web.UI.Page
     {
         NapoleonService NapoleonDA = new NapoleonService();
+        public static clsUsuario usuario =  new clsUsuario();
         public static List<clsUsuario> _lstUsuario = new List<clsUsuario>();
         public static List<tbl_ConfigSitio> _lstSitioG = new List<tbl_ConfigSitio>();
         public static List<tbl_CAT_Proyecto> _lstProyecto = new List<tbl_CAT_Proyecto>();
         public static List<clsConfigSitio> _lstSitesG = new List<clsConfigSitio>();
+        public static List<clsPrioridadSucursal> _lstPriodidad = new List<clsPrioridadSucursal>();
+        public static int intProyectoG = 0;
+        public static int intTipoUsuario = 0;
+        public static int SecMax = 0;
 
         public string URL
         {
@@ -34,13 +39,23 @@ namespace _3.FUJI.Napoleon.Site
             try
             {
                 hflURL.Value = URL;
-                if (Session["UserID"] != null && Session["UserID"].ToString() != "" &&
+                if (Session["UserID"] != null && Session["UserID"].ToString() != "" && Session["tbl_CAT_Usuarios"] != null &&
                Security.ValidateToken(Session["Token"].ToString(), Session["intUsuarioID"].ToString(), Session["UserID"].ToString(), Session["Password"].ToString()))
                 {
                     if (!IsPostBack)
                     {
-                        Session["intProyectoID"] = 0;
-                        Session["intUsuarioIDGrid"] = 0;
+                        try
+                        {
+                            Session["intProyectoID"] = 0;
+                            Session["intUsuarioIDGrid"] = 0;
+                            usuario = (clsUsuario)Session["tbl_CAT_Usuarios"];
+                            intTipoUsuario = usuario.intTipoUsuarioID;
+                            intProyectoG = usuario.intProyectoID == null ? 0 : usuario.intProyectoID;
+                        }
+                        catch(Exception eInicializadores)
+                        {
+                            Log.EscribeLog("Existe un error en Inicalizadores de PageLoad: " + eInicializadores.Message);
+                        }
                         if (Session["intTipoUsuario"].ToString() == "1")
                         {
                             cargaSitios();
@@ -49,7 +64,7 @@ namespace _3.FUJI.Napoleon.Site
                             cargaSitiosCat();
                             inicializaCombos();
                             cargaGridUsuarios();
-                            //cargaGridPrioridad();
+                            
                             //lblMensajeConf.Text = "";
                             divUser.Visible = true;
                             divAddUser.Visible = true;
@@ -80,6 +95,7 @@ namespace _3.FUJI.Napoleon.Site
             {
                 cargaproyectosCat();
                 cargaTipoUserCat();
+                
             }
             catch (Exception eIC)
             {
@@ -87,6 +103,8 @@ namespace _3.FUJI.Napoleon.Site
                 throw eIC;
             }
         }
+
+        
 
         private void cargaGridUsuarios()
         {
@@ -107,6 +125,7 @@ namespace _3.FUJI.Napoleon.Site
             }
             catch (Exception ecU)
             {
+                Log.EscribeLog("Existe un error en cargaGridUsuarios: " + ecU.Message);
                 throw ecU;
             }
         }
@@ -117,7 +136,7 @@ namespace _3.FUJI.Napoleon.Site
             {
                 grvSites.DataSource = null;
                 List<tbl_ConfigSitio> _lstSitio = new List<tbl_ConfigSitio>();
-                _lstSitio = NapoleonDA.getSitios();
+                _lstSitio = NapoleonDA.getSitios(intProyectoG, 0);
                 if(_lstSitio!= null)
                 {
                     if (_lstSitio.Count > 0)
@@ -141,7 +160,7 @@ namespace _3.FUJI.Napoleon.Site
             {
                 ddlSitio.DataSource = null;
                 List<tbl_ConfigSitio> _lstSitio = new List<tbl_ConfigSitio>();
-                _lstSitio = NapoleonDA.getSitios();
+                _lstSitio = NapoleonDA.getSitios(intProyectoG, 0);
                 if (_lstSitio != null)
                 {
                     if (_lstSitio.Count > 0)
@@ -221,7 +240,7 @@ namespace _3.FUJI.Napoleon.Site
                 gridSitiosProyec.DataSource = null;
                 List<tbl_ConfigSitio> _lstSitio = new List<tbl_ConfigSitio>();
                 List<clsConfigSitio> _lstSites = new List<clsConfigSitio>();
-                _lstSitio = NapoleonDA.getSitios();
+                _lstSitio = NapoleonDA.getSitios(intProyectoG,0);
                 
                 if (_lstSitio != null)
                 {
@@ -235,17 +254,17 @@ namespace _3.FUJI.Napoleon.Site
                             mdlConfig.bitActivo = (bool)item.bitActivo;
 
                             mdlConfig.bitSeleccionado = false;
-                            mdlConfig.datFechaSistema = (DateTime)item.datFechaSistema;
-                            mdlConfig.intPuertoCliente = (int)item.intPuertoCliente;
-                            mdlConfig.in_tPuertoServer = (int)item.in_tPuertoServer;
-                            mdlConfig.vchAETitle = item.vchAETitle;
-                            mdlConfig.vchAETitleServer = item.vchAETitleServer;
-                            mdlConfig.vchIPCliente = item.vchIPCliente;
-                            mdlConfig.vchIPServidor = item.vchIPServidor;
-                            mdlConfig.vchMaskCliente = item.vchMaskCliente;
-                            mdlConfig.vchnombreSitio = item.vchnombreSitio;
-                            mdlConfig.vchPathLocal = item.vchPathLocal;
-                            mdlConfig.vchUserAdmin = item.vchUserAdmin;
+                            mdlConfig.datFechaSistema = item.datFechaSistema == null ? DateTime.MinValue : (DateTime)item.datFechaSistema;
+                            mdlConfig.intPuertoCliente = item.intPuertoCliente == null ? 0:(int)item.intPuertoCliente;
+                            mdlConfig.in_tPuertoServer = item.in_tPuertoServer == null ? 0  : (int)item.in_tPuertoServer;
+                            mdlConfig.vchAETitle = item.vchAETitle == null ? "" : item.vchAETitle;
+                            mdlConfig.vchAETitleServer = item.vchAETitleServer == null ? "" : item.vchAETitleServer;
+                            mdlConfig.vchIPCliente = item.vchIPCliente == null ? "" : item.vchIPCliente;
+                            mdlConfig.vchIPServidor = item.vchIPServidor == null ? "" : item.vchIPServidor;
+                            mdlConfig.vchMaskCliente = item.vchMaskCliente == null ? "" : item.vchMaskCliente;
+                            mdlConfig.vchnombreSitio = item.vchnombreSitio == null ? "" : item.vchnombreSitio;
+                            mdlConfig.vchPathLocal = item.vchPathLocal == null ? "" : item.vchPathLocal;
+                            mdlConfig.vchUserAdmin = item.vchUserAdmin == null ? "" : item.vchUserAdmin;
                             _lstSites.Add(mdlConfig);
                         }
                         //_lstSitio = _lstSitio.Where(x => x.vchClaveSitio.ToUpper().Contains(txtBusquedaSite.Text.ToString()) || x.vchnombreSitio.ToUpper().Contains(txtBusquedaSite.Text.ToString())).ToList();
@@ -368,16 +387,16 @@ namespace _3.FUJI.Napoleon.Site
                         intUsuarioID = Convert.ToInt32(e.CommandArgument.ToString());
                         mdlUsuario = _lstUsuario.First(x => x.intUsuarioID == intUsuarioID);
                         bool actualiza = !mdlUsuario.bitActivo;
-                        string mensaje = "";
-                        bool success = NapoleonDA.updateEstatusUsuario(intUsuarioID, actualiza, ref mensaje);
-                        if(success)
+                        clsMensaje response = new clsMensaje();
+                        response = NapoleonDA.updateEstatusUsuario(intUsuarioID, actualiza);
+                        if(response.valido)
                         {
                             cargaGridUsuarios();
                             ShowMessage("Cambios correctos", MessageType.Success, "alert_containerSites");
                         }
                         else
                         {
-                            ShowMessage("Existe un error al actualizar el estatus: " + mensaje, MessageType.Error, "alert_containerSites");
+                            ShowMessage("Existe un error al actualizar el estatus: " + response.vchMensaje, MessageType.Error, "alert_containerSites");
                         }
                         break;
                     case "viewEditar":
@@ -494,8 +513,7 @@ namespace _3.FUJI.Napoleon.Site
             try
             {
                 tbl_CAT_Usuarios mdl = new tbl_CAT_Usuarios();
-                string mensaje = "";
-                bool success = false;
+                clsMensaje response = new clsMensaje();
                 if (Session["intUsuarioIDGrid"] != null)
                 {
                     if (Convert.ToInt32(Session["intUsuarioIDGrid"].ToString()) > 0)
@@ -504,8 +522,9 @@ namespace _3.FUJI.Napoleon.Site
                         mdl = obtenerUsuario();
                         if (mdl != null)
                         {
-                            success = NapoleonDA.updateUsuario(mdl, ref mensaje);
-                            if (success)
+                            
+                            response = NapoleonDA.updateUsuario(mdl);
+                            if (response.valido)
                             {
                                 cargaGridUsuarios();
                                 limpiarUsuario();
@@ -513,7 +532,7 @@ namespace _3.FUJI.Napoleon.Site
                             }
                             else
                             {
-                                ShowMessage("Existe un error en: " + mensaje, MessageType.Error, "alert_container");
+                                ShowMessage("Existe un error en: " + response.vchMensaje, MessageType.Error, "alert_container");
                             }
                         }
                     }
@@ -523,8 +542,8 @@ namespace _3.FUJI.Napoleon.Site
                         mdl = obtenerUsuario();
                         if (mdl != null)
                         {
-                            success = NapoleonDA.setUsuario(mdl, ref mensaje);
-                            if (success)
+                            response = NapoleonDA.setUsuario(mdl);
+                            if (response.valido)
                             {
                                 cargaGridUsuarios();
                                 limpiarUsuario();
@@ -532,7 +551,7 @@ namespace _3.FUJI.Napoleon.Site
                             }
                             else
                             {
-                                ShowMessage("Existe un error en: " + mensaje, MessageType.Error, "alert_container");
+                                ShowMessage("Existe un error en: " + response.vchMensaje, MessageType.Error, "alert_container");
 
                             }
                         }
@@ -554,15 +573,15 @@ namespace _3.FUJI.Napoleon.Site
                 mdl.intUsuarioID = Convert.ToInt32(Session["intUsuarioIDGrid"].ToString());
                 mdl.vchNombre = txtNombre.Text;
                 mdl.vchApellido = txtApePat.Text;
-                mdl.intUsuarioID = Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString());
+                mdl.intTipoUsuarioID = Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString());
                 
-                if(mdl.intUsuarioID != 1)
+                if(mdl.intTipoUsuarioID != 1 && mdl.intTipoUsuarioID != 4)
                 {
-                    if(mdl.intUsuarioID == 2)
+                    if(mdl.intTipoUsuarioID == 2)
                     {
                         mdl.intProyectoID = Convert.ToInt32(ddlProyecto.SelectedValue.ToString());
                     }
-                    if(mdl.intUsuarioID == 3)
+                    if(mdl.intTipoUsuarioID == 3)
                     {
                         mdl.id_Sitio = Convert.ToInt32(ddlSitio.SelectedValue.ToString());
                     }
@@ -580,7 +599,7 @@ namespace _3.FUJI.Napoleon.Site
                 }
                 else
                 {
-                    mdl.vchPassword = txtPassword1.Text;
+                    mdl.vchPassword = Security.Encrypt(txtPassword1.Text);
                 }
                 mdl.datFecha = DateTime.Now;
                 mdl.bitActivo = true;
@@ -592,41 +611,6 @@ namespace _3.FUJI.Napoleon.Site
                 Log.EscribeLog("Existe un error al obtenerUsuario: " + eOU.Message);
             }
             return mdl;
-        }
-
-        protected void ddlSitioPriridad_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void grvPrioridad_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-
-        }
-
-        protected void grvPrioridad_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-
-        }
-
-        protected void grvPrioridad_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-
-        }
-
-        protected void chkRow_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void ddlBandejaP_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void txtBandejaP_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         protected void txtBusquedaSite_TextChanged(object sender, EventArgs e)
@@ -730,9 +714,9 @@ namespace _3.FUJI.Napoleon.Site
                         id_Sitio = Convert.ToInt32(e.CommandArgument.ToString());
                         _mdlSitio = _lstSitioG.First(x => x.id_Sitio == id_Sitio);
                         _mdlSitio.bitActivo = !_mdlSitio.bitActivo;
-                        string mensaje = "";
-                        bool valido = NapoleonDA.updateEstatusSitio(id_Sitio, (bool)_mdlSitio.bitActivo, ref mensaje);
-                        if(valido)
+                        clsMensaje response = new clsMensaje();
+                        response = NapoleonDA.updateEstatusSitio(id_Sitio, (bool)_mdlSitio.bitActivo);
+                        if(response.valido)
                         {
                             cargaSitios();
                             cargaSitiosP();
@@ -741,7 +725,7 @@ namespace _3.FUJI.Napoleon.Site
                         }
                         else
                         {
-                            ShowMessage("Existe un error al actualizar el estatus: " + mensaje, MessageType.Error, "alert_containerSites");
+                            ShowMessage("Existe un error al actualizar el estatus: " + response.vchMensaje, MessageType.Error, "alert_containerSites");
                         }
                         break;
                 }
@@ -916,9 +900,9 @@ namespace _3.FUJI.Napoleon.Site
                         intProyectoID = Convert.ToInt32(e.CommandArgument.ToString());
                         _mdlProyecto = _lstProyecto.First(x => x.intProyectoID == intProyectoID);
                         bool activo = (bool)!_mdlProyecto.bitActivo;
-                        string mensaje = "";
-                        bool valido = NapoleonDA.updateEstatusProyectos(intProyectoID, activo, ref mensaje);
-                        if(valido)
+                        clsMensaje response = new clsMensaje();
+                        response = NapoleonDA.updateEstatusProyectos(intProyectoID, activo);
+                        if(response.valido)
                         {
                             cargaProyectos();
                             cargaproyectosCat();
@@ -926,7 +910,7 @@ namespace _3.FUJI.Napoleon.Site
                         }
                         else
                         {
-                            ShowMessage("Existe un error al actializar: " + mensaje, MessageType.Error, "alert_container");
+                            ShowMessage("Existe un error al actializar: " + response.vchMensaje, MessageType.Error, "alert_container");
                         }
                         break;
                 }
@@ -1326,14 +1310,14 @@ namespace _3.FUJI.Napoleon.Site
                         if (Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString()) == 2)
                         {
                             ddlProyecto.Enabled = true;
-                            rfvTipUser.Enabled = true;
+                            RequiredFieldValidator4.Enabled = true;
                             ddlSitio.Enabled = false;
                             rfvSitio.Enabled = false;
                         }
                         if (Convert.ToInt32(ddlTipoUsuario.SelectedValue.ToString()) == 3)
                         {
                             ddlProyecto.Enabled = false;
-                            rfvTipUser.Enabled = false;
+                            RequiredFieldValidator4.Enabled = false;
                             ddlSitio.Enabled = true;
                             rfvSitio.Enabled = true;
                         }
@@ -1341,7 +1325,7 @@ namespace _3.FUJI.Napoleon.Site
                     else
                     {
                         ddlProyecto.Enabled = false;
-                        rfvTipUser.Enabled = false;
+                        RequiredFieldValidator4.Enabled = false;
                         ddlSitio.Enabled = false;
                         rfvSitio.Enabled = false;
                     }
@@ -1353,5 +1337,7 @@ namespace _3.FUJI.Napoleon.Site
                 ShowMessage("Existe un error: " + eddP.Message, MessageType.Error, "alert_containerSites");
             }
         }
+
+        
     }
 }
