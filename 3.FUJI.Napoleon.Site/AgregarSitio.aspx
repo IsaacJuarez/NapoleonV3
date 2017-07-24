@@ -13,13 +13,13 @@
         function ShowMessage(message, messagetype, idControl) {
             var cssclass;
             switch (messagetype) {
-                case 'Success':
+                case 'Correcto':
                     cssclass = 'alert-success'
                     break;
                 case 'Error':
                     cssclass = 'alert-danger'
                     break;
-                case 'Warning':
+                case 'Advertencia':
                     cssclass = 'alert-warning'
                     break;
                 default:
@@ -112,21 +112,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-5  col-sm-5 col-xs-5 text-left">
-                                    <asp:Label runat="server" ID="lblNumContacto" Text="Numero de Contacto"></asp:Label>
+                                    <asp:Label runat="server" ID="lblNumContacto" Text="Teléfono"></asp:Label>
                                     <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" Text="*" ForeColor="Red" ControlToValidate="txtNumContacto" ValidationGroup="vgAgregarSitio"></asp:RequiredFieldValidator>
 
                                 </div>
                                 <div class="col-md-7  col-sm-7 col-xs-7 text-left">
                                     <asp:TextBox runat="server" ID="txtNumContacto" onkeypress="return validarNum(event)" onchange="quitaNoNumero(this)" CssClass="form-control" MaxLength="12" Width="100%"></asp:TextBox>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5  col-sm-5 col-xs-5 text-left">
-                                    <asp:Label runat="server" ID="lblPassword" Text="Password"></asp:Label>
-                                    <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator6" Text="*" ForeColor="Red" ControlToValidate="txtPassSitio" ValidationGroup="vgAgregarSitio"></asp:RequiredFieldValidator>
-                                </div>
-                                <div class="col-md-7  col-sm-7 col-xs-7 text-left">
-                                    <asp:TextBox runat="server" ID="txtPassSitio" TextMode="Password" CssClass="form-control" MaxLength="12" Width="100%"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">

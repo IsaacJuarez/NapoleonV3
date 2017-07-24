@@ -6,6 +6,7 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Feed2Cloud</title>
+    <link rel="icon" href="Images/favicon.ico" type="image/ico" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <!-- Site -->
@@ -70,20 +71,30 @@
                                 <h3>General</h3>
                                 <ul class="nav side-menu">
                                     <li>
-                                        <a href="frmGeneral.aspx"><i class="fa fa-home"></i> Inicio <span class="fa fa-chevron-down"></span></a>
+                                        <a id="mnAddSite" runat="server" href="frmAgregarSitio.aspx"><i class="fa fa-cloud"></i> Agregar Sitio <span class="fa fa-chevron-down"></span></a>
                                     </li>
                                     <li>
-                                        <a href="frmAdministracion.aspx"><i class="fa fa-database"></i> Estudios <span class="fa fa-chevron-down"></span></a>
+                                        <a id="mnGeneral" runat="server" href="frmGeneral.aspx"><i class="fa fa-home"></i> Inicio <span class="fa fa-chevron-down"></span></a>
                                     </li>
                                     <li>
-                                        <a href="frmDashBoardService.aspx"><i class="fa fa-cogs"></i> Dashboard Servicios <span class="fa fa-chevron-down"></span></a>
+                                        <a id="mnManagement" runat="server" href="frmAdministracion.aspx"><i class="fa fa-database"></i> Estudios <span class="fa fa-chevron-down"></span></a>
                                     </li>
                                     <li>
-                                        <a href="frmConfigSites.aspx"><i class="fa fa-cubes"></i> Configuración de Sitios <span class="fa fa-chevron-down"></span></a>
+                                        <a id="mnDashBoarService" runat="server" href="frmDashBoardService.aspx"><i class="fa fa-cogs"></i> Dashboard Servicios <span class="fa fa-chevron-down"></span></a>
                                     </li>
                                     <li>
-                                        <a href="frmPrioridadSitio.aspx"><i class="fa fa-sort-numeric-asc"></i> Prioridad por Sitio <span class="fa fa-chevron-down"></span></a>
+                                        <a id="mnConfigSites" runat="server" href="frmConfigSites.aspx"><i class="fa fa-cubes"></i> Configuración de Sitios <span class="fa fa-chevron-down"></span></a>
                                     </li>
+                                    <li>
+                                        <a id="mnPrioridadSitio" runat="server" href="frmPrioridadSitio.aspx"><i class="fa fa-sort-numeric-asc"></i> Prioridad por Sitio <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a id="mnAdminUsers" runat="server" href="frmConfiguraciones.aspx"><i class="fa fa-users"></i> Administración Usuarios <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    <li>
+                                        <a id="mnVersiones" runat="server" href="frmVersionFeed2.aspx"><i class="fa fa-cloud-download"></i> Versiones Feed2Cloud <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -111,9 +122,20 @@
                             </div>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
-                                    <a data-toggle="tooltip" data-placement="top" title="Salir">
-                                            <span class="glyphicon glyphicon-off" aria-hidden="true" onclick="return cerrarpagina();"></span>
-                                        </a>
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <asp:Label Text="" runat="server" ID="lblUserTop"></asp:Label>
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="frmHelp.aspx"><i class="fa fa-question-circle pull-right"></i> Ayuda</a></li>
+                                        <li><a href="frmUpdateUser.aspx"><i class="fa fa-key pull-right"></i> Cambiar Contraseña</a></li>
+                                        <li class="">
+                                            <a  onclick="return cerrarpagina();">
+                                                <i class="fa fa-sign-out pull-right"></i>
+                                                Salir
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </nav>

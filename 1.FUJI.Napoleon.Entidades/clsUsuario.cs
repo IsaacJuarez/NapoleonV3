@@ -31,6 +31,10 @@ namespace _1.FUJI.Napoleon.Entidades
         public string vchUserAdmin { get; set; }
 
         public string Token { get; set; }
+        public bool bitSolicitarPass { get; set; }
+        public bool bitGuardarCambios { get; set; }
+        public string vchCorreo { get; set; }
+
         public clsUsuario()
         {
             intUsuarioID = int.MinValue;
@@ -47,6 +51,9 @@ namespace _1.FUJI.Napoleon.Entidades
             vchUserAdmin = string.Empty;
             Token = string.Empty;
             vchSitio = string.Empty;
+            bitSolicitarPass = false;
+            bitGuardarCambios = false;
+            vchCorreo = string.Empty;
         }
     }
 }

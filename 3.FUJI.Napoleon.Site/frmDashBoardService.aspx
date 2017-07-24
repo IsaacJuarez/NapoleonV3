@@ -169,13 +169,13 @@
         function ShowMessage(message, messagetype, idControl) {
             var cssclass;
             switch (messagetype) {
-                case 'Success':
+                case 'Correcto':
                     cssclass = 'alert-success'
                     break;
                 case 'Error':
                     cssclass = 'alert-danger'
                     break;
-                case 'Warning':
+                case 'Advertencia':
                     cssclass = 'alert-warning'
                     break;
                 default:

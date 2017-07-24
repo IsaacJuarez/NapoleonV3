@@ -11,23 +11,15 @@
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_CAT_TipoUsuario" Width="1.5" PointX="3.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_CAT_Usuarios" Width="1.5" PointX="6" PointY="15.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_ConfigSitio" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NAPOLEONModel.tbl_DET_Estudio" Width="1.5" PointX="8.25" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NAPOLEONModel.tbl_DET_Estudio_AUD" Width="1.5" PointX="10.5" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_MST_Estudio" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_MST_PrioridadEstudio" Width="1.5" PointX="5.25" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NAPOLEONModel.tbl_REL_ProyectoSitio" Width="1.5" PointX="6" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_REL_SitioModalidad" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
-        <AssociationConnector Association="NAPOLEONModel.FK_CAT_Estudio_DET_Estudio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_CAT_Modalidad_MST_Estudio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_CAT_Modalidad_REL_SitioModalidad" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_CAT_Proyecto_CAT_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="NAPOLEONModel.FK_CAT_Proyecto_REL_ProyectoSitio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_CAT_TipoUsuarios_CAT_Usuarios" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_MST_Estudio" ManuallyRouted="false" />
-        <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_REL_ProyectoSitio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_REL_SitioModalidad" ManuallyRouted="false" />
-        <AssociationConnector Association="NAPOLEONModel.FK_DET_Estudio_DET_Estudio_AUD" ManuallyRouted="false" />
-        <AssociationConnector Association="NAPOLEONModel.FK_MST_Estudio_DET_Estudio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_MST_Estudio_MST_PrioridadEstudio" ManuallyRouted="false" />
         <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_ConfigSitio_AUD" Width="1.5" PointX="3" PointY="22.5" />
@@ -36,7 +28,17 @@
         <AssociationConnector Association="NAPOLEONModel.FK_TBL_CONF_REFERENCE_TBL_CONF" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_RegistroSitio" Width="1.5" PointX="3" PointY="27.875" />
         <AssociationConnector Association="NAPOLEONModel.FK_TBL_REGI_REFERENCE_TBL_CONF" />
-      </Diagram>
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_DET_Estudio" Width="1.5" PointX="8.25" PointY="4.5" />
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_DET_Estudio_AUD" Width="1.5" PointX="10.5" PointY="4.75" />
+        <AssociationConnector Association="NAPOLEONModel.FK_CAT_Estudio_DET_Estudio" />
+        <AssociationConnector Association="NAPOLEONModel.FK_DET_Estudio_DET_Estudio_AUD" />
+        <AssociationConnector Association="NAPOLEONModel.FK_MST_Estudio_DET_Estudio" />
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_CAT_Extensiones" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_REL_ProyectoSitio" Width="1.5" PointX="8" PointY="10.75" />
+        <AssociationConnector Association="NAPOLEONModel.FK_CAT_Proyecto_REL_ProyectoSitio" />
+        <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_REL_ProyectoSitio" />
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_CAT_Feed2Version" Width="1.5" PointX="8.375" PointY="0.75" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

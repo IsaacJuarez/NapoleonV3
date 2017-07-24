@@ -34,32 +34,17 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public DbSet<tbl_CAT_TipoUsuario> tbl_CAT_TipoUsuario { get; set; }
         public DbSet<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public DbSet<tbl_ConfigSitio> tbl_ConfigSitio { get; set; }
-        public DbSet<tbl_DET_Estudio> tbl_DET_Estudio { get; set; }
-        public DbSet<tbl_DET_Estudio_AUD> tbl_DET_Estudio_AUD { get; set; }
         public DbSet<tbl_MST_Estudio> tbl_MST_Estudio { get; set; }
         public DbSet<tbl_MST_PrioridadEstudio> tbl_MST_PrioridadEstudio { get; set; }
-        public DbSet<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
         public DbSet<tbl_REL_SitioModalidad> tbl_REL_SitioModalidad { get; set; }
         public DbSet<tbl_ConfigSitio_AUD> tbl_ConfigSitio_AUD { get; set; }
         public DbSet<tbl_DET_ServicioSitio> tbl_DET_ServicioSitio { get; set; }
         public DbSet<tbl_RegistroSitio> tbl_RegistroSitio { get; set; }
-    
-        public virtual ObjectResult<stp_getEstudio_Result> stp_getEstudio(Nullable<int> intEstatusID, Nullable<int> id_Sitio, Nullable<int> intModalidadID)
-        {
-            var intEstatusIDParameter = intEstatusID.HasValue ?
-                new ObjectParameter("intEstatusID", intEstatusID) :
-                new ObjectParameter("intEstatusID", typeof(int));
-    
-            var id_SitioParameter = id_Sitio.HasValue ?
-                new ObjectParameter("id_Sitio", id_Sitio) :
-                new ObjectParameter("id_Sitio", typeof(int));
-    
-            var intModalidadIDParameter = intModalidadID.HasValue ?
-                new ObjectParameter("intModalidadID", intModalidadID) :
-                new ObjectParameter("intModalidadID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudio_Result>("stp_getEstudio", intEstatusIDParameter, id_SitioParameter, intModalidadIDParameter);
-        }
+        public DbSet<tbl_DET_Estudio> tbl_DET_Estudio { get; set; }
+        public DbSet<tbl_DET_Estudio_AUD> tbl_DET_Estudio_AUD { get; set; }
+        public DbSet<tbl_CAT_Extensiones> tbl_CAT_Extensiones { get; set; }
+        public DbSet<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
+        public DbSet<tbl_CAT_Feed2Version> tbl_CAT_Feed2Version { get; set; }
     
         public virtual ObjectResult<stp_getPrioridadSucursalModalidad_Result> stp_getPrioridadSucursalModalidad(Nullable<int> id_sitio, Nullable<int> intProyecto)
         {
@@ -149,6 +134,36 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
                 new ObjectParameter("sucOID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("stp_getPromedioEnvio", fIniParameter, fFinParameter, sucOIDParameter);
+        }
+    
+        public virtual ObjectResult<stp_getEstudiosEnviar_Result> stp_getEstudiosEnviar(Nullable<int> id_Sitio)
+        {
+            var id_SitioParameter = id_Sitio.HasValue ?
+                new ObjectParameter("id_Sitio", id_Sitio) :
+                new ObjectParameter("id_Sitio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudiosEnviar_Result>("stp_getEstudiosEnviar", id_SitioParameter);
+        }
+    
+        public virtual ObjectResult<stp_getEstudio_Result> stp_getEstudio(Nullable<int> intEstatusID, Nullable<int> id_Sitio, Nullable<int> intModalidadID, Nullable<int> intProyectoID)
+        {
+            var intEstatusIDParameter = intEstatusID.HasValue ?
+                new ObjectParameter("intEstatusID", intEstatusID) :
+                new ObjectParameter("intEstatusID", typeof(int));
+    
+            var id_SitioParameter = id_Sitio.HasValue ?
+                new ObjectParameter("id_Sitio", id_Sitio) :
+                new ObjectParameter("id_Sitio", typeof(int));
+    
+            var intModalidadIDParameter = intModalidadID.HasValue ?
+                new ObjectParameter("intModalidadID", intModalidadID) :
+                new ObjectParameter("intModalidadID", typeof(int));
+    
+            var intProyectoIDParameter = intProyectoID.HasValue ?
+                new ObjectParameter("intProyectoID", intProyectoID) :
+                new ObjectParameter("intProyectoID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudio_Result>("stp_getEstudio", intEstatusIDParameter, id_SitioParameter, intModalidadIDParameter, intProyectoIDParameter);
         }
     }
 }

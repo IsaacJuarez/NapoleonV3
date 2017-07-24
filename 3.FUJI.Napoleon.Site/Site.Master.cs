@@ -43,12 +43,76 @@ namespace _3.FUJI.Napoleon.Site
                         }
                         hfURL.Value = URL;
                     }
+                    lblUserTop.Text = user.vchNombre.ToUpper() + " " + user.vchApellido.ToUpper();
                     lblUser.Text = Session["UserID"].ToString();
+                    enableMenu(user.intTipoUsuarioID);
                 }
             }
             catch (Exception ePL)
             {
                 Log.EscribeLog("Existe un error en PageLoad de SiteMaster: " + ePL.Message);
+            }
+        }
+
+        private void enableMenu(int intTipoUsuarioID)
+        {
+            try
+            {
+                if (intTipoUsuarioID == 1 || intTipoUsuarioID == 2) //Administradores
+                {
+                    mnGeneral.Visible = true;
+                    mnManagement.Visible = true;
+                    mnDashBoarService.Visible = true;
+                    mnConfigSites.Visible = true;
+                    mnPrioridadSitio.Visible = true;
+                    mnAdminUsers.Visible = true;
+                    mnVersiones.Visible = true;
+                    mnAddSite.Visible = false;
+                    lblUserTop.Text = user.vchNombre.ToUpper();
+                }
+                else
+                {
+                    if (intTipoUsuarioID == 4)//Vendedor
+                    {
+                        mnGeneral.Visible = false;
+                        mnManagement.Visible = false;
+                        mnDashBoarService.Visible = true;
+                        mnConfigSites.Visible = true;
+                        mnPrioridadSitio.Visible = false;
+                        mnAdminUsers.Visible = false;
+                        mnVersiones.Visible = true;
+                        mnAddSite.Visible = true;
+                    }
+                    else
+                    {
+                        if (intTipoUsuarioID == 3)//Medico
+                        {
+                            mnGeneral.Visible = true;
+                            mnManagement.Visible = true;
+                            mnDashBoarService.Visible = true;
+                            mnConfigSites.Visible = true;
+                            mnPrioridadSitio.Visible = true;
+                            mnAdminUsers.Visible = false;
+                            mnVersiones.Visible = false;
+                            mnAddSite.Visible = false;
+                        }
+                        else
+                        {
+                            mnGeneral.Visible = false;
+                            mnManagement.Visible = false;
+                            mnDashBoarService.Visible = false;
+                            mnConfigSites.Visible = false;
+                            mnPrioridadSitio.Visible = false;
+                            mnAdminUsers.Visible = false;
+                            mnVersiones.Visible = false;
+                            mnAddSite.Visible = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception eeM)
+            {
+                Log.EscribeLog("Existe un error en enableMenu de SiteMaster: " + eeM.Message);
             }
         }
 

@@ -90,7 +90,7 @@ namespace _3.FUJI.Napoleon.Site
             }
         }
 
-        public enum MessageType { Success, Error, Info, Warning };
+        public enum MessageType { Correcto, Error, Informacion, Advertencia };
 
         protected void ShowMessage(string Message, MessageType type, String container)
         {

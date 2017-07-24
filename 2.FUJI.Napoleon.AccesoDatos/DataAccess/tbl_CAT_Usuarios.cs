@@ -25,6 +25,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<System.DateTime> datFecha { get; set; }
         public string vchUserAdmin { get; set; }
         public Nullable<int> id_Sitio { get; set; }
+        public Nullable<bool> bitSolicitarPass { get; set; }
+        public string vchCorreo { get; set; }
     
         public virtual tbl_CAT_Proyecto tbl_CAT_Proyecto { get; set; }
         public virtual tbl_CAT_TipoUsuario tbl_CAT_TipoUsuario { get; set; }

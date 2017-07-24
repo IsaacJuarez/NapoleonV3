@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbNapoleon.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\stp_getEstudiosEnviar_Result.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\stp_getEstudio_Result.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
@@ -72,6 +75,12 @@
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_CAT_Estatus.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\tbl_CAT_Extensiones.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\tbl_CAT_Feed2Version.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_CAT_Modalidad.cs">

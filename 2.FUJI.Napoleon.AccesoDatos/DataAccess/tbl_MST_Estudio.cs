@@ -16,8 +16,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     {
         public tbl_MST_Estudio()
         {
-            this.tbl_DET_Estudio = new HashSet<tbl_DET_Estudio>();
             this.tbl_MST_PrioridadEstudio = new HashSet<tbl_MST_PrioridadEstudio>();
+            this.tbl_DET_Estudio = new HashSet<tbl_DET_Estudio>();
         }
     
         public int intEstudioID { get; set; }
@@ -31,10 +31,12 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<int> intNumeroArchivo { get; set; }
         public Nullable<int> intTamanoTotal { get; set; }
         public string vchgenero { get; set; }
+        public string vchStudyInstanceUID { get; set; }
+        public string vchEdad { get; set; }
     
         public virtual tbl_CAT_Modalidad tbl_CAT_Modalidad { get; set; }
         public virtual tbl_ConfigSitio tbl_ConfigSitio { get; set; }
-        public virtual ICollection<tbl_DET_Estudio> tbl_DET_Estudio { get; set; }
         public virtual ICollection<tbl_MST_PrioridadEstudio> tbl_MST_PrioridadEstudio { get; set; }
+        public virtual ICollection<tbl_DET_Estudio> tbl_DET_Estudio { get; set; }
     }
 }

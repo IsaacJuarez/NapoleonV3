@@ -74,7 +74,7 @@ namespace _3.FUJI.Napoleon.Site
             {
                 List<clsModeloCatalogo> _lstCat = new List<clsModeloCatalogo>();
                 //Combo de Estatus
-                _lstCat = NapoleonDA.getCatalogo("Estatus",0,0);
+                _lstCat = NapoleonDA.getCatalogo("Estatus", 0, 0);
                 ddlBusEstatus.DataSource = _lstCat;
                 ddlBusEstatus.DataTextField = "vchDescripcion";
                 ddlBusEstatus.DataValueField = "vchValue";
@@ -87,11 +87,11 @@ namespace _3.FUJI.Napoleon.Site
                 ddlBusSucursal.DataTextField = "vchDescripcion";
                 ddlBusSucursal.DataValueField = "vchValue";
                 ddlBusSucursal.DataBind();
-                if(intTipoUsuario == 1 || intTipoUsuario == 2)
+                if (intTipoUsuario == 1 || intTipoUsuario == 2)
                     ddlBusSucursal.Items.Insert(0, new ListItem("Todas...", "0"));
                 //Combo de Prioridad
                 _lstCat = null;
-                _lstCat = NapoleonDA.getCatalogo("Prioridad",0,0);
+                _lstCat = NapoleonDA.getCatalogo("Prioridad", 0, 0);
                 ddlBusPrioridad.DataSource = _lstCat;
                 ddlBusPrioridad.DataTextField = "vchDescripcion";
                 ddlBusPrioridad.DataValueField = "vchValue";
@@ -99,7 +99,7 @@ namespace _3.FUJI.Napoleon.Site
                 ddlBusPrioridad.Items.Insert(0, new ListItem("Todas...", "0"));
                 //Combo de Modalidad
                 _lstCat = null;
-                _lstCat = NapoleonDA.getCatalogo("Modalidades",0,0);
+                _lstCat = NapoleonDA.getCatalogo("Modalidades", 0, 0);
                 ddlBusModalidad.DataSource = _lstCat;
                 ddlBusModalidad.DataTextField = "vchDescripcion";
                 ddlBusModalidad.DataValueField = "vchValue";
@@ -121,7 +121,7 @@ namespace _3.FUJI.Napoleon.Site
                 int intModalidadID = Convert.ToInt32(ddlBusModalidad.SelectedValue);
                 int intEstatusID = Convert.ToInt32(ddlBusEstatus.SelectedValue);
                 int id_Sitio = Convert.ToInt32(ddlBusSucursal.SelectedValue);
-                response = NapoleonDA.getListEstudios(intEstatusID,id_Sitio, intModalidadID);
+                response = NapoleonDA.getListEstudios(intEstatusID, id_Sitio, intModalidadID, user.intProyectoID);
                 if (response._lstEst.Count > 0)
                 {
                     _lstGrid = response._lstEst;
@@ -184,7 +184,14 @@ namespace _3.FUJI.Napoleon.Site
 
         protected void Timer1_Tick(object sender, EventArgs e)
         {
-
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eTimer)
+            {
+                Log.EscribeLog("Existe un error al actualizar el timmer: " + eTimer.Message);
+            }
         }
 
         protected void btnBusquedaEst_Click(object sender, EventArgs e)
@@ -405,7 +412,7 @@ namespace _3.FUJI.Napoleon.Site
                         if (response._mensaje.vchError == "")
                         {
                             cargaGridAdministracion();
-                            ShowMessage("Se agrego correctamente el estudio a la lista de prioridades.", MessageType.Success, "alert_container");
+                            ShowMessage("Se agrego correctamente el estudio a la lista de prioridades.", MessageType.Correcto, "alert_container");
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "modalPrioridad", "$('#modalPrioridad').modal('hide');", true);
                         }
                         else
@@ -457,7 +464,7 @@ namespace _3.FUJI.Napoleon.Site
             }
         }
 
-        public enum MessageType { Success, Error, Info, Warning };
+        public enum MessageType { Correcto, Error, Informacion, Advertencia };
 
         protected void ShowMessage(string Message, MessageType type, String container)
         {
@@ -564,11 +571,11 @@ namespace _3.FUJI.Napoleon.Site
                         {
                             //Todo Correcto
                             cargaGridAdministracion();
-                            ShowMessage("Cambios guardados correctamente.", MessageType.Success, "alert_container");
+                            ShowMessage("Cambios guardados correctamente.", MessageType.Correcto, "alert_container");
                         }
                         else
                         {
-                            ShowMessage("Existen los siguientes errores: " + _error + ".", MessageType.Success, "alert_container");
+                            ShowMessage("Existen los siguientes errores: " + _error + ".", MessageType.Correcto, "alert_container");
                         }
                         _lstPrioridades.Clear();
                     }
@@ -578,6 +585,99 @@ namespace _3.FUJI.Napoleon.Site
             {
                 Log.EscribeLog("Existe un error en autoguardar: " + eAuto.Message);
                 throw eAuto;
+            }
+        }
+
+        protected void ddlBusModalidad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en ddlBusModalidad_SelectedIndexChanged: " + eB.Message);
+            }
+        }
+
+        protected void ddlBusEstatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en ddlBusEstatus_SelectedIndexChanged: " + eB.Message);
+            }
+        }
+
+        protected void txtBusNumEstudio_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en txtBusNumEstudio_TextChanged: " + eB.Message);
+            }
+        }
+
+        protected void txtBusNombre_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en txtBusNombre_TextChanged: " + eB.Message);
+            }
+        }
+
+        protected void ddlBusPrioridad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en ddlBusPrioridad_SelectedIndexChanged: " + eB.Message);
+            }
+        }
+
+        protected void btnBusLimp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ddlBusModalidad.SelectedValue = "0";
+                ddlBusEstatus.SelectedValue = "0";
+                txtBusNumEstudio.Text = "";
+                txtBusNombre.Text = "";
+                ddlBusPrioridad.SelectedValue = "0";
+                if (user.id_Sitio > 0)
+                    ddlBusSucursal.SelectedValue = user.id_Sitio.ToString();
+                else
+                    ddlBusSucursal.SelectedValue = "0";
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en btnBusLimp_Click: " + eB.Message);
+            }
+        }
+
+        protected void ddlBusSucursal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cargaGridAdministracion();
+            }
+            catch (Exception eB)
+            {
+                Log.EscribeLog("Existe un error en ddlBusSucursal_SelectedIndexChanged: " + eB.Message);
             }
         }
     }

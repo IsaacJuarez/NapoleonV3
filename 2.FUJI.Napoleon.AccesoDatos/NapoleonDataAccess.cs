@@ -17,7 +17,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
         string[] arrHover = new string[] { "#FFCDD2", "#B2DFDB", "#B3E5FC", "#D1C4E9", "#DCEDC8", "#FFF9C4", "#FFCCBC", "#D7CCC8", "#CFD8DC", "#FFE0B2", "#F0F4C3" };
         public NAPOLEONEntities NapoleonDA;
         #region login
-        public bool Logear(string _Usuario, String _Password, ref clsUsuario _User)
+        public bool Logear(string _Usuario, String _Password, string vchSitio, ref clsUsuario _User)
         {
             bool Success = false;
             try
@@ -27,20 +27,64 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 {
                     if (NapoleonDA.tbl_CAT_Usuarios.Any(x => (bool)x.bitActivo && x.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && x.vchPassword.Trim() == _Password.Trim()))
                     {
-                        var query = NapoleonDA.tbl_CAT_Usuarios.First(x => x.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && x.vchPassword.Trim() == _Password.Trim());
-                        if (query != null)
+                        if (vchSitio != "")
                         {
-                            if (Success = query.intUsuarioID > 0 ? true : false)
+                            var query = (from user in NapoleonDA.tbl_CAT_Usuarios
+                                         join site in NapoleonDA.tbl_ConfigSitio on user.id_Sitio equals site.id_Sitio
+                                         where user.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && user.vchPassword.Trim() == _Password.Trim() && (bool)user.bitActivo && site.vchnombreSitio.ToUpper() == vchSitio.ToUpper()
+                                         select new
+                                         {
+                                             intUsuarioID = user.intUsuarioID,
+                                             intTipoUsuarioID = user.intTipoUsuarioID,
+                                             intProyectoID = user.intProyectoID,
+                                             id_Sitio = user.id_Sitio,
+                                             vchSitio = site.vchnombreSitio,
+                                             vchNombre = user.vchNombre,
+                                             vchApellido = user.vchApellido,
+                                             vchUsuario = user.vchUsuario,
+                                             vchPassword = user.vchPassword,
+                                             bitSol = user.bitSolicitarPass,
+                                             vchCorreo = user.vchCorreo
+                                         }
+                           ).First();
+                            if (query != null)
                             {
-                                _User.intUsuarioID = query.intUsuarioID;
-                                _User.intTipoUsuarioID = query.intTipoUsuarioID == null ? 0 : (int)query.intTipoUsuarioID;
-                                _User.intProyectoID = query.intProyectoID == null ? 0 : (int)query.intProyectoID;
-                                _User.id_Sitio = query.id_Sitio == null ? 0 : (int)query.id_Sitio;
-                                _User.vchNombre = query.vchNombre;
-                                _User.vchApellido = query.vchApellido;
-                                _User.vchUsuario = query.vchUsuario;
-                                _User.vchPassword = query.vchPassword;
-                                _User.Token = Security.Encrypt(query.intUsuarioID + "|" + query.vchUsuario + "|" + query.vchPassword);
+                                if (Success = query.intUsuarioID > 0 ? true : false)
+                                {
+                                    _User.intUsuarioID = query.intUsuarioID;
+                                    _User.intTipoUsuarioID = query.intTipoUsuarioID == null ? 0 : (int)query.intTipoUsuarioID;
+                                    _User.intProyectoID = query.intProyectoID == null ? 0 : (int)query.intProyectoID;
+                                    _User.id_Sitio = query.id_Sitio == null ? 0 : (int)query.id_Sitio;
+                                    _User.vchNombre = query.vchNombre;
+                                    _User.vchSitio = query.vchSitio;
+                                    _User.vchApellido = query.vchApellido;
+                                    _User.vchUsuario = query.vchUsuario;
+                                    _User.vchPassword = query.vchPassword;
+                                    _User.bitSolicitarPass = query.bitSol == null ? false : (bool)query.bitSol;
+                                    _User.vchCorreo = query.vchCorreo == null ? "" : query.vchCorreo;
+                                    _User.Token = Security.Encrypt(query.intUsuarioID + "|" + query.vchUsuario + "|" + query.vchPassword);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var query = NapoleonDA.tbl_CAT_Usuarios.First(x => x.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && x.vchPassword.Trim() == _Password.Trim());
+                            if (query != null)
+                            {
+                                if (Success = query.intUsuarioID > 0 ? true : false)
+                                {
+                                    _User.intUsuarioID = query.intUsuarioID;
+                                    _User.intTipoUsuarioID = query.intTipoUsuarioID == null ? 0 : (int)query.intTipoUsuarioID;
+                                    _User.intProyectoID = query.intProyectoID == null ? 0 : (int)query.intProyectoID;
+                                    _User.id_Sitio = query.id_Sitio == null ? 0 : (int)query.id_Sitio;
+                                    _User.vchNombre = query.vchNombre;
+                                    _User.vchApellido = query.vchApellido;
+                                    _User.vchUsuario = query.vchUsuario;
+                                    _User.vchPassword = query.vchPassword;
+                                    _User.bitSolicitarPass = query.bitSolicitarPass == null ? false : (bool)query.bitSolicitarPass;
+                                    _User.vchCorreo = query.vchCorreo == null ? "" : query.vchCorreo;
+                                    _User.Token = Security.Encrypt(query.intUsuarioID + "|" + query.vchUsuario + "|" + query.vchPassword);
+                                }
                             }
                         }
                     }
@@ -57,7 +101,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             }
             return Success;
         }
-
 
         #endregion login
 
@@ -218,7 +261,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                                          datFecha = item.datFecha,
                                          vchUserAdmin = item.vchUserAdmin,
                                          id_Sitio = item.id_Sitio,
-                                         vchSitio = y2.vchClaveSitio
+                                         vchSitio = y2.vchClaveSitio,
+                                         vchCorreo = item.vchCorreo
                                      }).ToList();
                         if (query.Count > 0)
                         {
@@ -238,6 +282,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                                 user.vchUserAdmin = item.vchUserAdmin;
                                 user.id_Sitio = item.id_Sitio == null ? 0 : (int)item.id_Sitio;
                                 user.vchSitio = item.vchSitio == null ? "" : item.vchSitio;
+                                user.vchCorreo = item.vchCorreo == null ? "" : item.vchCorreo;
                                 _lstUser.Add(user);
                             }
                         }
@@ -327,7 +372,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos
 
         #endregion catalogos
 
-
         #region sets
         public bool setProyecto(tbl_CAT_Proyecto mdlProyecto, List<tbl_REL_ProyectoSitio> lstSitos, ref string mensaje)
         {
@@ -373,7 +417,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             }
             return valido;
         }
-
 
         public bool updateProyecto(tbl_CAT_Proyecto mdlProyecto, List<clsConfigSitio> lstSito, ref string mensaje)
         {
@@ -439,6 +482,29 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return valido;
         }
 
+        public bool updateEstatusFiles(int intVersionID, bool activo, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    tbl_CAT_Feed2Version mdl = NapoleonDA.tbl_CAT_Feed2Version.First(x => x.intVersionID == intVersionID);
+                    mdl.bitActivo = activo;
+                    //mdl.datFecha = DateTime.Now;
+                    NapoleonDA.SaveChanges();
+                    valido = true;
+                }
+            }
+            catch(Exception euF)
+            {
+                valido = false;
+                mensaje = euF.Message;
+                Log.EscribeLog("Existe un error en updateEstatusFiles: " + euF.Message);
+            }
+            return valido;
+        }
+
         public bool updateEstatusProyectos(int intProyectoID, bool activo, ref string mensaje)
         {
             bool valido = false;
@@ -494,9 +560,18 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 {
                     if (!NapoleonDA.tbl_CAT_Usuarios.Any(x => x.vchUsuario == user.vchUsuario))
                     {
-                        NapoleonDA.tbl_CAT_Usuarios.Add(user);
-                        NapoleonDA.SaveChanges();
-                        valido = true;
+                        if (!NapoleonDA.tbl_CAT_Usuarios.Any(x => x.vchCorreo == user.vchCorreo))
+                        {
+
+                            NapoleonDA.tbl_CAT_Usuarios.Add(user);
+                            NapoleonDA.SaveChanges();
+                            valido = true;
+                        }
+                        else
+                        {
+                            mensaje = "Ya existe un usuario registrado con el correo indicado.";
+                            valido = false;
+                        }
                     }
                     else
                     {
@@ -520,17 +595,26 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             {
                 using (NapoleonDA = new NAPOLEONEntities())
                 {
-                    tbl_CAT_Usuarios mdl = NapoleonDA.tbl_CAT_Usuarios.First(x => x.intUsuarioID == user.intUsuarioID);
-                    mdl.vchNombre = user.vchNombre;
-                    mdl.vchApellido = user.vchApellido;
-                    mdl.vchPassword = user.vchPassword;
-                    mdl.intTipoUsuarioID = user.intTipoUsuarioID;
-                    mdl.intProyectoID = user.intProyectoID;
-                    mdl.datFecha = DateTime.Now;
-                    mdl.bitActivo = true;
-                    mdl.id_Sitio = user.id_Sitio;
-                    NapoleonDA.SaveChanges();
-                    valido = true;
+                    if (!NapoleonDA.tbl_CAT_Usuarios.Any(x => x.intUsuarioID != user.intUsuarioID && x.vchCorreo == user.vchCorreo))
+                    {
+                        tbl_CAT_Usuarios mdl = NapoleonDA.tbl_CAT_Usuarios.First(x => x.intUsuarioID == user.intUsuarioID);
+                        mdl.vchNombre = user.vchNombre;
+                        mdl.vchApellido = user.vchApellido;
+                        mdl.vchPassword = user.vchPassword;
+                        mdl.intTipoUsuarioID = user.intTipoUsuarioID;
+                        mdl.intProyectoID = user.intProyectoID;
+                        mdl.datFecha = DateTime.Now;
+                        mdl.bitActivo = true;
+                        mdl.id_Sitio = user.id_Sitio;
+                        mdl.vchCorreo = user.vchCorreo;
+                        NapoleonDA.SaveChanges();
+                        valido = true;
+                    }
+                    else
+                    {
+                        valido = false;
+                        mensaje = "Ya existe otro usuario registrado con el correo especificado.";
+                    }
                 }
             }
             catch (Exception esU)
@@ -541,7 +625,142 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return valido;
         }
 
+        public bool updatePassword(int intUsuarioID, string vchPassword, bool SolRe, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    tbl_CAT_Usuarios mdl = NapoleonDA.tbl_CAT_Usuarios.First(x => x.intUsuarioID == intUsuarioID);
+                    mdl.bitActivo = true;
+                    mdl.bitSolicitarPass = SolRe;
+                    mdl.vchPassword = vchPassword;
+                    NapoleonDA.SaveChanges();
+                    valido = true;
+                }
+            }
+            catch(Exception euP)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en updatePassword: " + euP.Message);
+                mensaje = euP.Message;
+            }
+            return valido;
+        }
 
+        public bool getNewPassword(string vchCorreo, ref string mensaje, ref clsUsuario user)
+        {
+            bool valido = false;
+            try
+            {
+
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_CAT_Usuarios.Any(x => x.vchCorreo == vchCorreo))
+                    {
+                        var query = NapoleonDA.tbl_CAT_Usuarios.First(x => x.vchCorreo == vchCorreo);
+                        if (query != null)
+                        {
+                            user.intUsuarioID = query.intUsuarioID;
+                            user.vchUsuario = query.vchUsuario;
+                        }
+                        valido = true;
+                    }
+                    else
+                    {
+                        mensaje = "No existe correo electrónico registrado";
+                        valido = false;
+                    }
+                }
+            }
+            catch (Exception egnP)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en getNewPassword: " + egnP.Message);
+            }
+            return valido;
+        }
+
+        public bool setActualizaUser(clsUsuario mdl, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_CAT_Usuarios.Any(x => x.intUsuarioID == mdl.intUsuarioID))
+                    {
+                        tbl_CAT_Usuarios user = NapoleonDA.tbl_CAT_Usuarios.First(x => x.intUsuarioID == mdl.intUsuarioID);
+                        user.vchNombre = mdl.vchNombre;
+                        user.vchApellido = mdl.vchApellido;
+                        user.vchCorreo = mdl.vchCorreo;
+                        if (mdl.bitGuardarCambios)
+                        {
+                            user.vchPassword = mdl.vchPassword;
+                        }
+                        NapoleonDA.SaveChanges();
+                        valido = true;
+                    }
+                    else
+                    {
+                        valido = false;
+                        mensaje = "No existe el usuario.";
+                    }
+                }
+            }
+            catch(Exception esSU)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en setActualizaUser: " + esSU.Message);
+            }
+            return valido;
+        }
+
+        public bool setFileVersion(tbl_CAT_Feed2Version fileFeed2, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    NapoleonDA.tbl_CAT_Feed2Version.Add(fileFeed2);
+                    NapoleonDA.SaveChanges();
+                    valido = true;
+                }
+            }
+            catch (Exception esF)
+            {
+                valido = false;
+                mensaje = esF.Message;
+                Log.EscribeLog("Existe un error en setFileVersion: " + esF.Message);
+            }
+            return valido;
+        }
+
+        public List<tbl_CAT_Feed2Version> getListaArchivos()
+        {
+            List<tbl_CAT_Feed2Version> _lstresponse = new List<tbl_CAT_Feed2Version>();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_CAT_Feed2Version.Any())
+                    {
+                        var query = NapoleonDA.tbl_CAT_Feed2Version.ToList();
+                        if(query != null)
+                        {
+                            _lstresponse.AddRange(query);
+                        }
+                    }
+                }
+            }
+            catch(Exception egA)
+            {
+                Log.EscribeLog("Existe un error al obtener los archivos: " + egA.Message);
+            }
+            return _lstresponse;
+        }
 
         #endregion sets
 
@@ -734,14 +953,14 @@ namespace _2.FUJI.Napoleon.AccesoDatos
         #endregion addRegistro
 
         #region admin
-        public List<clsEstudio> getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, ref string mensaje)
+        public List<clsEstudio> getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, int intProyectoID, ref string mensaje)
         {
             List<clsEstudio> _lstEst = new List<clsEstudio>();
             try
             {
                 using (NapoleonDA = new NAPOLEONEntities())
                 {
-                    var query = NapoleonDA.stp_getEstudio(intEstatusID, id_Sitio, intModalidadID).ToList();
+                    var query = NapoleonDA.stp_getEstudio(intEstatusID, id_Sitio, intModalidadID, intProyectoID).ToList();
                     if (query != null)
                     {
                         if (query.Count > 0)
@@ -1033,22 +1252,26 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                         else
                         {
-                            using (NapoleonDA = new NAPOLEONEntities())
-                            {
-                                tbl_MST_PrioridadEstudio mdl = NapoleonDA.tbl_MST_PrioridadEstudio.First(u => u.intEstudioID == _mdlPrioridad.intEstudioID);
-                                mdl.bitUrgente = _mdlPrioridad.bitUrgente;
-                                mdl.bitAtendido = _mdlPrioridad.bitAtendido;
-                                mdl.intSecuencia = getSiguientePrioridad() + 1;
-                                mdl.datAtendido = _mdlPrioridad.datAtendido;
-                                mdl.datFecha = _mdlPrioridad.datFecha;
-                                mdl.vchusuarioSol = _mdlPrioridad.vchusuarioSol;
-                                NapoleonDA.SaveChanges();
-                            }
-                            _msgReturn.vchMensaje = "OK";
                             if (!(bool)_mdlPrioridad.bitUrgente)
                             {
                                 setPrioridad((int)_mdlPrioridad.intEstudioID, 0, (int)_mdlPrioridad.intSecuencia);
                             }
+                            else
+                            {
+                                using (NapoleonDA = new NAPOLEONEntities())
+                                {
+                                    tbl_MST_PrioridadEstudio mdl = NapoleonDA.tbl_MST_PrioridadEstudio.First(u => u.intEstudioID == _mdlPrioridad.intEstudioID);
+                                    mdl.bitUrgente = _mdlPrioridad.bitUrgente;
+                                    mdl.bitAtendido = _mdlPrioridad.bitAtendido;
+                                    mdl.intSecuencia = getSiguientePrioridad() + 1;
+                                    mdl.datAtendido = _mdlPrioridad.datAtendido;
+                                    mdl.datFecha = _mdlPrioridad.datFecha;
+                                    mdl.vchusuarioSol = _mdlPrioridad.vchusuarioSol;
+                                    NapoleonDA.SaveChanges();
+                                }
+                                _msgReturn.vchMensaje = "OK";
+                            }
+                            
                             //NapoleonDA.Dispose();
                         }
                     }
@@ -1320,33 +1543,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                     }
                 }
-                //using (SqlConnection cn = new SqlConnection(Helper.ConnectionString()))
-                //{
-                //    try
-                //    {
-                //        cn.Open();
-
-                //        SqlCommand cmd = new SqlCommand("stp_updatePrioridadesSucMod", cn);
-                //        cmd.CommandType = CommandType.StoredProcedure;
-
-                //        cmd.Parameters.AddWithValue("@intREL_SitioModID", _mdlPriModalidad.intREL_SitioModID);
-                //        cmd.Parameters.AddWithValue("@Activar", _mdlPriModalidad.bitActivo == true ? false : true);
-                //        SqlDataReader dr = cmd.ExecuteReader();
-
-                //        if (dr.Read())
-                //        {
-                //            _menReturn.vchMensaje = dr.GetString(0);
-                //        }
-                //    }
-                //    catch (Exception esql)
-                //    {
-                //        _menReturn.vchError = esql.Message;
-                //    }
-                //    finally
-                //    {
-                //        cn.Close();
-                //    }
-                //}
             }
             catch (Exception eup)
             {
@@ -1375,33 +1571,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                     }
                 }
-                //using (SqlConnection cn = new SqlConnection(Helper.ConnectionString()))
-                //{
-                //    try
-                //    {
-                //        cn.Open();
-
-                //        SqlCommand cmd = new SqlCommand("stp_setPrioridadesSucMod", cn);
-                //        cmd.CommandType = CommandType.StoredProcedure;
-
-                //        cmd.Parameters.AddWithValue("@intREL_SitioModID", mosID);
-                //        cmd.Parameters.AddWithValue("@Activar", activar);
-                //        SqlDataReader dr = cmd.ExecuteReader();
-
-                //        if (dr.Read())
-                //        {
-                //            result = dr.GetString(0);
-                //        }
-                //    }
-                //    catch (Exception esql)
-                //    {
-                //        result = esql.Message;
-                //    }
-                //    finally
-                //    {
-                //        cn.Close();
-                //    }
-                //}
             }
             catch (Exception eSP)
             {
@@ -1413,7 +1582,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
         #endregion prioridadMod
 
         #region dash
-        public List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID)
+        public List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID)
         {
             List<clsEntidadTabla> _lst = new List<clsEntidadTabla>();
             try
@@ -1422,7 +1591,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 {
                     List<clsEstudio> _listTabla = new List<clsEstudio>();
                     string message = "";
-                    _listTabla = getListEstudios(0,sucOID, 0, ref message);
+                    _listTabla = getListEstudios(0,sucOID, 0, intProyectoID, ref message);
                     if(_listTabla.Any(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin))
                     {
                         _listTabla = _listTabla.Where(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin).ToList();
@@ -1461,7 +1630,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
         }
 
 
-        public List<clsGrafica> getDatosGraficas(String _tipo, DateTime _FechaIncio, DateTime _FechaFin, int sucOID)
+        public List<clsGrafica> getDatosGraficas(String _tipo, DateTime _FechaIncio, DateTime _FechaFin, int sucOID, int intProyectoID)
         {
             List<clsGrafica> _lstReturn = new List<clsGrafica>();
             try
@@ -1478,7 +1647,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
 
                     case "Completos":
                         
-                        _lstNap = getListEstudios(0, sucOID, 0, ref message);
+                        _lstNap = getListEstudios(0, sucOID, 0, intProyectoID, ref message);
                         if (_lstNap.Any(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin))
                         {
                             _lstNap = _lstNap.Where(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin).ToList();
@@ -1516,7 +1685,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                         break;
                     case "PSC":
-                        _lstNap = getListEstudios(0, sucOID, 0, ref message);
+                        _lstNap = getListEstudios(0, sucOID, 0, intProyectoID, ref message);
                         if (_lstNap.Any(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin))
                         {
                             _lstNap = _lstNap.Where(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin).ToList();
@@ -1530,7 +1699,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                             if (_lstNap.Count > 0)
                             {
                                 List<clsEstudio> _lstNapFiltro = new List<clsEstudio>();
-                                _lstNapFiltro = _lstNap.Where(item => item.intEstatusID == 2).ToList();
+                                _lstNapFiltro = _lstNap.Where(item => item.intEstatusID == 1).ToList();
                                 i = 0;
                                 //Obtener las Etiquetas
                                 foreach (String _label in _lstNapFiltro.Select(x => x.vchClaveSitio).Distinct().ToList())
@@ -1554,7 +1723,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                         break;
                     case "PCSY":
-                        _lstNap = getListEstudios(0, sucOID, 0, ref message);
+                        _lstNap = getListEstudios(0, sucOID, 0, intProyectoID, ref message);
                         if (_lstNap.Any(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin))
                         {
                             _lstNap = _lstNap.Where(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin).ToList();
@@ -1568,7 +1737,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                             if (_lstNap.Count > 0)
                             {
                                 List<clsEstudio> _lstNapFiltro = new List<clsEstudio>();
-                                _lstNapFiltro = _lstNap.Where(item => item.intEstatusID == 2).ToList();
+                                _lstNapFiltro = _lstNap.Where(item => item.intEstatusID == 1).ToList();
                                 i = 0;
                                 //Obtener las Etiquetas
                                 foreach (String _label in _lstNapFiltro.Select(x => x.vchClaveSitio).Distinct().ToList())
@@ -1592,7 +1761,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                         break;
                     case "Totales":
-                        _lstNap = getListEstudios(0, sucOID, 0, ref message);
+                        _lstNap = getListEstudios(0, sucOID, 0, intProyectoID, ref message);
                         if (_lstNap.Any(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin))
                         {
                             _lstNap = _lstNap.Where(x => x.datFecha >= FechaIncio && x.datFecha <= FechaFin).ToList();
@@ -1639,13 +1808,13 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return _lstReturn;
         }
 
-        public clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID)
+        public clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID, int intProyectoID)
         {
             clsTop mdlResult = new clsTop();
             try
             {
                 string message = "";
-                List<clsEstudio> _list = getListEstudios(0, sucOID,0, ref message);
+                List<clsEstudio> _list = getListEstudios(0, sucOID,0, intProyectoID, ref message);
                 if (_list.Any(x => x.datFecha >= fini && x.datFecha <= ffin))
                 {
                     _list = _list.Where(x => x.datFecha >= fini && x.datFecha <= ffin).ToList();
@@ -1659,22 +1828,24 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                     if (_list.Count > 0)
                     {
                         mdlResult.TotalEstEnviados = _list.Count().ToString("N0");
-                        var querySC = _list.Where(item => item.intEstatusID == 2);
-                        var queryCSY = _list.Where(item => item.intEstatusID == 2);
+                        var querySC = _list.Where(item => item.intEstatusID == 1);
+                        var queryCSY = _list.Where(item => item.intEstatusID == 1);
                         if (querySC != null)
                             if (querySC.Count() > 0)
                                 mdlResult.PendientesEnvSC = querySC.Count().ToString("N0");
                         if (queryCSY != null)
                             if (queryCSY.Count() > 0)
                                 mdlResult.PendientesEnvCSy = queryCSY.Count().ToString("N0");
-                        int sumBytesT = 0;
+                        long sumBytesT = 0;
                         int NumArchivosT = 0;
                         foreach (var mdl in _list)
                         {
-                            sumBytesT += (int)mdl.intTamanoTotal;
+                            sumBytesT += ((int)mdl.intTamanoTotal > 0 ? (mdl.intTamanoTotal/1024) : 0);
                             NumArchivosT += (int)mdl.intNumeroArchivo;
                         }
-                        mdlResult.TamañoTotalArc = sumBytesT.ToString("N0") + " Kb";
+                        string mensajeTotalArchivo = "";
+                        mensajeTotalArchivo = convertirBytes(sumBytesT);
+                        mdlResult.TamañoTotalArc = mensajeTotalArchivo;
                         mdlResult.PromedioArchivos = (NumArchivosT / _list.Count()).ToString("N0");
                     }
                 }
@@ -1686,7 +1857,38 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return mdlResult;
         }
 
-        public string getPromedioEnvio(DateTime fIni, DateTime fFin, int sucOID)
+        private string convertirBytes(long sumBytesT)
+        {
+            string mensaje = "";
+            try
+            {
+                if(sumBytesT > 1000)
+                {
+                    long division = (sumBytesT / 1000);
+                    if(division < 10000)
+                    {
+                        mensaje = division.ToString("N0") + " MB";
+                    }
+                    else
+                    {
+                        int division2 = ((int)division / 1000);
+                        mensaje = division2.ToString("N0") + " GB";
+                    }
+                }
+                else
+                {
+                    mensaje = sumBytesT.ToString("N0") + " Kb";
+                }
+            }
+            catch(Exception eCB)
+            {
+                mensaje = "";
+                Log.EscribeLog("Existe un error al convertir el mensaje del tamaño de archivos: " + eCB.Message);
+            }
+            return mensaje;
+        }
+
+        public string getPromedioEnvio(DateTime fIni, DateTime fFin, int sucOID, int intProyectoID)
         {
             string result = "";
             try
@@ -1700,6 +1902,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         cmd.Parameters.AddWithValue("@fIni", fIni);
                         cmd.Parameters.AddWithValue("@fFin", fFin);
                         cmd.Parameters.AddWithValue("@sucOID", sucOID);
+                        cmd.Parameters.AddWithValue("@intProyectoID", intProyectoID);
                         cmd.CommandType = CommandType.StoredProcedure;
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.Read())
@@ -1720,6 +1923,481 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return result;
         }
         #endregion dash
+
+        #region listenerSCP
+
+        public clsConfiguracion getConeccion(string vchClaveSitio)
+        {
+            tbl_ConfigSitio mdl = new tbl_ConfigSitio();
+            clsConfiguracion mdlReturn = new clsConfiguracion();
+            try
+            {
+
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_ConfigSitio.Any(item => (bool)item.bitActivo))
+                    {
+                        using (NapoleonDA = new NAPOLEONEntities())
+                        {
+                            var query = (from item in NapoleonDA.tbl_ConfigSitio
+                                         where (bool)item.bitActivo && item.vchClaveSitio == vchClaveSitio
+                                         select item);
+                            if (query != null)
+                            {
+                                if (query.Count() > 0)
+                                {
+                                    mdl = query.First();
+                                    mdlReturn.bitActivo = mdl.bitActivo == null ? false : (bool)mdl.bitActivo;
+                                    mdlReturn.datFechaSistema = mdl.datFechaSistema == null ? DateTime.Now : (DateTime)mdl.datFechaSistema;
+                                    mdlReturn.id_Sitio = mdl.id_Sitio;
+                                    mdlReturn.intPuertoCliente = mdl.intPuertoCliente == null ? 0 : (int)mdl.intPuertoCliente;
+                                    mdlReturn.intPuertoServer = mdl.in_tPuertoServer == null ? 0 : (int)mdl.in_tPuertoServer;
+                                    mdlReturn.vchAETitle = mdl.vchAETitle;
+                                    mdlReturn.vchAETitleServer = mdl.vchAETitleServer == null ? "" : mdl.vchAETitleServer;
+                                    mdlReturn.vchClaveSitio = mdl.vchClaveSitio;
+                                    mdlReturn.vchIPCliente = mdl.vchIPCliente == null ? "" : mdl.vchIPCliente;
+                                    mdlReturn.vchIPServidor = mdl.vchIPServidor == null ? "" : mdl.vchIPServidor;
+                                    mdlReturn.vchMaskCliente = mdl.vchMaskCliente == null ? "" : mdl.vchMaskCliente;
+                                    mdlReturn.vchNombreSitio = mdl.vchnombreSitio;
+                                    mdlReturn.vchNombreUsuario = mdl.vchUserAdmin == null ? "" :  mdl.vchUserAdmin;
+                                    mdlReturn.vchPathLocal = mdl.vchPathLocal == null ? "" :  mdl.vchPathLocal;
+                                    mdlReturn.vchUsuario = mdl.vchUserAdmin == null ? "" :  mdl.vchUserAdmin;
+                                }
+                            }
+                        }
+                    }
+                }
+                Log.EscribeLog("Se consulta la configuración: Puerto Cliente: " + mdl.intPuertoCliente);
+            }
+            catch (Exception egc)
+            {
+                Log.EscribeLog("Existe un error al obtener las configuraciones para el Servicio SCP: " + egc);
+            }
+            return mdlReturn;
+        }
+        public bool setService(int id_Servicio, string vchClaveSitio, int tipoServicio, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                tbl_DET_ServicioSitio mdl = new tbl_DET_ServicioSitio();
+
+                if (id_Servicio > 0)
+                {
+                    using (NapoleonDA = new NAPOLEONEntities())
+                    {
+                        if (NapoleonDA.tbl_DET_ServicioSitio.Any(x => x.id_Sitio == id_Servicio))
+                        {
+                            using (NapoleonDA = new NAPOLEONEntities())
+                            {
+                                mdl = NapoleonDA.tbl_DET_ServicioSitio.First(x => x.id_Sitio == id_Servicio);
+                                switch (tipoServicio)
+                                {
+                                    case 1://SCP
+                                        mdl.datFechaSCP = DateTime.Now;
+                                        break;
+                                    case 2://Sync
+                                        mdl.datFechaSync = DateTime.Now;
+                                        break;
+                                    case 3://SCU
+                                        mdl.datFechaSCU = DateTime.Now;
+                                        break;
+                                }
+                                NapoleonDA.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            using (NapoleonDA = new NAPOLEONEntities())
+                            {
+                                mdl.id_Sitio = id_Servicio;
+                                mdl.datFechaSCP = DateTime.Now;
+                                NapoleonDA.tbl_DET_ServicioSitio.Add(mdl);
+                                NapoleonDA.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (vchClaveSitio != "")
+                    {
+                        using (NapoleonDA = new NAPOLEONEntities())
+                        {
+                            DataAccess.tbl_ConfigSitio mdlSitio = new DataAccess.tbl_ConfigSitio();
+                            if (NapoleonDA.tbl_ConfigSitio.Any(x => x.vchClaveSitio == vchClaveSitio))
+                            {
+                                mdlSitio = NapoleonDA.tbl_ConfigSitio.First(x => x.vchClaveSitio == vchClaveSitio);
+                                mdl = NapoleonDA.tbl_DET_ServicioSitio.First(x => x.id_Sitio == mdlSitio.id_Sitio);
+                                switch (tipoServicio)
+                                {
+                                    case 1://SCP
+                                        mdl.datFechaSCP = DateTime.Now;
+                                        break;
+                                    case 2://Sync
+                                        mdl.datFechaSync = DateTime.Now;
+                                        break;
+                                    case 3://SCU
+                                        mdl.datFechaSCU = DateTime.Now;
+                                        break;
+                                }
+                                NapoleonDA.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                valido = true;
+                mensaje = "";
+            }
+            catch (Exception eSS)
+            {
+                valido = false;
+                mensaje = eSS.Message;
+                Log.EscribeLog("Existe un error en setService: " + eSS.Message);
+                //throw eSS;
+            }
+            return valido;
+        }
+
+        #endregion listenerSCP
+
+        #region Sync
+        public bool setEstudioServer(clsEstudio _estudio, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_MST_Estudio.Any(x => x.id_Sitio == _estudio.id_Sitio && x.vchAccessionNumber == _estudio.vchAccessionNumber))
+                    {
+                        int intEstudioID = NapoleonDA.tbl_MST_Estudio.First(x => x.id_Sitio == _estudio.id_Sitio && x.vchAccessionNumber == _estudio.vchAccessionNumber).intEstudioID;
+                        if (intEstudioID > 0)
+                        {
+                            tbl_DET_Estudio mdl = new tbl_DET_Estudio();
+                            mdl.datFecha = _estudio.datFecha;
+                            mdl.intEstatusID = _estudio.intEstatusID;
+                            mdl.intEstudioID = intEstudioID;
+                            mdl.intSizeFile = _estudio.intSizeFile;
+                            mdl.vchNameFile = _estudio.vchNameFile;
+                            mdl.vchPathFile = _estudio.vchPathFile;
+                            mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
+                            NapoleonDA.tbl_DET_Estudio.Add(mdl);
+                            NapoleonDA.SaveChanges();
+                            valido = true;
+                        }
+                    }
+                    else
+                    {
+                        tbl_MST_Estudio MST = new tbl_MST_Estudio();
+                        MST.datFecha = _estudio.datFecha;
+                        MST.id_Sitio = _estudio.id_Sitio;
+                        MST.intModalidadID = _estudio.intModalidad;
+                        MST.PatientID = _estudio.PatientID;
+                        MST.PatientName = _estudio.PatientName;
+                        MST.vchAccessionNumber = _estudio.vchAccessionNumber;
+                        MST.vchPatientBirthDate = _estudio.vchPatientBirthDate;
+                        MST.vchgenero = _estudio.vchgenero;
+                        MST.vchEdad = _estudio.vchEdad;
+                        NapoleonDA.tbl_MST_Estudio.Add(MST);
+                        NapoleonDA.SaveChanges();
+                        if (MST.intEstudioID > 0)
+                        {
+                            tbl_DET_Estudio mdl = new tbl_DET_Estudio();
+                            mdl.datFecha = _estudio.datFecha;
+                            mdl.intEstatusID = _estudio.intEstatusID;
+                            mdl.intEstudioID = MST.intEstudioID;
+                            mdl.intSizeFile = _estudio.intSizeFile;
+                            mdl.vchNameFile = _estudio.vchNameFile;
+                            mdl.vchPathFile = _estudio.vchPathFile;
+                            mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
+                            NapoleonDA.tbl_DET_Estudio.Add(mdl);
+                            NapoleonDA.SaveChanges();
+                            valido = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception esES)
+            {
+                valido = false;
+                mensaje = esES.Message;
+                Log.EscribeLog("Existe un error en setEstudioServer: " + esES.Message);
+            }
+            return valido;
+        }
+        #endregion Sync
+
+        #region SenderSCU
+        public List<clsEstudio> getEstudiosEnviar(int id_Sitio, ref string mensaje)
+        {
+            Log.EscribeLog("Leyendo del Sitio: " + id_Sitio.ToString());
+            List<clsEstudio> lstEst = new List<clsEstudio>();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    var query = (from item in NapoleonDA.stp_getEstudiosEnviar(id_Sitio)
+                                 select item).ToList();
+                    if (query != null)
+                    {
+                        if (query.Count > 0)
+                        {
+                            foreach (var est in query)
+                            {
+                                clsEstudio mdl = new clsEstudio();
+                                mdl.intDetEstudioID = est.intDetEstudioID;
+                                mdl.bitUrgente = est.bitUrgente;
+                                mdl.datFecha = (DateTime)est.datFecha;
+                                mdl.intEstatusID = (int)est.intEstatusID;
+                                mdl.intEstudioID = (int)est.intEstudioID;
+                                mdl.intModalidadID = est.intSecuencia;
+                                mdl.URGENTES = est.URGENTES;
+                                mdl.vchPathFile = est.vchPathFile;
+                                lstEst.Add(mdl);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mensaje = e.Message;
+                Log.EscribeLog("Existe un error en getEstudiosEnviar: " + e.Message);
+            }
+            Log.EscribeLog("Archivos a enviar: " + lstEst.Count.ToString());
+            return lstEst;
+        }
+
+        public bool updateEstatus(int intDetEstudioID, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    tbl_DET_Estudio det = NapoleonDA.tbl_DET_Estudio.First(x => x.intDetEstudioID == intDetEstudioID);
+                    det.intEstatusID = 3;
+                    NapoleonDA.SaveChanges();
+                }
+                valido = true;
+            }
+            catch (Exception eup)
+            {
+                valido = false;
+                mensaje = eup.Message;
+                Log.EscribeLog("Existe un error en updateEstatus:" + eup.Message);
+            }
+            return valido;
+        }
+        #endregion SenderSCU
+
+        #region config
+        public bool getVerificaSitio(string vchClaveSitio, ref string mensaje)
+        {
+            tbl_ConfigSitio _mdlConf = new tbl_ConfigSitio();
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_ConfigSitio.Any(item => (bool)item.bitActivo && item.vchClaveSitio == vchClaveSitio))
+                    {
+                        valido = true;
+                        mensaje = "";
+                    }
+                    else
+                    {
+                        valido = false;
+                        mensaje = "No se encontro la Configuración para el sitio.";
+                    }
+                }
+            }
+            catch (Exception egV)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en ConfiguracionDataAccess.getVerificaSitio: " + egV.Message);
+            }
+            return valido;
+        }
+
+        public bool setConfiguracion(tbl_ConfigSitio mdlConfig, ref string mensaje, ref int id_Sitio)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    var validacion = (from item in NapoleonDA.tbl_ConfigSitio
+                                      where item.vchClaveSitio.Trim().ToUpper() == mdlConfig.vchClaveSitio.ToUpper().Trim()
+                                      select item).ToList();
+                    if (validacion != null)
+                    {
+                        if (validacion.Count() > 0)
+                        {
+                            mensaje = "La clave del sitio que deseas dar de alta ya está en uso, favor de editar.";
+                            valido = false;
+                        }
+                        else
+                        {
+                            NapoleonDA.tbl_ConfigSitio.Add(mdlConfig);
+                            NapoleonDA.SaveChanges();
+                            id_Sitio = mdlConfig.id_Sitio;
+                            valido = true;
+                            mensaje = "Cambios correctos.";
+                        }
+                    }
+                    else
+                    {
+                        NapoleonDA.tbl_ConfigSitio.Add(mdlConfig);
+                        NapoleonDA.SaveChanges();
+                        id_Sitio = mdlConfig.id_Sitio;
+                        valido = true;
+                        mensaje = "Cambios correctos.";
+                    }
+                }
+            }
+            catch (Exception esC)
+            {
+                Log.EscribeLog("Existe un error al guardar la información" + esC.Message);
+                valido = false;
+                mensaje = esC.Message;
+            }
+            return valido;
+        }
+
+        public bool updateConfiguracion(clsConfiguracion mdlConfig, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_ConfigSitio.Any(item => item.vchClaveSitio.Trim().ToUpper() == mdlConfig.vchClaveSitio.Trim().ToUpper()))
+                    {
+
+                        //Validar que la nueva clave del sitio no exista
+                        //if (ConfigDA.tbl_ConfigSitio.Any(item => item.vchClaveSitio.ToUpper().Trim() == mdlConfig.vchClaveSitio.Trim().ToUpper() && item.id_Sitio != mdlConfig.id_Sitio))
+                        //{
+                        //    mensaje = "La clave del sitio que deseas dar de alta ya está en uso, favor de editar.";
+                        //    valido = false;
+                        //}
+                        //else// end validacion de nueva clave.
+                        //{
+                        tbl_ConfigSitio sitio = NapoleonDA.tbl_ConfigSitio.First(i => i.vchClaveSitio.Trim().ToUpper() == mdlConfig.vchClaveSitio.Trim().ToUpper());
+                        //sitio.vchClaveSitio = mdlConfig.vchClaveSitio;
+                        sitio.vchAETitle = mdlConfig.vchAETitle;
+                        sitio.vchIPCliente = mdlConfig.vchIPCliente;
+                        sitio.vchMaskCliente = mdlConfig.vchMaskCliente;
+                        sitio.intPuertoCliente = mdlConfig.intPuertoCliente;
+                        sitio.vchnombreSitio = mdlConfig.vchNombreSitio;
+                        sitio.vchPathLocal = mdlConfig.vchPathLocal;
+                        //sitio.vchIPServidor = mdlConfig.vchIPServidor;
+                        //sitio.intPuertoServer = mdlConfig.intPuertoServer;
+                        sitio.vchUserAdmin = mdlConfig.vchUserChanges;
+                        sitio.datFechaSistema = DateTime.Now;
+                        NapoleonDA.SaveChanges();
+                        mensaje = "Cambios correctos.";
+                        valido = true;
+                        NapoleonDA.Dispose();
+                        //}
+                    }
+                    else
+                    {
+                        valido = false;
+                        mensaje = "No es posible actualizar los datos.";
+                    }
+                }
+            }
+            catch (Exception esC)
+            {
+                Log.EscribeLog("Existe un error al guardar la información: " + esC.Message);
+                valido = false;
+                mensaje = esC.Message;
+            }
+            return valido;
+        }
+
+        public bool updateConfiguracionServer(clsConfiguracion mdlConfig, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_ConfigSitio.Any(item => item.vchClaveSitio == mdlConfig.vchClaveSitio))
+                    {
+                        NapoleonDA = new NAPOLEONEntities();
+                        ////Validar que la nueva clave del sitio no exista
+                        //if (ConfigDA.tbl_ConfigSitio.Any(item => item.vchClaveSitio.ToUpper().Trim() == mdlConfig.vchClaveSitio.Trim().ToUpper() && item.id_Sitio != mdlConfig.id_Sitio))
+                        //{
+                        //    mensaje = "La clave del sitio que deseas dar de alta ya está en uso, favor de editar.";
+                        //    valido = false;
+                        //}
+                        //else// end validacion de nueva clave.
+                        //{
+                        tbl_ConfigSitio sitio = NapoleonDA.tbl_ConfigSitio.First(i => i.vchClaveSitio.Trim().ToUpper() == mdlConfig.vchClaveSitio.Trim().ToUpper());
+                        //sitio.vchClaveSitio = mdlConfig.vchClaveSitio;
+                        //sitio.vchIPCliente = mdlConfig.vchIPCliente;
+                        //sitio.vchMaskCliente = mdlConfig.vchMaskCliente;
+                        //sitio.intPuertoCliente = mdlConfig.intPuertoCliente;
+                        //sitio.vchNombreSitio = mdlConfig.vchNombreSitio;
+                        sitio.vchIPServidor = mdlConfig.vchIPServidor;
+                        sitio.in_tPuertoServer = mdlConfig.intPuertoServer;
+                        sitio.vchAETitleServer = mdlConfig.vchAETitleServer;
+                        sitio.vchUserAdmin = mdlConfig.vchUserChanges;
+                        sitio.datFechaSistema = DateTime.Now;
+                        NapoleonDA.SaveChanges();
+                        mensaje = "Cambios correctos.";
+                        valido = true;
+                        //}
+                    }
+                    else
+                    {
+                        valido = false;
+                        mensaje = "No es posible actualizar los datos.";
+                    }
+                }
+
+
+            }
+            catch (Exception esC)
+            {
+                Log.EscribeLog("Existe un error al actualizar la información: " + esC.Message);
+                valido = false;
+                mensaje = esC.Message;
+            }
+            return valido;
+        }
+
+        public string getXMLFileConfig(string vchClave)
+        {
+            string formato = "";
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_CAT_Extensiones.Any(item => (bool)item.bitActivo && item.vchClave == vchClave))
+                    {
+                        var query = (from item in NapoleonDA.tbl_CAT_Extensiones
+                                     where item.vchClave.Trim().ToUpper() == vchClave.Trim().ToUpper()
+                                     select item).First();
+                        if (query != null)
+                        {
+                            formato = query.vchValor.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception eXML)
+            {
+                formato = "";
+                Log.EscribeLog("Existe un error al obtener el formato XML: " + eXML.Message);
+            }
+            return formato;
+        }
+        #endregion config
+
     }
 }
 

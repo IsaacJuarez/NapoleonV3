@@ -17,7 +17,7 @@
     <RootNamespace>_3.FUJI.Napoleon.Site</RootNamespace>
     <AssemblyName>3.FUJI.Napoleon.Site</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -26,7 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -47,6 +47,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=17.1.1.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.17.1.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
@@ -77,21 +81,34 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AgregarSitio.aspx" />
+    <Content Include="App_Data\build\css\custom.css" />
+    <Content Include="App_Data\build\css\custom.min.css" />
+    <Content Include="App_Data\build\js\custom.js" />
+    <Content Include="App_Data\build\js\custom.min.js" />
     <Content Include="build\css\custom.css" />
     <Content Include="build\css\custom.min.css" />
     <Content Include="build\js\custom.js" />
     <Content Include="build\js\custom.min.js" />
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\daterangepicker.js" />
+    <Content Include="Content\formatoHTML.html" />
     <Content Include="Content\moment.js" />
     <Content Include="Content\moment.min.js" />
     <Content Include="frmAdministracion.aspx" />
+    <Content Include="frmAgregarSitio.aspx" />
     <Content Include="frmConfigSites.aspx" />
     <Content Include="frmDashBoardService.aspx" />
+    <Content Include="frmDownLoad.aspx" />
     <Content Include="frmGeneral.aspx" />
+    <Content Include="frmHelp.aspx" />
     <Content Include="frmPrioridadSitio.aspx" />
+    <Content Include="frmUpdateUser.aspx" />
+    <Content Include="frmVersionFeed2.aspx" />
     <Content Include="Images\enConstr.png" />
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\FEED-01.png" />
     <Content Include="Images\FEED2CJAV.png" />
+    <Content Include="Images\ic-action-download.png" />
     <Content Include="Images\ic_action_user.png" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -2119,7 +2136,9 @@
     <Content Include="vendors\pivot\dist\pivot_spec.js" />
     <Content Include="vendors\pivot\dist\pivot_spec.min.js" />
     <Content Include="vendors\pivot\dist\tips_data.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgregarSitio.aspx.cs">
@@ -2143,6 +2162,13 @@
     <Compile Include="frmAdministracion.aspx.designer.cs">
       <DependentUpon>frmAdministracion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmAgregarSitio.aspx.cs">
+      <DependentUpon>frmAgregarSitio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAgregarSitio.aspx.designer.cs">
+      <DependentUpon>frmAgregarSitio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmConfigSites.aspx.cs">
       <DependentUpon>frmConfigSites.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2164,12 +2190,26 @@
     <Compile Include="frmDashBoardService.aspx.designer.cs">
       <DependentUpon>frmDashBoardService.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmDownLoad.aspx.cs">
+      <DependentUpon>frmDownLoad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmDownLoad.aspx.designer.cs">
+      <DependentUpon>frmDownLoad.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmGeneral.aspx.cs">
       <DependentUpon>frmGeneral.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="frmGeneral.aspx.designer.cs">
       <DependentUpon>frmGeneral.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmHelp.aspx.cs">
+      <DependentUpon>frmHelp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmHelp.aspx.designer.cs">
+      <DependentUpon>frmHelp.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmLogin.aspx.cs">
       <DependentUpon>frmLogin.aspx</DependentUpon>
@@ -2185,12 +2225,29 @@
     <Compile Include="frmPrioridadSitio.aspx.designer.cs">
       <DependentUpon>frmPrioridadSitio.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmUpdateUser.aspx.cs">
+      <DependentUpon>frmUpdateUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmUpdateUser.aspx.designer.cs">
+      <DependentUpon>frmUpdateUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmVersionFeed2.aspx.cs">
+      <DependentUpon>frmVersionFeed2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmVersionFeed2.aspx.designer.cs">
+      <DependentUpon>frmVersionFeed2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DataContracts\ClienteF2CRequest.cs" />
+    <Compile Include="Services\DataContracts\ClienteF2CResponse.cs" />
     <Compile Include="Services\DataContracts\EstudioRequest.cs" />
     <Compile Include="Services\DataContracts\EstudioResponse.cs" />
+    <Compile Include="Services\DataContracts\FileFeed2Request.cs" />
     <Compile Include="Services\DataContracts\LoginRequest.cs" />
     <Compile Include="Services\DataContracts\LoginResponse.cs" />
     <Compile Include="Services\DataContracts\PrioridadModalidadRequest.cs" />
@@ -2199,6 +2256,7 @@
     <Compile Include="Services\DataContracts\PrioridadSucModRequest.cs" />
     <Compile Include="Services\DataContracts\ProyectoRequest.cs" />
     <Compile Include="Services\DataContracts\ProyectoResponse.cs" />
+    <Compile Include="Services\DataContracts\UserRequest.cs" />
     <Compile Include="Services\ServiceContracts\INapoleonService.cs" />
     <Compile Include="Services\NapoleonService.svc.cs">
       <DependentUpon>NapoleonService.svc</DependentUpon>
@@ -2212,7 +2270,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -2247,7 +2304,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54279</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:54279/</IISUrl>
+          <IISUrl>http://localhost/3.FUJI.Napoleon.Site</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

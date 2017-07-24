@@ -32,36 +32,37 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <asp:Label runat="server" ID="lblModalidad" Text="Modalidad" AssociatedControlID="ddlBusModalidad"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusModalidad" runat="server" CssClass="form-control" >
+                                            <asp:DropDownList ID="ddlBusModalidad" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlBusModalidad_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-4">
                                             <asp:Label runat="server" ID="lblBusEstatus" Text="Estatus" AssociatedControlID="ddlBusEstatus"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusEstatus" runat="server" CssClass="form-control " >
+                                            <asp:DropDownList ID="ddlBusEstatus" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlBusEstatus_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-4">
                                             <asp:Label runat="server" ID="lblBusSucursal" Text="Sitio" AssociatedControlID="ddlBusSucursal"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusSucursal" runat="server" CssClass="form-control " >
+                                            <asp:DropDownList ID="ddlBusSucursal" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlBusSucursal_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <asp:Label runat="server" ID="lblBusNumEstudio" Text="Num. Estudio" AssociatedControlID="txtBusNumEstudio"></asp:Label>
-                                            <asp:TextBox ID="txtBusNumEstudio" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                            <asp:TextBox ID="txtBusNumEstudio" runat="server" Text="" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtBusNumEstudio_TextChanged"></asp:TextBox>
                                         </div>
                                         <div class="col-md-4">
                                             <asp:Label runat="server" ID="lblBusNombre" Text="Nombre" AssociatedControlID="txtBusNombre"></asp:Label>
-                                            <asp:TextBox ID="txtBusNombre" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                            <asp:TextBox ID="txtBusNombre" runat="server" Text="" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtBusNombre_TextChanged"></asp:TextBox>
                                         </div>
                                         <div class="col-md-3">
                                             <asp:Label runat="server" ID="lblBusPrioridad" Text="Prioridad" AssociatedControlID="ddlBusPrioridad"></asp:Label>
-                                            <asp:DropDownList ID="ddlBusPrioridad" runat="server" CssClass="form-control " >
+                                            <asp:DropDownList ID="ddlBusPrioridad" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlBusPrioridad_SelectedIndexChanged" >
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-1">
                                             <div class="row text-right">
+                                                <asp:Button runat="server" ID="btnBusLimp" Text="Limpiar" CssClass="btn btnCenter btn-info" OnClick="btnBusLimp_Click" />
                                                 <asp:Button runat="server" ID="btnBusquedaEst" Text="Buscar" CssClass="btn btnCenter btn-primary" OnClick="btnBusquedaEst_Click"/>
                                             </div>
                                         </div>
@@ -173,13 +174,13 @@
         function ShowMessage(message, messagetype, idControl) {
             var cssclass;
             switch (messagetype) {
-                case 'Success':
+                case 'Correcto':
                     cssclass = 'alert-success'
                     break;
                 case 'Error':
                     cssclass = 'alert-danger'
                     break;
-                case 'Warning':
+                case 'Advertencia':
                     cssclass = 'alert-warning'
                     break;
                 default:

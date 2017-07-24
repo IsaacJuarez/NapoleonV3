@@ -101,6 +101,31 @@ namespace _2.FUJI.Napoleon.AccesoDatos.Extensions
             catch (Exception exc) { Log.EscribeLog(exc.Message); }
             return Valid;
         }
+
+        /// <summary>
+        /// Permite validar si el token es válido
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <returns></returns>
+        public static bool ValidateTokenSitio(String _Token, String id_Sitio, String vchClaveSitio)
+        {
+            bool Valid = false;
+            try
+            {
+                String validacion = Security.Decrypt(_Token);
+                if (validacion != "")
+                {
+                    Log.EscribeLog("Validar: " + validacion);
+                    var _val = validacion.Split('|');
+                    if (_val[0].ToString() == id_Sitio && _val[1].ToString() == vchClaveSitio)
+                    {
+                        Valid = true;
+                    }
+                }
+            }
+            catch (Exception exc) { Log.EscribeLog(exc.Message); }
+            return Valid;
+        }
         /// <summary>
         /// Convierte un string en su representación en hexadecimal.
         /// </summary>

@@ -130,6 +130,15 @@ namespace _3.FUJI.Napoleon.Site {
         protected global::System.Web.UI.WebControls.DropDownList ddlBusPrioridad;
         
         /// <summary>
+        /// Control btnBusLimp.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBusLimp;
+        
+        /// <summary>
         /// Control btnBusquedaEst.
         /// </summary>
         /// <remarks>

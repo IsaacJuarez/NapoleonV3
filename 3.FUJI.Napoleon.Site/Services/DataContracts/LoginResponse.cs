@@ -13,9 +13,11 @@ namespace _3.FUJI.Napoleon.Site.Services.DataContracts
             CurrentUser = new clsUsuario();
             Token = string.Empty;
             Success = false;
+            vchMensaje = string.Empty;
         }
         public clsUsuario CurrentUser { get; set; }
         public string Token { get; set; }
         public bool Success { get; set; }
+        public string vchMensaje { get; set; }
     }
 }

@@ -94,7 +94,7 @@ namespace _3.FUJI.Napoleon.Site
 
                 reg.vchNombreCliente = txtNombreContacto.Text;
                 reg.vchEmail = txtEmail.Text;
-                reg.vchpassword = Security.Decrypt(txtPassSitio.Text);
+                //reg.vchpassword = Security.Decrypt(txtPassSitio.Text);
                 reg.vchNumeroContacto = txtNumContacto.Text;
                 reg.vchVendedor = txtVendedor.Text;
                 reg.bitActivo = true;
@@ -110,21 +110,21 @@ namespace _3.FUJI.Napoleon.Site
                         if (response.valido)
                         {
                             enableClean(false);
-                            ShowMessage("El Sitio " + txtClaveSitio.Text + " se reservó correctamente", MessageType.Success, "alert_container");
+                            ShowMessage("El Sitio " + txtClaveSitio.Text + " se reservó correctamente", MessageType.Correcto, "alert_container");
                         }
                         else
                         {
-                            ShowMessage("Existe un error:" + response.vchMensaje, MessageType.Info, "alert_container");
+                            ShowMessage("Existe un error:" + response.vchMensaje, MessageType.Informacion, "alert_container");
                         }
                     }
                     else
                     {
-                        ShowMessage("Favor de verificar la información.", MessageType.Info, "alert_container");
+                        ShowMessage("Favor de verificar la información.", MessageType.Informacion, "alert_container");
                     }
                 }
                 else
                 {
-                    ShowMessage("La clave para el sitio ya existe, favor de verificar.", MessageType.Info, "alert_container");
+                    ShowMessage("La clave para el sitio ya existe, favor de verificar.", MessageType.Informacion, "alert_container");
                 }
                 //almacenar Sitio
             }
@@ -139,10 +139,10 @@ namespace _3.FUJI.Napoleon.Site
         {
             try
             {
-                mdl.vchClaveSitio = txtClaveSitio.Text;
-                mdl.vchnombreSitio = txtNombreSitio.Text;
+                mdl.vchClaveSitio = txtClaveSitio.Text.ToUpper();
+                mdl.vchnombreSitio = txtNombreSitio.Text.ToUpper();
 
-                reg.vchNombreCliente = txtNombreContacto.Text;
+                reg.vchNombreCliente = txtNombreContacto.Text.ToUpper();
                 reg.vchEmail = txtEmail.Text;
                 reg.vchNumeroContacto = txtNumContacto.Text;
                 reg.vchVendedor = txtVendedor.Text;
@@ -153,7 +153,7 @@ namespace _3.FUJI.Napoleon.Site
             }
         }
 
-        public enum MessageType { Success, Error, Info, Warning };
+        public enum MessageType { Correcto, Error, Informacion, Advertencia };
 
         protected void ShowMessage(string Message, MessageType type, String container)
         {

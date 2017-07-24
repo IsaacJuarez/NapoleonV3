@@ -21,7 +21,7 @@ namespace _3.FUJI.Napoleon.Site.Services
             clsUsuario entidad = new clsUsuario();
             try
             {
-                Response.Success = controller.Logear(Request.username, Request.password, ref entidad);
+                Response.Success = controller.Logear(Request.username, Request.password, Request.vchSitio, ref entidad);
                 Response.CurrentUser = entidad;
             }
             catch (Exception egV)
@@ -112,9 +112,12 @@ namespace _3.FUJI.Napoleon.Site.Services
             string mensaje = "";
             try
             {
-                NapoleonDataAccess controller = new NapoleonDataAccess();
-                response.success = controller.setProyecto(request.mdlProyecto, request.lstSitos, ref mensaje);
-                response.mensaje = mensaje;
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    response.success = controller.setProyecto(request.mdlProyecto, request.lstSitos, ref mensaje);
+                    response.mensaje = mensaje;
+                }
             }
             catch(Exception eSP)
             {
@@ -128,9 +131,12 @@ namespace _3.FUJI.Napoleon.Site.Services
             string mensaje = "";
             try
             {
-                NapoleonDataAccess controller = new NapoleonDataAccess();
-                response.success = controller.updateProyecto(request.mdlProyecto, request.lstSites, ref mensaje);
-                response.mensaje = mensaje;
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    response.success = controller.updateProyecto(request.mdlProyecto, request.lstSites, ref mensaje);
+                    response.mensaje = mensaje;
+                }
             }
             catch (Exception eSP)
             {
@@ -142,7 +148,6 @@ namespace _3.FUJI.Napoleon.Site.Services
         public clsMensaje updateEstatusSitio(int id_Sitio, bool activo)
         {
             clsMensaje response = new clsMensaje();
-            bool valido = false;
             try
             {
                 string mensaje = "";
@@ -151,6 +156,23 @@ namespace _3.FUJI.Napoleon.Site.Services
                 response.vchMensaje = mensaje;
             }
             catch(Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+
+        public clsMensaje updateEstatusFiles(int intVersionID, bool activo)
+        {
+            clsMensaje response = new clsMensaje();
+            try
+            {
+                string mensaje = "";
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                response.valido = controller.updateEstatusFiles(intVersionID, activo, ref mensaje);
+                response.vchMensaje = mensaje;
+            }
+            catch (Exception euS)
             {
                 throw euS;
             }
@@ -174,14 +196,34 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
-        public clsMensaje updateEstatusUsuario(int intUsuarioID, bool activo)
+        public clsMensaje updateEstatusUsuario(UserRequest request)
+        {
+            clsMensaje response = new clsMensaje();
+            try
+            {
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.updateEstatusUsuario(request.user.intUsuarioID, request.user.bitActivo, ref mensaje);
+                    response.vchMensaje = mensaje;
+                }
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+
+        public clsMensaje updatePassword(int intUsuarioID, string vchPassword, bool SolRe)
         {
             clsMensaje response = new clsMensaje();
             try
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
                 string mensaje = "";
-                response.valido = controller.updateEstatusUsuario(intUsuarioID, activo,ref mensaje);
+                response.valido = controller.updatePassword(intUsuarioID, vchPassword, SolRe, ref mensaje);
                 response.vchMensaje = mensaje;
             }
             catch (Exception euS)
@@ -191,15 +233,18 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
-        public clsMensaje setUsuario(tbl_CAT_Usuarios user)
+        public clsMensaje setActualizaUser(UserRequest request)
         {
             clsMensaje response = new clsMensaje();
             try
             {
-                NapoleonDataAccess controller = new NapoleonDataAccess();
-                string mensaje = "";
-                response.valido = controller.setUsuario(user,ref mensaje);
-                response.vchMensaje = mensaje;
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.setActualizaUser(request.user, ref mensaje);
+                    response.vchMensaje = mensaje;
+                }
             }
             catch (Exception euS)
             {
@@ -208,14 +253,91 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
-        public clsMensaje updateUsuario(tbl_CAT_Usuarios user)
+        public clsMensaje setFileVersion(FileFeed2Request request)
+        {
+            clsMensaje response = new clsMensaje();
+            try
+            {
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.setFileVersion(request.file, ref mensaje);
+                    response.vchMensaje = mensaje;
+                }
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+
+        public List<tbl_CAT_Feed2Version> getListaArchivos()
+        {
+            List<tbl_CAT_Feed2Version> response = new List<tbl_CAT_Feed2Version>();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                response = controller.getListaArchivos();
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+        
+        public clsMensaje setUsuario(UserRequest request)
+        {
+            clsMensaje response = new clsMensaje();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                string mensaje = "";
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    response.valido = controller.setUsuario(request.usuario, ref mensaje);
+                    response.vchMensaje = mensaje;
+                }
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+
+        public clsMensaje updateUsuario(UserRequest request)
         {
             clsMensaje response = new clsMensaje();
             try
             {
                 string mensaje = "";
                 NapoleonDataAccess controller = new NapoleonDataAccess();
-                response.valido = controller.updateUsuario(user, ref mensaje);
+                if (Security.ValidateToken(request.Token, request.intUsuarioID, request.vchUsuario, request.vchPassword))
+                {
+                    response.valido = controller.updateUsuario(request.usuario, ref mensaje);
+                    response.vchMensaje = mensaje;
+                }
+            }
+            catch (Exception euS)
+            {
+                throw euS;
+            }
+            return response;
+        }
+
+        public LoginResponse getNewPassword(string vchCorreo)
+        {
+            LoginResponse response = new LoginResponse();
+            try
+            {
+                string mensaje = "";
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                clsUsuario mdl = new clsUsuario();
+                response.Success = controller.getNewPassword(vchCorreo, ref mensaje, ref mdl);
+                response.CurrentUser = mdl;
                 response.vchMensaje = mensaje;
             }
             catch (Exception euS)
@@ -225,6 +347,8 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
         
+
+
         public List<clsDashboardService> getServicioSitio(int intProyectoID, int id_Sitio)
         {
             List<clsDashboardService> valido = new List<clsDashboardService>();
@@ -271,7 +395,7 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
-        public clsMensaje getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID)
+        public clsMensaje getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, int intProyectoID)
         {
             clsMensaje response = new clsMensaje();
             List<clsEstudio> lst = new List<clsEstudio>();
@@ -279,7 +403,7 @@ namespace _3.FUJI.Napoleon.Site.Services
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
                 string mensaje = "";
-                lst = controller.getListEstudios(intEstatusID, id_Sitio, intModalidadID,ref mensaje);
+                lst = controller.getListEstudios(intEstatusID, id_Sitio, intModalidadID, intProyectoID, ref mensaje);
                 response.vchMensaje = mensaje;
                 response._lstEst = lst;
             }
@@ -433,13 +557,13 @@ namespace _3.FUJI.Napoleon.Site.Services
             return _userResponse;
         }
 
-        public List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID)
+        public List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID)
         {
             List<clsEntidadTabla> valida;
             try
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
-                valida = controller.getDatosTabla(FechaIncio, FechaFin, sucOID);
+                valida = controller.getDatosTabla(FechaIncio, FechaFin, sucOID, intProyectoID);
             }
             catch (Exception egV)
             {
@@ -448,13 +572,13 @@ namespace _3.FUJI.Napoleon.Site.Services
             return valida;
         }
 
-        public List<clsGrafica> getDatosGraficas(String tipo, DateTime FechaIncio, DateTime FechaFin, int sucOID)
+        public List<clsGrafica> getDatosGraficas(String tipo, DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID)
         {
             List<clsGrafica> valida;
             try
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
-                valida = controller.getDatosGraficas(tipo, FechaIncio, FechaFin, sucOID);
+                valida = controller.getDatosGraficas(tipo, FechaIncio, FechaFin, sucOID, intProyectoID);
             }
             catch (Exception egV)
             {
@@ -463,13 +587,13 @@ namespace _3.FUJI.Napoleon.Site.Services
             return valida;
         }
 
-        public clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID)
+        public clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID, int intProyectoID)
         {
             clsTop NumEst = new clsTop();
             try
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
-                NumEst = controller.getDatosTop(fini, ffin, sucOID);
+                NumEst = controller.getDatosTop(fini, ffin, sucOID, intProyectoID);
             }
             catch (Exception egV)
             {
@@ -478,13 +602,13 @@ namespace _3.FUJI.Napoleon.Site.Services
             return NumEst;
         }
 
-        public string getPromedioEnvio(DateTime FechaIncio, DateTime FechaFin, int sucOID)
+        public string getPromedioEnvio(DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID)
         {
             string NumEst = "";
             try
             {
                 NapoleonDataAccess controller = new NapoleonDataAccess();
-                NumEst = controller.getPromedioEnvio(FechaIncio, FechaFin, sucOID);
+                NumEst = controller.getPromedioEnvio(FechaIncio, FechaFin, sucOID, intProyectoID);
             }
             catch (Exception egV)
             {
@@ -492,5 +616,277 @@ namespace _3.FUJI.Napoleon.Site.Services
             }
             return NumEst;
         }
+
+        #region feed2Cliente
+        public ClienteF2CResponse getConeccion(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    response.ConfigSitio = controller.getConeccion(request.vchClaveSitio);
+                    response.valido = true;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                throw getC;
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse setService(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.setService(request.id_Sitio, request.vchClaveSitio, request.tipoServicio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                Log.EscribeLog("Existe un error en el servicio setService: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse setEstudioServer(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.setEstudioServer(request.estudio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                Log.EscribeLog("Existe un error en el servicio setEstudioServer: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse getEstudiosEnviar(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.lstEstudio = controller.getEstudiosEnviar(request.id_Sitio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio getEstudiosEnviar: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio getEstudiosEnviar: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse updateEstatus(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.updateEstatus(request.intDetEstudioID, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio updateEstatus: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio updateEstatus: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse getVerificaSitio(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.getVerificaSitio(request.vchClaveSitio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio getVerificaSitio: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio getVerificaSitio: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse setConfiguracion(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    int id_Sitio = 0;
+                    response.valido = controller.setConfiguracion(request.mdlConfig, ref mensaje, ref id_Sitio);
+                    response.id_Sitio = id_Sitio;
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio setConfiguracion: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio setConfiguracion: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse updateConfiguracion(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    int id_Sitio = 0;
+                    response.valido = controller.updateConfiguracion(request.mdlConfiguracion, ref mensaje);
+                    response.id_Sitio = id_Sitio;
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio updateConfiguracion: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio updateConfiguracion: " + getC.Message);
+            }
+            return response;
+        }
+
+
+        public ClienteF2CResponse updateConfiguracionServer(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    int id_Sitio = 0;
+                    response.valido = controller.updateConfiguracionServer(request.mdlConfiguracion, ref mensaje);
+                    response.id_Sitio = id_Sitio;
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio updateConfiguracionServer: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio updateConfiguracionServer: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse getXMLFileConfig(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    response.vchFormato = controller.getXMLFileConfig(request.vchPassword);
+                    response.valido = true;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio getXMLFileConfig: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio getXMLFileConfig: " + getC.Message);
+            }
+            return response;
+        }
+        #endregion feed2Clinete
     }
 }

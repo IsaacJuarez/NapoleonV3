@@ -139,13 +139,14 @@ namespace _3.FUJI.Napoleon.Site
                         {
                             ((Image)e.Row.FindControl("imgLActivo")).ImageUrl = "~/Images/online.png";
                         }
-                        leyenda = tiempo2String(dif);
+                        leyenda ="...hace " + tiempo2String(dif);
                     }
                     else
                     {
                         ((Image)e.Row.FindControl("imgLActivo")).ImageUrl = "~/Images/online.png";
+                        leyenda = "...ahora";
                     }
-                    ((Label)e.Row.FindControl("lblTiempoTransL")).Text = "...hace " + leyenda;
+                    ((Label)e.Row.FindControl("lblTiempoTransL")).Text =  leyenda;
                 }
                 else
                 {
@@ -166,13 +167,14 @@ namespace _3.FUJI.Napoleon.Site
                         {
                             ((Image)e.Row.FindControl("imgSActivo")).ImageUrl = "~/Images/online.png";
                         }
-                        leyenda = tiempo2String(dif);
+                        leyenda = "...hace " + tiempo2String(dif);
                     }
                     else
                     {
                         ((Image)e.Row.FindControl("imgSActivo")).ImageUrl = "~/Images/online.png";
+                        leyenda = "...ahora";
                     }
-                    ((Label)e.Row.FindControl("lblTiempoTransS")).Text = "...hace " + leyenda;
+                    ((Label)e.Row.FindControl("lblTiempoTransS")).Text =  leyenda;
                 }
                 else
                 {
@@ -200,7 +202,7 @@ namespace _3.FUJI.Napoleon.Site
                         ((Image)e.Row.FindControl("imgHActivo")).ImageUrl = "~/Images/online.png";
                         leyenda = "...ahora";
                     }
-                    ((Label)e.Row.FindControl("lblTiempoTransH")).Text = "...hace " + leyenda;
+                    ((Label)e.Row.FindControl("lblTiempoTransH")).Text = leyenda;
                 }
                 else
                 {
@@ -330,7 +332,7 @@ namespace _3.FUJI.Napoleon.Site
                 ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_container");
             }
         }
-        public enum MessageType { Success, Error, Info, Warning };
+        public enum MessageType { Correcto, Error, Informacion, Advertencia };
 
         protected void ShowMessage(string Message, MessageType type, String container)
         {

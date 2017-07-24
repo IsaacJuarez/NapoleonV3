@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsConfigSitio.cs" />
+    <Compile Include="clsConfiguracion.cs" />
+    <Compile Include="clsCorreo.cs" />
     <Compile Include="clsDashboardService.cs" />
     <Compile Include="clsEntidadTabla.cs" />
     <Compile Include="clsEstudio.cs" />

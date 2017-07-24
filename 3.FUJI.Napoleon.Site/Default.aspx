@@ -8,7 +8,7 @@
             <div class="col-md-12 text-center">
                 <center>
                     <asp:Image runat="server" ImageUrl="~/Images/Fujifilm-sqr.png" Width="200px" />
-                    <asp:Image runat="server" ImageUrl="~/Images/FEED2CJAV.png" Width="200px" />
+                    <asp:Image runat="server" ImageUrl="~/Images/FEED-01.png" Width="200px" />
                 </center>
             </div>
         </div>

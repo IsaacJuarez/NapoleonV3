@@ -20,9 +20,16 @@ namespace _1.FUJI.Napoleon.Entidades
         public int intNumeroArchivo { get; set; }
         public int intTamanoTotal { get; set; }
         public DateTime datFecha { get; set; }
-        
+
         public int intEstatusID { get; set; }
         public string vchEstatusID { get; set; }
+
+        public string vchNameFile { get; set; }
+        public int intSizeFile { get; set; }
+        public string vchPathFile { get; set; }
+        public string vchStudyInstanceUID { get; set; }
+        public int intDetEstudioID { get; set; }
+        public int URGENTES { get; set; }
 
         //prioridad
         public int intPrioridadID { get; set; }
@@ -32,6 +39,9 @@ namespace _1.FUJI.Napoleon.Entidades
         public bool bitAtendido { get; set; }
         public DateTime datAtendido { get; set; }
         public string vchusuarioSol { get; set; }
+        public string vchgenero { get; set; }
+        public string vchEdad { get; set; }
+        public int intModalidad { get; set; }
 
         public clsEstudio()
         {
@@ -51,6 +61,14 @@ namespace _1.FUJI.Napoleon.Entidades
             
             intEstatusID = int.MinValue;
             vchEstatusID = string.Empty;
+            vchNameFile = string.Empty;
+            intSizeFile = int.MinValue;
+            vchPathFile = string.Empty;
+            vchStudyInstanceUID = string.Empty;
+            vchgenero = string.Empty;
+            vchEdad = string.Empty;
+            intDetEstudioID = int.MinValue;
+            intModalidad = int.MinValue;
 
             intPrioridadID = int.MinValue;
             vchPrioridad = string.Empty;
@@ -59,6 +77,7 @@ namespace _1.FUJI.Napoleon.Entidades
             bitAtendido = false;
             datAtendido = DateTime.MinValue;
             vchusuarioSol = string.Empty;
+            URGENTES = int.MinValue;
         }
     }
 }

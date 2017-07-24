@@ -15,11 +15,7 @@ namespace _3.FUJI.Napoleon.Site.Services
     [ServiceContract]
     public interface INapoleonService
     {
-        [WebInvoke(Method = "POST",
-           BodyStyle = WebMessageBodyStyle.WrappedRequest,
-           ResponseFormat = WebMessageFormat.Json,
-           RequestFormat = WebMessageFormat.Json
-        )]
+        
         [OperationContract]
         LoginResponse Logear(LoginRequest Request);
 
@@ -85,6 +81,14 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
+        clsMensaje updateEstatusFiles(int intVersionID, bool activo);
+
+        [WebInvoke(Method = "POST",
+           BodyStyle = WebMessageBodyStyle.WrappedRequest,
+           ResponseFormat = WebMessageFormat.Json,
+           RequestFormat = WebMessageFormat.Json
+        )]
+        [OperationContract]
         clsMensaje updateEstatusProyectos(int intProyectoID, bool activo);
 
         [WebInvoke(Method = "POST",
@@ -93,7 +97,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        clsMensaje updateEstatusUsuario(int intUsuarioID, bool activo);
+        clsMensaje updateEstatusUsuario(UserRequest request);
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -101,7 +105,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        clsMensaje setUsuario(tbl_CAT_Usuarios user);
+        clsMensaje setUsuario(UserRequest request);
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -109,7 +113,27 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        clsMensaje updateUsuario(tbl_CAT_Usuarios user);
+        clsMensaje updateUsuario(UserRequest request);
+
+        [WebInvoke(Method = "POST",
+           BodyStyle = WebMessageBodyStyle.WrappedRequest,
+           ResponseFormat = WebMessageFormat.Json,
+           RequestFormat = WebMessageFormat.Json
+        )]
+        [OperationContract]
+        clsMensaje updatePassword(int intUsuarioID, string vchPassword, bool SolRe);
+
+        [OperationContract]
+        LoginResponse getNewPassword(string vchCorreo);
+
+        [OperationContract]
+        clsMensaje setActualizaUser(UserRequest request);
+
+        [OperationContract]
+        clsMensaje setFileVersion(FileFeed2Request request);
+
+        [OperationContract]
+        List<tbl_CAT_Feed2Version> getListaArchivos();
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -141,7 +165,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        clsMensaje getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID);
+        clsMensaje getListEstudios(int intEstatusID, int id_Sitio, int intModalidadID, int intProyectoID);
 
 
         [WebInvoke(Method = "POST",
@@ -206,7 +230,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID);
+        List<clsEntidadTabla> getDatosTabla(DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID);
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -214,7 +238,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        List<clsGrafica> getDatosGraficas(String tipo, DateTime FechaIncio, DateTime FechaFin, int sucOID);
+        List<clsGrafica> getDatosGraficas(String tipo, DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID);
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -222,7 +246,7 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID);
+        clsTop getDatosTop(DateTime fini, DateTime ffin, int sucOID, int intProyectoID);
 
         [WebInvoke(Method = "POST",
            BodyStyle = WebMessageBodyStyle.WrappedRequest,
@@ -230,6 +254,52 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
-        string getPromedioEnvio(DateTime FechaIncio, DateTime FechaFin, int sucOID);
+        string getPromedioEnvio(DateTime FechaIncio, DateTime FechaFin, int sucOID, int intProyectoID);
+
+        #region ClienteF2C
+
+        [OperationContract]
+        ClienteF2CResponse getConeccion(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse setService(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse setEstudioServer(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse getEstudiosEnviar(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse updateEstatus(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse getVerificaSitio(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse setConfiguracion(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse updateConfiguracion(ClienteF2CRequest request);
+
+
+
+        [OperationContract]
+        ClienteF2CResponse updateConfiguracionServer(ClienteF2CRequest request);
+
+
+        [OperationContract]
+        ClienteF2CResponse getXMLFileConfig(ClienteF2CRequest request);
+
+        #endregion ClienteF2C
+
     }
 }
+
