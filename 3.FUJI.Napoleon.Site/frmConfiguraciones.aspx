@@ -521,13 +521,14 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                    <asp:RequiredFieldValidator ID="rfvPass" runat="server" ValidationGroup="vdgUserCaptura" ControlToValidate="txtPassword1" Text="*" ForeColor="Red" ErrorMessage="Contraseña requerida"></asp:RequiredFieldValidator>
+                                                                    <asp:RequiredFieldValidator ID="rfvPass" runat="server" ValidationGroup="vdgUserCaptura" ControlToValidate="txtPassword1" Text="* Contraseña requerida" ForeColor="Red" ErrorMessage="Contraseña requerida"></asp:RequiredFieldValidator>
                                                                     <asp:RegularExpressionValidator ID="rgVPass" Font-Bold="true" runat="server" ControlToValidate="txtPassword1" ValidationExpression=".{8}.*" ErrorMessage="Capturar al menos 8 caracteres" Text="* Capturar al menos 8 caracteres" ForeColor="Red" ValidationGroup="vdgUserCaptura"></asp:RegularExpressionValidator>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
-                                                                    <div class="row" >
+                                                                    <div class="row">
+                                                                        <asp:Label ID="lblContrasenia" runat="server" Text="" ForeColor="DarkGreen" Visible="false"></asp:Label>
                                                                         <asp:Button runat="server" ID="btnCancel" OnClick="btnCancel_Click" type="submit" Text="Cancelar" class="btn btn-primary" CausesValidation="false"></asp:Button>
                                                                         <asp:Button runat="server" ID="btnAddUser" OnClick="btnAddUser_Click" type="submit" Text="Agregar" ValidationGroup="vdgUserCaptura" class="btn btn-success"></asp:Button>
                                                                     </div>

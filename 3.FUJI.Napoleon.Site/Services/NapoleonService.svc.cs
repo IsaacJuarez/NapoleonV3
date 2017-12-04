@@ -125,6 +125,7 @@ namespace _3.FUJI.Napoleon.Site.Services
             }
             return response;
         }
+
         public ProyectoResponse updateProyecto(ProyectoRequest request)
         {
             ProyectoResponse response = new ProyectoResponse();
@@ -346,8 +347,6 @@ namespace _3.FUJI.Napoleon.Site.Services
             }
             return response;
         }
-        
-
 
         public List<clsDashboardService> getServicioSitio(int intProyectoID, int id_Sitio)
         {
@@ -831,7 +830,6 @@ namespace _3.FUJI.Napoleon.Site.Services
             }
             return response;
         }
-
 
         public ClienteF2CResponse updateConfiguracionServer(ClienteF2CRequest request)
         {

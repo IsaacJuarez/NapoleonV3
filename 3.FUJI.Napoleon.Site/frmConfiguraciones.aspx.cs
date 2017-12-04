@@ -411,6 +411,7 @@ namespace _3.FUJI.Napoleon.Site
                         }
                         break;
                     case "viewEditar":
+                        btnAddUser.Text = "Guardar";
                         intUsuarioID = Convert.ToInt32(e.CommandArgument.ToString());
                         mdlUsuario = _lstUsuario.First(x => x.intUsuarioID  == intUsuarioID);
                         fillUsuario(mdlUsuario);
@@ -474,9 +475,14 @@ namespace _3.FUJI.Napoleon.Site
                 }
                 txtUsuario.Text = mdlUsuario.vchUsuario;
                 txtPassword1.Text = Security.Decrypt(mdlUsuario.vchPassword);
+                rfvPass.Enabled = false;
+                rgVPass.Enabled = false;
+                lblContrasenia.Visible = true;
+                lblContrasenia.Text = "Si no se desea cambiar la cotraseña dejar en blanco.";
                 Session["PasswordAntiguo"] = Security.Decrypt(mdlUsuario.vchPassword);
                 Session["intUsuarioIDGrid"] = mdlUsuario.intUsuarioID;
                 txtUsuario.Enabled = false;
+                RequiredFieldValidator1.Enabled = false;
                 txtEmailUser.Text = mdlUsuario.vchCorreo;
             }
             catch(Exception eFU)
@@ -551,6 +557,12 @@ namespace _3.FUJI.Napoleon.Site
                 txtPassword1.Text = "";
                 Session["PasswordAntiguo"] = "";
                 Session["intUsuarioIDGrid"] =0;
+                txtEmailUser.Text = "";
+                RequiredFieldValidator1.Enabled = true;
+                rfvPass.Enabled = true;
+                rgVPass.Enabled = true;
+                lblContrasenia.Visible = false;
+                btnAddUser.Text = "Agregar";
             }
             catch(Exception elu)
             {

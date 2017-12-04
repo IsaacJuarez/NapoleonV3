@@ -178,7 +178,8 @@ namespace _3.FUJI.Napoleon.Site
             }
             catch (Exception ecgA)
             {
-                throw ecgA;
+
+                ShowMessage("Existe un error al cargar los estudios: " + ecgA.Message, MessageType.Error, "alert_container");
             }
         }
 
