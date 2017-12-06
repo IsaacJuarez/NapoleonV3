@@ -68,6 +68,9 @@
     <Compile Include="DataAccess\stp_getEstudiosEnviar_Result.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\stp_getEstudiosTrasmitir_Result.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\stp_getEstudio_Result.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
@@ -144,7 +147,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="DataAccess\dbNapoleon.edmx.diagram">
       <DependentUpon>dbNapoleon.edmx</DependentUpon>
     </None>

@@ -719,6 +719,33 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
+        public ClienteF2CResponse getEstudiosTransmitir(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.lstEstudio = controller.getEstudiosTransmitir(request.id_Sitio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio getEstudiosTransmitir: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio getEstudiosTransmitir: " + getC.Message);
+            }
+            return response;
+        }
+
         public ClienteF2CResponse updateEstatus(ClienteF2CRequest request)
         {
             ClienteF2CResponse response = new ClienteF2CResponse();
@@ -742,6 +769,33 @@ namespace _3.FUJI.Napoleon.Site.Services
                 response.valido = false;
                 response.message = "Existe un error en el servicio updateEstatus: " + getC.Message;
                 Log.EscribeLog("Existe un error en el servicio updateEstatus: " + getC.Message);
+            }
+            return response;
+        }
+
+        public ClienteF2CResponse updateEstatusTransmitir(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.valido = controller.updateEstatusTransmitir(request.intDetEstudioID, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio updateEstatusTransmitir: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio updateEstatusTransmitir: " + getC.Message);
             }
             return response;
         }

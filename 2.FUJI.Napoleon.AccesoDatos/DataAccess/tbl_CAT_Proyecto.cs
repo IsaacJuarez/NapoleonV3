@@ -16,8 +16,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     {
         public tbl_CAT_Proyecto()
         {
-            this.tbl_CAT_Usuarios = new HashSet<tbl_CAT_Usuarios>();
             this.tbl_REL_ProyectoSitio = new HashSet<tbl_REL_ProyectoSitio>();
+            this.tbl_CAT_Usuarios = new HashSet<tbl_CAT_Usuarios>();
         }
     
         public int intProyectoID { get; set; }
@@ -26,7 +26,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public Nullable<System.DateTime> datFecha { get; set; }
         public string vchUserAdmin { get; set; }
     
-        public virtual ICollection<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public virtual ICollection<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
+        public virtual ICollection<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
     }
 }

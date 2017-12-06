@@ -138,6 +138,7 @@
           <Property Name="vchPathFile" Type="varchar" MaxLength="200" />
           <Property Name="vchStudyInstanceUID" Type="varchar" MaxLength="200" />
           <Property Name="datFecha" Type="datetime" />
+          <Property Name="bitFileComplete" Type="bit" />
         </EntityType>
         <EntityType Name="tbl_DET_Estudio_AUD">
           <Key>
@@ -429,6 +430,9 @@
         <Function Name="stp_getEstudiosEnviar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Sitio" Type="int" Mode="In" />
         </Function>
+        <Function Name="stp_getEstudiosTrasmitir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Sitio" Type="int" Mode="In" />
+        </Function>
         <Function Name="stp_getPrioridadSucursalModalidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_sitio" Type="int" Mode="In" />
           <Parameter Name="intProyecto" Type="int" Mode="In" />
@@ -437,6 +441,7 @@
           <Parameter Name="fIni" Type="date" Mode="In" />
           <Parameter Name="fFin" Type="date" Mode="In" />
           <Parameter Name="sucOID" Type="int" Mode="In" />
+          <Parameter Name="intProyectoID" Type="int" Mode="In" />
         </Function>
         <Function Name="stp_setPrioridades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idEstudio" Type="int" Mode="In" />
@@ -575,8 +580,8 @@
           <Property Name="bitActivo" Type="Boolean" />
           <Property Name="datFecha" Type="DateTime" Precision="3" />
           <Property Name="vchUserAdmin" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="Self.FK_CAT_Proyecto_CAT_Usuarios" FromRole="tbl_CAT_Proyecto" ToRole="tbl_CAT_Usuarios" />
           <NavigationProperty Name="tbl_REL_ProyectoSitio" Relationship="NAPOLEONModel.FK_CAT_Proyecto_REL_ProyectoSitio" FromRole="tbl_CAT_Proyecto" ToRole="tbl_REL_ProyectoSitio" />
+          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="NAPOLEONModel.FK_CAT_Proyecto_CAT_Usuarios" FromRole="tbl_CAT_Proyecto" ToRole="tbl_CAT_Usuarios" />
         </EntityType>
         <EntityType Name="tbl_CAT_TipoUsuario">
           <Key>
@@ -587,28 +592,7 @@
           <Property Name="bitEstatus" Type="Boolean" />
           <Property Name="datFecha" Type="DateTime" Precision="3" />
           <Property Name="vchUserAdmin" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="Self.FK_CAT_TipoUsuarios_CAT_Usuarios" FromRole="tbl_CAT_TipoUsuario" ToRole="tbl_CAT_Usuarios" />
-        </EntityType>
-        <EntityType Name="tbl_CAT_Usuarios">
-          <Key>
-            <PropertyRef Name="intUsuarioID" />
-          </Key>
-          <Property Name="intUsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="intTipoUsuarioID" Type="Int32" />
-          <Property Name="intProyectoID" Type="Int32" />
-          <Property Name="vchNombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchApellido" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchUsuario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="bitActivo" Type="Boolean" />
-          <Property Name="datFecha" Type="DateTime" Precision="3" />
-          <Property Name="vchUserAdmin" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tbl_CAT_Proyecto" Relationship="Self.FK_CAT_Proyecto_CAT_Usuarios" FromRole="tbl_CAT_Usuarios" ToRole="tbl_CAT_Proyecto" />
-          <NavigationProperty Name="tbl_CAT_TipoUsuario" Relationship="Self.FK_CAT_TipoUsuarios_CAT_Usuarios" FromRole="tbl_CAT_Usuarios" ToRole="tbl_CAT_TipoUsuario" />
-          <Property Name="id_Sitio" Type="Int32" />
-          <NavigationProperty Name="tbl_ConfigSitio" Relationship="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" FromRole="tbl_CAT_Usuarios" ToRole="tbl_ConfigSitio" />
-          <Property Name="bitSolicitarPass" Type="Boolean" />
-          <Property Name="vchCorreo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="NAPOLEONModel.FK_CAT_TipoUsuarios_CAT_Usuarios" FromRole="tbl_CAT_TipoUsuario" ToRole="tbl_CAT_Usuarios" />
         </EntityType>
         <EntityType Name="tbl_ConfigSitio">
           <Key>
@@ -630,11 +614,11 @@
           <Property Name="bitActivo" Type="Boolean" />
           <NavigationProperty Name="tbl_MST_Estudio" Relationship="Self.FK_ConfigSitio_MST_Estudio" FromRole="tbl_ConfigSitio" ToRole="tbl_MST_Estudio" />
           <NavigationProperty Name="tbl_REL_SitioModalidad" Relationship="Self.FK_ConfigSitio_REL_SitioModalidad" FromRole="tbl_ConfigSitio" ToRole="tbl_REL_SitioModalidad" />
-          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" FromRole="tbl_ConfigSitio" ToRole="tbl_CAT_Usuarios" />
           <NavigationProperty Name="tbl_DET_ServicioSitio" Relationship="NAPOLEONModel.FK_ConfigSitio_DET_ServicioSitio" FromRole="tbl_ConfigSitio" ToRole="tbl_DET_ServicioSitio" />
           <NavigationProperty Name="tbl_ConfigSitio_AUD" Relationship="NAPOLEONModel.FK_TBL_CONF_REFERENCE_TBL_CONF" FromRole="tbl_ConfigSitio" ToRole="tbl_ConfigSitio_AUD" />
           <NavigationProperty Name="tbl_RegistroSitio" Relationship="NAPOLEONModel.FK_TBL_REGI_REFERENCE_TBL_CONF" FromRole="tbl_ConfigSitio" ToRole="tbl_RegistroSitio" />
           <NavigationProperty Name="tbl_REL_ProyectoSitio" Relationship="NAPOLEONModel.FK_ConfigSitio_REL_ProyectoSitio" FromRole="tbl_ConfigSitio" ToRole="tbl_REL_ProyectoSitio" />
+          <NavigationProperty Name="tbl_CAT_Usuarios" Relationship="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" FromRole="tbl_ConfigSitio" ToRole="tbl_CAT_Usuarios" />
         </EntityType>
         <EntityType Name="tbl_MST_Estudio">
           <Key>
@@ -709,30 +693,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CAT_Proyecto_CAT_Usuarios">
-          <End Role="tbl_CAT_Proyecto" Type="Self.tbl_CAT_Proyecto" Multiplicity="0..1" />
-          <End Role="tbl_CAT_Usuarios" Type="Self.tbl_CAT_Usuarios" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_CAT_Proyecto">
-              <PropertyRef Name="intProyectoID" />
-            </Principal>
-            <Dependent Role="tbl_CAT_Usuarios">
-              <PropertyRef Name="intProyectoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CAT_TipoUsuarios_CAT_Usuarios">
-          <End Role="tbl_CAT_TipoUsuario" Type="Self.tbl_CAT_TipoUsuario" Multiplicity="0..1" />
-          <End Role="tbl_CAT_Usuarios" Type="Self.tbl_CAT_Usuarios" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_CAT_TipoUsuario">
-              <PropertyRef Name="intTipoUsuarioID" />
-            </Principal>
-            <Dependent Role="tbl_CAT_Usuarios">
-              <PropertyRef Name="intTipoUsuarioID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ConfigSitio_MST_Estudio">
           <End Role="tbl_ConfigSitio" Type="Self.tbl_ConfigSitio" Multiplicity="0..1" />
           <End Role="tbl_MST_Estudio" Type="Self.tbl_MST_Estudio" Multiplicity="*" />
@@ -774,7 +734,6 @@
           <EntitySet Name="tbl_CAT_Modalidad" EntityType="Self.tbl_CAT_Modalidad" />
           <EntitySet Name="tbl_CAT_Proyecto" EntityType="Self.tbl_CAT_Proyecto" />
           <EntitySet Name="tbl_CAT_TipoUsuario" EntityType="Self.tbl_CAT_TipoUsuario" />
-          <EntitySet Name="tbl_CAT_Usuarios" EntityType="Self.tbl_CAT_Usuarios" />
           <EntitySet Name="tbl_ConfigSitio" EntityType="Self.tbl_ConfigSitio" />
           <EntitySet Name="tbl_MST_Estudio" EntityType="Self.tbl_MST_Estudio" />
           <EntitySet Name="tbl_MST_PrioridadEstudio" EntityType="Self.tbl_MST_PrioridadEstudio" />
@@ -787,14 +746,6 @@
             <End Role="tbl_CAT_Modalidad" EntitySet="tbl_CAT_Modalidad" />
             <End Role="tbl_REL_SitioModalidad" EntitySet="tbl_REL_SitioModalidad" />
           </AssociationSet>
-          <AssociationSet Name="FK_CAT_Proyecto_CAT_Usuarios" Association="Self.FK_CAT_Proyecto_CAT_Usuarios">
-            <End Role="tbl_CAT_Proyecto" EntitySet="tbl_CAT_Proyecto" />
-            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CAT_TipoUsuarios_CAT_Usuarios" Association="Self.FK_CAT_TipoUsuarios_CAT_Usuarios">
-            <End Role="tbl_CAT_TipoUsuario" EntitySet="tbl_CAT_TipoUsuario" />
-            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
-          </AssociationSet>
           <AssociationSet Name="FK_ConfigSitio_MST_Estudio" Association="Self.FK_ConfigSitio_MST_Estudio">
             <End Role="tbl_ConfigSitio" EntitySet="tbl_ConfigSitio" />
             <End Role="tbl_MST_Estudio" EntitySet="tbl_MST_Estudio" />
@@ -806,10 +757,6 @@
           <AssociationSet Name="FK_MST_Estudio_MST_PrioridadEstudio" Association="Self.FK_MST_Estudio_MST_PrioridadEstudio">
             <End Role="tbl_MST_Estudio" EntitySet="tbl_MST_Estudio" />
             <End Role="tbl_MST_PrioridadEstudio" EntitySet="tbl_MST_PrioridadEstudio" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConfigSitio_CAT_Usuario" Association="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario">
-            <End Role="tbl_ConfigSitio" EntitySet="tbl_ConfigSitio" />
-            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
           </AssociationSet>
           <EntitySet Name="tbl_ConfigSitio_AUD" EntityType="NAPOLEONModel.tbl_ConfigSitio_AUD" />
           <EntitySet Name="tbl_DET_ServicioSitio" EntityType="NAPOLEONModel.tbl_DET_ServicioSitio" />
@@ -852,6 +799,7 @@
             <Parameter Name="fIni" Mode="In" Type="DateTime" />
             <Parameter Name="fFin" Mode="In" Type="DateTime" />
             <Parameter Name="sucOID" Mode="In" Type="Int32" />
+            <Parameter Name="intProyectoID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="stp_getEstudiosEnviar" ReturnType="Collection(NAPOLEONModel.stp_getEstudiosEnviar_Result)">
           <Parameter Name="id_Sitio" Mode="In" Type="Int32" />
@@ -880,26 +828,30 @@
             <End Role="tbl_ConfigSitio" EntitySet="tbl_ConfigSitio" />
             <End Role="tbl_REL_ProyectoSitio" EntitySet="tbl_REL_ProyectoSitio" />
           </AssociationSet>
-          <EntitySet Name="tbl_CAT_Feed2Version" EntityType="NAPOLEONModel.tbl_CAT_Feed2Version" />
           <FunctionImport Name="stp_getEstudio" ReturnType="Collection(NAPOLEONModel.stp_getEstudio_Result)">
             <Parameter Name="intEstatusID" Mode="In" Type="Int32" />
             <Parameter Name="id_Sitio" Mode="In" Type="Int32" />
             <Parameter Name="intModalidadID" Mode="In" Type="Int32" />
             <Parameter Name="intProyectoID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="stp_getEstudiosTrasmitir" ReturnType="Collection(NAPOLEONModel.stp_getEstudiosTrasmitir_Result)">
+          <Parameter Name="id_Sitio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tbl_CAT_Usuarios" EntityType="NAPOLEONModel.tbl_CAT_Usuarios" />
+          <AssociationSet Name="FK_CAT_Proyecto_CAT_Usuarios" Association="NAPOLEONModel.FK_CAT_Proyecto_CAT_Usuarios">
+            <End Role="tbl_CAT_Proyecto" EntitySet="tbl_CAT_Proyecto" />
+            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CAT_TipoUsuarios_CAT_Usuarios" Association="NAPOLEONModel.FK_CAT_TipoUsuarios_CAT_Usuarios">
+            <End Role="tbl_CAT_TipoUsuario" EntitySet="tbl_CAT_TipoUsuario" />
+            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConfigSitio_CAT_Usuario" Association="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario">
+            <End Role="tbl_ConfigSitio" EntitySet="tbl_ConfigSitio" />
+            <End Role="tbl_CAT_Usuarios" EntitySet="tbl_CAT_Usuarios" />
+          </AssociationSet>
+          <EntitySet Name="tbl_CAT_Feed2Version" EntityType="NAPOLEONModel.tbl_CAT_Feed2Version" />
           </EntityContainer>
-        <Association Name="FK_ConfigSitio_CAT_Usuario">
-          <End Type="NAPOLEONModel.tbl_ConfigSitio" Role="tbl_ConfigSitio" Multiplicity="0..1" />
-          <End Type="NAPOLEONModel.tbl_CAT_Usuarios" Role="tbl_CAT_Usuarios" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_ConfigSitio">
-              <PropertyRef Name="id_Sitio" />
-            </Principal>
-            <Dependent Role="tbl_CAT_Usuarios">
-              <PropertyRef Name="id_Sitio" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="tbl_ConfigSitio_AUD">
           <Key>
             <PropertyRef Name="id_SitioAUD" />
@@ -1019,6 +971,7 @@
           <NavigationProperty Name="tbl_CAT_Estatus" Relationship="NAPOLEONModel.FK_CAT_Estudio_DET_Estudio" FromRole="tbl_DET_Estudio" ToRole="tbl_CAT_Estatus" />
           <NavigationProperty Name="tbl_DET_Estudio_AUD" Relationship="NAPOLEONModel.FK_DET_Estudio_DET_Estudio_AUD" FromRole="tbl_DET_Estudio" ToRole="tbl_DET_Estudio_AUD" />
           <NavigationProperty Name="tbl_MST_Estudio" Relationship="NAPOLEONModel.FK_MST_Estudio_DET_Estudio" FromRole="tbl_DET_Estudio" ToRole="tbl_MST_Estudio" />
+          <Property Name="bitFileComplete" Type="Boolean" />
         </EntityType>
         <EntityType Name="tbl_DET_Estudio_AUD">
           <Key>
@@ -1117,18 +1070,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="tbl_CAT_Feed2Version">
-          <Key>
-            <PropertyRef Name="intVersionID" />
-          </Key>
-          <Property Name="intVersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="vchVersion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchComentario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vchNombreArchivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="vbdata" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="datFecha" Type="DateTime" Precision="3" />
-          <Property Name="bitActivo" Type="Boolean" />
-        </EntityType>
         <ComplexType Name="stp_getEstudio_Result">
           <Property Type="Int32" Name="intEstudioID" Nullable="false" />
           <Property Type="Int32" Name="id_Sitio" Nullable="true" />
@@ -1152,6 +1093,86 @@
           <Property Type="DateTime" Name="datAtendido" Nullable="true" Precision="23" />
           <Property Type="String" Name="vchusuarioSol" Nullable="true" MaxLength="200" />
         </ComplexType>
+        <ComplexType Name="stp_getEstudiosTrasmitir_Result">
+          <Property Type="Int32" Name="intDetEstudioID" Nullable="false" />
+          <Property Type="Int32" Name="intEstudioID" Nullable="true" />
+          <Property Type="Int32" Name="intModalidadID" Nullable="true" />
+          <Property Type="String" Name="vchPathFile" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="intEstatusID" Nullable="true" />
+          <Property Type="Boolean" Name="bitUrgente" Nullable="false" />
+          <Property Type="Int32" Name="intSecuencia" Nullable="false" />
+          <Property Type="DateTime" Name="datFecha" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="URGENTES" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="tbl_CAT_Usuarios">
+          <Key>
+            <PropertyRef Name="intUsuarioID" />
+          </Key>
+          <Property Name="intUsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intTipoUsuarioID" Type="Int32" />
+          <Property Name="intProyectoID" Type="Int32" />
+          <Property Name="vchNombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vchApellido" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vchUsuario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vchPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="bitActivo" Type="Boolean" />
+          <Property Name="datFecha" Type="DateTime" Precision="3" />
+          <Property Name="vchUserAdmin" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_Sitio" Type="Int32" />
+          <Property Name="bitSolicitarPass" Type="Boolean" />
+          <Property Name="vchCorreo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_CAT_Proyecto" Relationship="NAPOLEONModel.FK_CAT_Proyecto_CAT_Usuarios" FromRole="tbl_CAT_Usuarios" ToRole="tbl_CAT_Proyecto" />
+          <NavigationProperty Name="tbl_CAT_TipoUsuario" Relationship="NAPOLEONModel.FK_CAT_TipoUsuarios_CAT_Usuarios" FromRole="tbl_CAT_Usuarios" ToRole="tbl_CAT_TipoUsuario" />
+          <NavigationProperty Name="tbl_ConfigSitio" Relationship="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" FromRole="tbl_CAT_Usuarios" ToRole="tbl_ConfigSitio" />
+        </EntityType>
+        <Association Name="FK_CAT_Proyecto_CAT_Usuarios">
+          <End Type="NAPOLEONModel.tbl_CAT_Proyecto" Role="tbl_CAT_Proyecto" Multiplicity="0..1" />
+          <End Type="NAPOLEONModel.tbl_CAT_Usuarios" Role="tbl_CAT_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_CAT_Proyecto">
+              <PropertyRef Name="intProyectoID" />
+            </Principal>
+            <Dependent Role="tbl_CAT_Usuarios">
+              <PropertyRef Name="intProyectoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CAT_TipoUsuarios_CAT_Usuarios">
+          <End Type="NAPOLEONModel.tbl_CAT_TipoUsuario" Role="tbl_CAT_TipoUsuario" Multiplicity="0..1" />
+          <End Type="NAPOLEONModel.tbl_CAT_Usuarios" Role="tbl_CAT_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_CAT_TipoUsuario">
+              <PropertyRef Name="intTipoUsuarioID" />
+            </Principal>
+            <Dependent Role="tbl_CAT_Usuarios">
+              <PropertyRef Name="intTipoUsuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConfigSitio_CAT_Usuario">
+          <End Type="NAPOLEONModel.tbl_ConfigSitio" Role="tbl_ConfigSitio" Multiplicity="0..1" />
+          <End Type="NAPOLEONModel.tbl_CAT_Usuarios" Role="tbl_CAT_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_ConfigSitio">
+              <PropertyRef Name="id_Sitio" />
+            </Principal>
+            <Dependent Role="tbl_CAT_Usuarios">
+              <PropertyRef Name="id_Sitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbl_CAT_Feed2Version">
+          <Key>
+            <PropertyRef Name="intVersionID" />
+          </Key>
+          <Property Name="intVersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vchVersion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vchComentario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vchNombreArchivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="vbdata" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="datFecha" Type="DateTime" Precision="3" />
+          <Property Name="bitActivo" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1197,25 +1218,6 @@
                 <ScalarProperty Name="intTipoUsuarioID" ColumnName="intTipoUsuarioID" />
                 <ScalarProperty Name="vchTipoUsuario" ColumnName="vchTipoUsuario" />
                 <ScalarProperty Name="bitEstatus" ColumnName="bitEstatus" />
-                <ScalarProperty Name="datFecha" ColumnName="datFecha" />
-                <ScalarProperty Name="vchUserAdmin" ColumnName="vchUserAdmin" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CAT_Usuarios">
-            <EntityTypeMapping TypeName="NAPOLEONModel.tbl_CAT_Usuarios">
-              <MappingFragment StoreEntitySet="tbl_CAT_Usuarios">
-                <ScalarProperty Name="vchCorreo" ColumnName="vchCorreo" />
-                <ScalarProperty Name="bitSolicitarPass" ColumnName="bitSolicitarPass" />
-                <ScalarProperty Name="id_Sitio" ColumnName="id_Sitio" />
-                <ScalarProperty Name="intUsuarioID" ColumnName="intUsuarioID" />
-                <ScalarProperty Name="intTipoUsuarioID" ColumnName="intTipoUsuarioID" />
-                <ScalarProperty Name="intProyectoID" ColumnName="intProyectoID" />
-                <ScalarProperty Name="vchNombre" ColumnName="vchNombre" />
-                <ScalarProperty Name="vchApellido" ColumnName="vchApellido" />
-                <ScalarProperty Name="vchUsuario" ColumnName="vchUsuario" />
-                <ScalarProperty Name="vchPassword" ColumnName="vchPassword" />
-                <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
                 <ScalarProperty Name="datFecha" ColumnName="datFecha" />
                 <ScalarProperty Name="vchUserAdmin" ColumnName="vchUserAdmin" />
               </MappingFragment>
@@ -1370,6 +1372,7 @@
           <EntitySetMapping Name="tbl_DET_Estudio">
             <EntityTypeMapping TypeName="NAPOLEONModel.tbl_DET_Estudio">
               <MappingFragment StoreEntitySet="tbl_DET_Estudio">
+                <ScalarProperty Name="bitFileComplete" ColumnName="bitFileComplete" />
                 <ScalarProperty Name="datFecha" ColumnName="datFecha" />
                 <ScalarProperty Name="vchStudyInstanceUID" ColumnName="vchStudyInstanceUID" />
                 <ScalarProperty Name="vchPathFile" ColumnName="vchPathFile" />
@@ -1418,19 +1421,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CAT_Feed2Version">
-            <EntityTypeMapping TypeName="NAPOLEONModel.tbl_CAT_Feed2Version">
-              <MappingFragment StoreEntitySet="tbl_CAT_Feed2Version">
-                <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
-                <ScalarProperty Name="datFecha" ColumnName="datFecha" />
-                <ScalarProperty Name="vbdata" ColumnName="vbdata" />
-                <ScalarProperty Name="vchNombreArchivo" ColumnName="vchNombreArchivo" />
-                <ScalarProperty Name="vchComentario" ColumnName="vchComentario" />
-                <ScalarProperty Name="vchVersion" ColumnName="vchVersion" />
-                <ScalarProperty Name="intVersionID" ColumnName="intVersionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="stp_getEstudio" FunctionName="NAPOLEONModel.Store.stp_getEstudio">
             <ResultMapping>
               <ComplexTypeMapping TypeName="NAPOLEONModel.stp_getEstudio_Result">
@@ -1458,6 +1448,53 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="stp_getEstudiosTrasmitir" FunctionName="NAPOLEONModel.Store.stp_getEstudiosTrasmitir">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NAPOLEONModel.stp_getEstudiosTrasmitir_Result">
+                <ScalarProperty Name="intDetEstudioID" ColumnName="intDetEstudioID" />
+                <ScalarProperty Name="intEstudioID" ColumnName="intEstudioID" />
+                <ScalarProperty Name="intModalidadID" ColumnName="intModalidadID" />
+                <ScalarProperty Name="vchPathFile" ColumnName="vchPathFile" />
+                <ScalarProperty Name="intEstatusID" ColumnName="intEstatusID" />
+                <ScalarProperty Name="bitUrgente" ColumnName="bitUrgente" />
+                <ScalarProperty Name="intSecuencia" ColumnName="intSecuencia" />
+                <ScalarProperty Name="datFecha" ColumnName="datFecha" />
+                <ScalarProperty Name="URGENTES" ColumnName="URGENTES" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tbl_CAT_Usuarios">
+            <EntityTypeMapping TypeName="NAPOLEONModel.tbl_CAT_Usuarios">
+              <MappingFragment StoreEntitySet="tbl_CAT_Usuarios">
+                <ScalarProperty Name="vchCorreo" ColumnName="vchCorreo" />
+                <ScalarProperty Name="bitSolicitarPass" ColumnName="bitSolicitarPass" />
+                <ScalarProperty Name="id_Sitio" ColumnName="id_Sitio" />
+                <ScalarProperty Name="vchUserAdmin" ColumnName="vchUserAdmin" />
+                <ScalarProperty Name="datFecha" ColumnName="datFecha" />
+                <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
+                <ScalarProperty Name="vchPassword" ColumnName="vchPassword" />
+                <ScalarProperty Name="vchUsuario" ColumnName="vchUsuario" />
+                <ScalarProperty Name="vchApellido" ColumnName="vchApellido" />
+                <ScalarProperty Name="vchNombre" ColumnName="vchNombre" />
+                <ScalarProperty Name="intProyectoID" ColumnName="intProyectoID" />
+                <ScalarProperty Name="intTipoUsuarioID" ColumnName="intTipoUsuarioID" />
+                <ScalarProperty Name="intUsuarioID" ColumnName="intUsuarioID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CAT_Feed2Version">
+            <EntityTypeMapping TypeName="NAPOLEONModel.tbl_CAT_Feed2Version">
+              <MappingFragment StoreEntitySet="tbl_CAT_Feed2Version">
+                <ScalarProperty Name="bitActivo" ColumnName="bitActivo" />
+                <ScalarProperty Name="datFecha" ColumnName="datFecha" />
+                <ScalarProperty Name="vbdata" ColumnName="vbdata" />
+                <ScalarProperty Name="vchNombreArchivo" ColumnName="vchNombreArchivo" />
+                <ScalarProperty Name="vchComentario" ColumnName="vchComentario" />
+                <ScalarProperty Name="vchVersion" ColumnName="vchVersion" />
+                <ScalarProperty Name="intVersionID" ColumnName="intVersionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

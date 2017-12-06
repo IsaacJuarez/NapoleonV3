@@ -10,27 +10,17 @@
 namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tbl_DET_Estudio
+    public partial class stp_getEstudiosTrasmitir_Result
     {
-        public tbl_DET_Estudio()
-        {
-            this.tbl_DET_Estudio_AUD = new HashSet<tbl_DET_Estudio_AUD>();
-        }
-    
         public int intDetEstudioID { get; set; }
         public Nullable<int> intEstudioID { get; set; }
-        public Nullable<int> intEstatusID { get; set; }
-        public string vchNameFile { get; set; }
-        public Nullable<int> intSizeFile { get; set; }
+        public Nullable<int> intModalidadID { get; set; }
         public string vchPathFile { get; set; }
-        public string vchStudyInstanceUID { get; set; }
+        public Nullable<int> intEstatusID { get; set; }
+        public bool bitUrgente { get; set; }
+        public int intSecuencia { get; set; }
         public Nullable<System.DateTime> datFecha { get; set; }
-        public Nullable<bool> bitFileComplete { get; set; }
-    
-        public virtual tbl_CAT_Estatus tbl_CAT_Estatus { get; set; }
-        public virtual ICollection<tbl_DET_Estudio_AUD> tbl_DET_Estudio_AUD { get; set; }
-        public virtual tbl_MST_Estudio tbl_MST_Estudio { get; set; }
+        public int URGENTES { get; set; }
     }
 }

@@ -261,39 +261,35 @@ namespace _3.FUJI.Napoleon.Site.Services
         [OperationContract]
         ClienteF2CResponse getConeccion(ClienteF2CRequest request);
 
-
         [OperationContract]
         ClienteF2CResponse setService(ClienteF2CRequest request);
-
 
         [OperationContract]
         ClienteF2CResponse setEstudioServer(ClienteF2CRequest request);
 
-
         [OperationContract]
         ClienteF2CResponse getEstudiosEnviar(ClienteF2CRequest request);
 
+        [OperationContract]
+        ClienteF2CResponse getEstudiosTransmitir(ClienteF2CRequest request);
+
+        [OperationContract]
+        ClienteF2CResponse updateEstatusTransmitir(ClienteF2CRequest request);
 
         [OperationContract]
         ClienteF2CResponse updateEstatus(ClienteF2CRequest request);
 
-
         [OperationContract]
         ClienteF2CResponse getVerificaSitio(ClienteF2CRequest request);
-
 
         [OperationContract]
         ClienteF2CResponse setConfiguracion(ClienteF2CRequest request);
 
-
         [OperationContract]
         ClienteF2CResponse updateConfiguracion(ClienteF2CRequest request);
 
-
-
         [OperationContract]
         ClienteF2CResponse updateConfiguracionServer(ClienteF2CRequest request);
-
 
         [OperationContract]
         ClienteF2CResponse getXMLFileConfig(ClienteF2CRequest request);

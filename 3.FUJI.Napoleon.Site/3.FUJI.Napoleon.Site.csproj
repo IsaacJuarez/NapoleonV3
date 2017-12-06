@@ -28,6 +28,7 @@
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,10 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AgregarSitio.aspx" />
-    <Content Include="App_Data\build\css\custom.css" />
-    <Content Include="App_Data\build\css\custom.min.css" />
-    <Content Include="App_Data\build\js\custom.js" />
-    <Content Include="App_Data\build\js\custom.min.js" />
     <Content Include="build\css\custom.css" />
     <Content Include="build\css\custom.min.css" />
     <Content Include="build\js\custom.js" />
@@ -299,7 +296,6 @@
     <Content Include="vendors\echarts\.github\ISSUE_TEMPLATE.md" />
     <Content Include="vendors\echarts\.jshintrc" />
     <Content Include="vendors\echarts\.npmignore" />
-    <Content Include="vendors\echarts\build\build.sh" />
     <Content Include="vendors\echarts\LICENSE" />
     <Content Include="vendors\echarts\map\json\china-contour.json" />
     <Content Include="vendors\echarts\map\json\china.json" />
@@ -841,9 +837,6 @@
     <Content Include="vendors\datatables.net\License.txt" />
     <Content Include="vendors\echarts\.gitignore" />
     <Content Include="vendors\echarts\asset\logo.png" />
-    <Content Include="vendors\echarts\build\amd2common.js" />
-    <Content Include="vendors\echarts\build\mangleString.js" />
-    <Content Include="vendors\echarts\build\optimize.js" />
     <Content Include="vendors\echarts\dist\echarts.common.js" />
     <Content Include="vendors\echarts\dist\echarts.common.min.js" />
     <Content Include="vendors\echarts\dist\echarts.js" />

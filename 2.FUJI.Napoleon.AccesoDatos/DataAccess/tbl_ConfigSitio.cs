@@ -18,11 +18,11 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         {
             this.tbl_MST_Estudio = new HashSet<tbl_MST_Estudio>();
             this.tbl_REL_SitioModalidad = new HashSet<tbl_REL_SitioModalidad>();
-            this.tbl_CAT_Usuarios = new HashSet<tbl_CAT_Usuarios>();
             this.tbl_DET_ServicioSitio = new HashSet<tbl_DET_ServicioSitio>();
             this.tbl_ConfigSitio_AUD = new HashSet<tbl_ConfigSitio_AUD>();
             this.tbl_RegistroSitio = new HashSet<tbl_RegistroSitio>();
             this.tbl_REL_ProyectoSitio = new HashSet<tbl_REL_ProyectoSitio>();
+            this.tbl_CAT_Usuarios = new HashSet<tbl_CAT_Usuarios>();
         }
     
         public int id_Sitio { get; set; }
@@ -42,10 +42,10 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
     
         public virtual ICollection<tbl_MST_Estudio> tbl_MST_Estudio { get; set; }
         public virtual ICollection<tbl_REL_SitioModalidad> tbl_REL_SitioModalidad { get; set; }
-        public virtual ICollection<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public virtual ICollection<tbl_DET_ServicioSitio> tbl_DET_ServicioSitio { get; set; }
         public virtual ICollection<tbl_ConfigSitio_AUD> tbl_ConfigSitio_AUD { get; set; }
         public virtual ICollection<tbl_RegistroSitio> tbl_RegistroSitio { get; set; }
         public virtual ICollection<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
+        public virtual ICollection<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
     }
 }

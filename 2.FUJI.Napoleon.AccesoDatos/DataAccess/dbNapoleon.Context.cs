@@ -32,7 +32,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public DbSet<tbl_CAT_Modalidad> tbl_CAT_Modalidad { get; set; }
         public DbSet<tbl_CAT_Proyecto> tbl_CAT_Proyecto { get; set; }
         public DbSet<tbl_CAT_TipoUsuario> tbl_CAT_TipoUsuario { get; set; }
-        public DbSet<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public DbSet<tbl_ConfigSitio> tbl_ConfigSitio { get; set; }
         public DbSet<tbl_MST_Estudio> tbl_MST_Estudio { get; set; }
         public DbSet<tbl_MST_PrioridadEstudio> tbl_MST_PrioridadEstudio { get; set; }
@@ -44,6 +43,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public DbSet<tbl_DET_Estudio_AUD> tbl_DET_Estudio_AUD { get; set; }
         public DbSet<tbl_CAT_Extensiones> tbl_CAT_Extensiones { get; set; }
         public DbSet<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
+        public DbSet<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public DbSet<tbl_CAT_Feed2Version> tbl_CAT_Feed2Version { get; set; }
     
         public virtual ObjectResult<stp_getPrioridadSucursalModalidad_Result> stp_getPrioridadSucursalModalidad(Nullable<int> id_sitio, Nullable<int> intProyecto)
@@ -119,7 +119,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("stp_updatePrioridadesSucMod", intREL_SitioModIDParameter, activarParameter);
         }
     
-        public virtual ObjectResult<string> stp_getPromedioEnvio(Nullable<System.DateTime> fIni, Nullable<System.DateTime> fFin, Nullable<int> sucOID)
+        public virtual ObjectResult<string> stp_getPromedioEnvio(Nullable<System.DateTime> fIni, Nullable<System.DateTime> fFin, Nullable<int> sucOID, Nullable<int> intProyectoID)
         {
             var fIniParameter = fIni.HasValue ?
                 new ObjectParameter("fIni", fIni) :
@@ -133,7 +133,11 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
                 new ObjectParameter("sucOID", sucOID) :
                 new ObjectParameter("sucOID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("stp_getPromedioEnvio", fIniParameter, fFinParameter, sucOIDParameter);
+            var intProyectoIDParameter = intProyectoID.HasValue ?
+                new ObjectParameter("intProyectoID", intProyectoID) :
+                new ObjectParameter("intProyectoID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("stp_getPromedioEnvio", fIniParameter, fFinParameter, sucOIDParameter, intProyectoIDParameter);
         }
     
         public virtual ObjectResult<stp_getEstudiosEnviar_Result> stp_getEstudiosEnviar(Nullable<int> id_Sitio)
@@ -164,6 +168,15 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
                 new ObjectParameter("intProyectoID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudio_Result>("stp_getEstudio", intEstatusIDParameter, id_SitioParameter, intModalidadIDParameter, intProyectoIDParameter);
+        }
+    
+        public virtual ObjectResult<stp_getEstudiosTrasmitir_Result> stp_getEstudiosTrasmitir(Nullable<int> id_Sitio)
+        {
+            var id_SitioParameter = id_Sitio.HasValue ?
+                new ObjectParameter("id_Sitio", id_Sitio) :
+                new ObjectParameter("id_Sitio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudiosTrasmitir_Result>("stp_getEstudiosTrasmitir", id_SitioParameter);
         }
     }
 }

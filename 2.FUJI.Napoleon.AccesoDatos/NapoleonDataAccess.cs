@@ -2110,6 +2110,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                             mdl.intSizeFile = _estudio.intSizeFile;
                             mdl.vchNameFile = _estudio.vchNameFile;
                             mdl.vchPathFile = _estudio.vchPathFile;
+                            mdl.bitFileComplete = false;
                             mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
                             NapoleonDA.tbl_DET_Estudio.Add(mdl);
                             NapoleonDA.SaveChanges();
@@ -2127,6 +2128,73 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return valido;
         }
         #endregion Sync
+
+        #region MoveFiles
+        public List<clsEstudio> getEstudiosTransmitir(int id_Sitio, ref string mensaje)
+        {
+            Log.EscribeLog("Leyendo del Sitio: " + id_Sitio.ToString());
+            List<clsEstudio> lstEst = new List<clsEstudio>();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    var query = (from item in NapoleonDA.stp_getEstudiosTrasmitir(id_Sitio)
+                                 select item).ToList();
+                    if (query != null)
+                    {
+                        if (query.Count > 0)
+                        {
+                            foreach (var est in query)
+                            {
+                                clsEstudio mdl = new clsEstudio();
+                                mdl.intDetEstudioID = est.intDetEstudioID;
+                                mdl.bitUrgente = est.bitUrgente;
+                                mdl.datFecha = (DateTime)est.datFecha;
+                                mdl.intEstatusID = (int)est.intEstatusID;
+                                mdl.intEstudioID = (int)est.intEstudioID;
+                                mdl.intModalidadID = est.intSecuencia;
+                                mdl.URGENTES = est.URGENTES;
+                                mdl.vchPathFile = est.vchPathFile;
+                                lstEst.Add(mdl);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mensaje = e.Message;
+                Log.EscribeLog("Existe un error en getEstudiosTransmitir: " + e.Message);
+            }
+            Log.EscribeLog("Archivos a transmitir: " + lstEst.Count.ToString());
+            return lstEst;
+        }
+
+        public bool updateEstatusTransmitir(int intDetEstudioID, ref string mensaje)
+        {
+            bool valido = false;
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    tbl_DET_Estudio det = NapoleonDA.tbl_DET_Estudio.First(x => x.intDetEstudioID == intDetEstudioID);
+                    det.bitFileComplete = true;
+                    NapoleonDA.SaveChanges();
+                }
+                valido = true;
+            }
+            catch (Exception eup)
+            {
+                valido = false;
+                mensaje = eup.Message;
+                Log.EscribeLog("Existe un error en getEstudiosTransmitir:" + eup.Message);
+            }
+            return valido;
+        }
+
+
+        #endregion MoveFiles
+
 
         #region SenderSCU
         public List<clsEstudio> getEstudiosEnviar(int id_Sitio, ref string mensaje)
