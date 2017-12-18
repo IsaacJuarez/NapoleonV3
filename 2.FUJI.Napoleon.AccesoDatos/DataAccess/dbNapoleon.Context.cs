@@ -45,6 +45,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public DbSet<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
         public DbSet<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
         public DbSet<tbl_CAT_Feed2Version> tbl_CAT_Feed2Version { get; set; }
+        public DbSet<tbl_DET_Sitio> tbl_DET_Sitio { get; set; }
     
         public virtual ObjectResult<stp_getPrioridadSucursalModalidad_Result> stp_getPrioridadSucursalModalidad(Nullable<int> id_sitio, Nullable<int> intProyecto)
         {
@@ -177,6 +178,15 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
                 new ObjectParameter("id_Sitio", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudiosTrasmitir_Result>("stp_getEstudiosTrasmitir", id_SitioParameter);
+        }
+    
+        public virtual ObjectResult<stp_getEstudiosEnviarServer_Result> stp_getEstudiosEnviarServer(Nullable<int> id_Sitio)
+        {
+            var id_SitioParameter = id_Sitio.HasValue ?
+                new ObjectParameter("id_Sitio", id_Sitio) :
+                new ObjectParameter("id_Sitio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<stp_getEstudiosEnviarServer_Result>("stp_getEstudiosEnviarServer", id_SitioParameter);
         }
     }
 }

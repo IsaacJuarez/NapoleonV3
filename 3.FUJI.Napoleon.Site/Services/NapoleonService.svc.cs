@@ -46,6 +46,39 @@ namespace _3.FUJI.Napoleon.Site.Services
             return _lstSitio;
         }
 
+        public tbl_DET_Sitio getDetalleSitio(int id_Sitio)
+        {
+            tbl_DET_Sitio _lstSitio = new tbl_DET_Sitio();
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                _lstSitio = controller.getDetalleSitio(id_Sitio);
+            }
+            catch (Exception egS)
+            {
+                throw egS;
+            }
+            return _lstSitio;
+        }
+
+        public bool setDetalleSitioEdicion(tbl_DET_Sitio detalle)
+        {
+            bool valido = false;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valido = controller.setDetalleSitioEdicion(detalle);
+            }
+            catch (Exception egS)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en setDetalleSitioEdicion: " + egS.Message);
+            }
+            return valido;
+        }
+
+        
+
         public List<tbl_CAT_Proyecto> getProyectos()
         {
             List<tbl_CAT_Proyecto> _lstSitio = new List<tbl_CAT_Proyecto>();
@@ -719,6 +752,33 @@ namespace _3.FUJI.Napoleon.Site.Services
             return response;
         }
 
+        public ClienteF2CResponse getEstudiosEnviarServer(ClienteF2CRequest request)
+        {
+            ClienteF2CResponse response = new ClienteF2CResponse();
+            try
+            {
+                if (Security.ValidateTokenSitio(request.Token, request.id_Sitio.ToString(), request.vchClaveSitio))
+                {
+                    NapoleonDataAccess controller = new NapoleonDataAccess();
+                    string mensaje = "";
+                    response.lstEstudio = controller.getEstudiosEnviarServer(request.id_Sitio, ref mensaje);
+                    response.message = mensaje;
+                }
+                else
+                {
+                    response.valido = false;
+                    response.message = "Los datos de validación son erroneos.";
+                }
+            }
+            catch (Exception getC)
+            {
+                response.valido = false;
+                response.message = "Existe un error en el servicio getEstudiosEnviarServer: " + getC.Message;
+                Log.EscribeLog("Existe un error en el servicio getEstudiosEnviarServer: " + getC.Message);
+            }
+            return response;
+        }
+
         public ClienteF2CResponse getEstudiosTransmitir(ClienteF2CRequest request)
         {
             ClienteF2CResponse response = new ClienteF2CResponse();
@@ -782,7 +842,7 @@ namespace _3.FUJI.Napoleon.Site.Services
                 {
                     NapoleonDataAccess controller = new NapoleonDataAccess();
                     string mensaje = "";
-                    response.valido = controller.updateEstatusTransmitir(request.intDetEstudioID, ref mensaje);
+                    response.valido = controller.updateEstatusTransmitir(request.intDetEstudioID, request.vchPathServer, ref mensaje);
                     response.message = mensaje;
                 }
                 else
@@ -938,6 +998,22 @@ namespace _3.FUJI.Napoleon.Site.Services
                 Log.EscribeLog("Existe un error en el servicio getXMLFileConfig: " + getC.Message);
             }
             return response;
+        }
+
+        public bool getPingServer()
+        {
+            bool valido = false;
+            try
+            {
+                NapoleonDataAccess controller = new NapoleonDataAccess();
+                valido = controller.getPingServer();
+            }
+            catch(Exception egPS)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error en getPingServer: " + egPS.Message);
+            }
+            return valido;
         }
         #endregion feed2Clinete
     }

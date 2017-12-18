@@ -19,6 +19,7 @@ namespace _3.FUJI.Napoleon.Site.Services.DataContracts
         public int intDetEstudioID { get; set; }
         public tbl_ConfigSitio mdlConfig;
         public clsConfiguracion mdlConfiguracion;
+        public string vchPathServer { get; set; }
 
         public clsEstudio estudio;
 
@@ -35,6 +36,7 @@ namespace _3.FUJI.Napoleon.Site.Services.DataContracts
             intDetEstudioID = int.MinValue;
             mdlConfig = new tbl_ConfigSitio();
             mdlConfiguracion = new clsConfiguracion();
+            vchPathServer = string.Empty;
         }
     }
 }

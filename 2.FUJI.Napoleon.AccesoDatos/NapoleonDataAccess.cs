@@ -3,6 +3,7 @@ using _2.FUJI.Napoleon.AccesoDatos.DataAccess;
 using _2.FUJI.Napoleon.AccesoDatos.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -22,13 +23,19 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             bool Success = false;
             try
             {
+                Log.EscribeLog("Usuario: " + _Usuario);
+                Log.EscribeLog("_Password: " + _Password);
+                Log.EscribeLog("vchSitio: '" + vchSitio + "'");
+                vchSitio = vchSitio == string.Empty ? "" : vchSitio;
+
                 List<clsUsuario> _lstUser = new List<clsUsuario>();
                 using (NapoleonDA = new NAPOLEONEntities())
                 {
                     if (NapoleonDA.tbl_CAT_Usuarios.Any(x => (bool)x.bitActivo && x.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && x.vchPassword.Trim() == _Password.Trim()))
                     {
-                        if (vchSitio != "")
+                        if (!(vchSitio == ""))
                         {
+                            Log.EscribeLog("Con Sitio");
                             var query = (from user in NapoleonDA.tbl_CAT_Usuarios
                                          join site in NapoleonDA.tbl_ConfigSitio on user.id_Sitio equals site.id_Sitio
                                          where user.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && user.vchPassword.Trim() == _Password.Trim() && (bool)user.bitActivo && site.vchnombreSitio.ToUpper() == vchSitio.ToUpper()
@@ -68,7 +75,9 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         }
                         else
                         {
+                            Log.EscribeLog("Sin sitio");
                             var query = NapoleonDA.tbl_CAT_Usuarios.First(x => x.vchUsuario.Trim().ToUpper() == _Usuario.Trim().ToUpper() && x.vchPassword.Trim() == _Password.Trim());
+                            Log.EscribeLog("Usuario: " + query.vchUsuario);
                             if (query != null)
                             {
                                 if (Success = query.intUsuarioID > 0 ? true : false)
@@ -101,6 +110,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             }
             return Success;
         }
+
+
 
         #endregion login
 
@@ -205,6 +216,85 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             }
             return _lstSitio;
         }
+
+        public tbl_DET_Sitio getDetalleSitio(int id_Sitio)
+        {
+            tbl_DET_Sitio mdl = new tbl_DET_Sitio();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if(NapoleonDA.tbl_DET_Sitio.Any(x=> x.id_Sitio == id_Sitio && (bool)x.bitActivo))
+                    {
+                        var query = NapoleonDA.tbl_DET_Sitio.First(x => x.id_Sitio == id_Sitio && (bool)x.bitActivo);
+
+                        if (query != null)
+                        {
+                            mdl = query;
+                        }
+                    }
+                }
+            }
+            catch (Exception egLD)
+            {
+                Log.EscribeLog("Existe un error getDetalleSitio: " + egLD.Message);
+            }
+            return mdl;
+        }
+
+        public bool setDetalleSitioEdicion(tbl_DET_Sitio detalle)
+        {
+            bool valido = false;
+            tbl_DET_Sitio mdl = new tbl_DET_Sitio();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_DET_Sitio.Any(x => x.id_Sitio == detalle.id_Sitio && x.intDETSitioID == detalle.intDETSitioID))
+                    {
+                        mdl = NapoleonDA.tbl_DET_Sitio.First(x => x.id_Sitio == detalle.id_Sitio && x.intDETSitioID == detalle.intDETSitioID);
+                        mdl.bitActivo = detalle.bitActivo;
+                        mdl.datFecha = DateTime.Now;
+                        mdl.intPuertoSCP = detalle.intPuertoSCP;
+                        mdl.vchAETitleSCP = detalle.vchAETitleSCP;
+                        mdl.vchAETitleSCU = detalle.vchAETitleSCU;
+                        mdl.vchUserAdmin = detalle.vchUserAdmin;
+                        mdl.vchVNAIP = detalle.vchVNAIP;
+                        NapoleonDA.SaveChanges();
+                        valido = true;
+                    }
+                    else
+                    {
+                        if (NapoleonDA.tbl_DET_Sitio.Any(x => x.id_Sitio == detalle.id_Sitio))
+                        {
+                            mdl = NapoleonDA.tbl_DET_Sitio.First(x => x.id_Sitio == detalle.id_Sitio);
+                            mdl.bitActivo = detalle.bitActivo;
+                            mdl.datFecha = DateTime.Now;
+                            mdl.intPuertoSCP = detalle.intPuertoSCP;
+                            mdl.vchAETitleSCP = detalle.vchAETitleSCP;
+                            mdl.vchAETitleSCU = detalle.vchAETitleSCU;
+                            mdl.vchUserAdmin = detalle.vchUserAdmin;
+                            mdl.vchVNAIP = detalle.vchVNAIP;
+                            NapoleonDA.SaveChanges();
+                            valido = true;
+                        }
+                        else
+                        {
+                            NapoleonDA.tbl_DET_Sitio.Add(detalle);
+                            NapoleonDA.SaveChanges();
+                            valido = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception egLD)
+            {
+                valido = false;
+                Log.EscribeLog("Existe un error setDetalleSitio: " + egLD.Message);
+            }
+            return valido;
+        }
+
         public List<tbl_CAT_Proyecto> getProyectos()
         {
             List<tbl_CAT_Proyecto> _lstProyecto = new List<tbl_CAT_Proyecto>();
@@ -939,6 +1029,16 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                     NapoleonDA.SaveChanges();
 
                     setRelSitioMod(mdlSitio.id_Sitio);
+                    tbl_DET_Sitio detalle = new tbl_DET_Sitio();
+                    detalle.bitActivo = true;
+                    detalle.datFecha = DateTime.Now;
+                    detalle.id_Sitio = mdlSitio.id_Sitio;
+                    detalle.intPuertoSCP = Convert.ToInt32(ConfigurationManager.AppSettings["puertoVNA"].ToString());
+                    detalle.vchAETitleSCP = ConfigurationManager.AppSettings["prefijoAETitle"].ToString() + mdlSitio.vchClaveSitio + ConfigurationManager.AppSettings["sufijoAETitleVNA"].ToString();
+                    detalle.vchAETitleSCU = ConfigurationManager.AppSettings["prefijoAETitle"].ToString() + mdlSitio.vchClaveSitio + ConfigurationManager.AppSettings["sufijoAETitleLoc"].ToString();
+                    detalle.vchUserAdmin = mdlRegistro.vchVendedor;
+                    detalle.vchVNAIP = ConfigurationManager.AppSettings["IPVNA"].ToString();
+                    setDetalleSitio(detalle);
                 }
 
             }
@@ -949,6 +1049,41 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 Log.EscribeLog("Error al ingresar el sitio: " + ess.Message);
             }
             return valido;
+        }
+
+        private void setDetalleSitio(tbl_DET_Sitio detalle)
+        {
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    if (NapoleonDA.tbl_DET_Sitio.Any(x => x.id_Sitio == detalle.id_Sitio && (bool)x.bitActivo))
+                    {
+                        //actualiza
+                        tbl_DET_Sitio det = new tbl_DET_Sitio();
+                        det = NapoleonDA.tbl_DET_Sitio.First(x => x.id_Sitio == detalle.id_Sitio && (bool)x.bitActivo);
+                        det.bitActivo = true;
+                        det.datFecha = DateTime.Now;
+                        det.id_Sitio = detalle.id_Sitio;
+                        det.intPuertoSCP = detalle.intPuertoSCP;
+                        det.vchAETitleSCP = detalle.vchAETitleSCP;
+                        det.vchAETitleSCU = detalle.vchAETitleSCU;
+                        det.vchUserAdmin = detalle.vchUserAdmin;
+                        det.vchVNAIP = detalle.vchVNAIP;
+                        NapoleonDA.SaveChanges();
+                    }
+                    else
+                    {
+                        //inserta
+                        NapoleonDA.tbl_DET_Sitio.Add(detalle);
+                        NapoleonDA.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception esD)
+            {
+                Log.EscribeLog("Existe un error en setDetalleSitio: " + esD.Message);
+            }
         }
         #endregion addRegistro
 
@@ -2170,7 +2305,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             return lstEst;
         }
 
-        public bool updateEstatusTransmitir(int intDetEstudioID, ref string mensaje)
+        public bool updateEstatusTransmitir(int intDetEstudioID, string vchPathServer, ref string mensaje)
         {
             bool valido = false;
             try
@@ -2179,6 +2314,8 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 {
                     tbl_DET_Estudio det = NapoleonDA.tbl_DET_Estudio.First(x => x.intDetEstudioID == intDetEstudioID);
                     det.bitFileComplete = true;
+                    det.intEstatusID = 2;
+                    det.vchPathServidor = vchPathServer;
                     NapoleonDA.SaveChanges();
                 }
                 valido = true;
@@ -2234,6 +2371,46 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 Log.EscribeLog("Existe un error en getEstudiosEnviar: " + e.Message);
             }
             Log.EscribeLog("Archivos a enviar: " + lstEst.Count.ToString());
+            return lstEst;
+        }
+
+        public List<clsEstudio> getEstudiosEnviarServer(int id_Sitio, ref string mensaje)
+        {
+            Log.EscribeLog("Leyendo del Sitio: " + id_Sitio.ToString());
+            List<clsEstudio> lstEst = new List<clsEstudio>();
+            try
+            {
+                using (NapoleonDA = new NAPOLEONEntities())
+                {
+                    var query = (from item in NapoleonDA.stp_getEstudiosEnviarServer(id_Sitio)
+                                 select item).ToList();
+                    if (query != null)
+                    {
+                        if (query.Count > 0)
+                        {
+                            foreach (var est in query)
+                            {
+                                clsEstudio mdl = new clsEstudio();
+                                mdl.intDetEstudioID = est.intDetEstudioID;
+                                mdl.bitUrgente = est.bitUrgente;
+                                mdl.datFecha = (DateTime)est.datFecha;
+                                mdl.intEstatusID = (int)est.intEstatusID;
+                                mdl.intEstudioID = (int)est.intEstudioID;
+                                mdl.intModalidadID = est.intSecuencia;
+                                mdl.URGENTES = est.URGENTES;
+                                mdl.vchPathFile = est.vchPathFile;
+                                lstEst.Add(mdl);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mensaje = e.Message;
+                Log.EscribeLog("Existe un error en getEstudiosEnviarServer: " + e.Message);
+            }
+            Log.EscribeLog("Archivos a enviar getEstudiosEnviarServer: " + lstEst.Count.ToString());
             return lstEst;
         }
 
@@ -2463,6 +2640,21 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                 Log.EscribeLog("Existe un error al obtener el formato XML: " + eXML.Message);
             }
             return formato;
+        }
+
+        public bool getPingServer()
+        {
+            bool valido = false;
+            try
+            {
+                valido = true;
+            }
+            catch(Exception egPS)
+            {
+                Log.EscribeLog("Existe un error en getPingServer: " + egPS.Message);
+                valido = false;
+            }
+            return valido;
         }
         #endregion config
 

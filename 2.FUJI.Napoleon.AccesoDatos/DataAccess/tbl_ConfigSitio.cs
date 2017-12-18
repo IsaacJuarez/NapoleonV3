@@ -23,6 +23,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
             this.tbl_RegistroSitio = new HashSet<tbl_RegistroSitio>();
             this.tbl_REL_ProyectoSitio = new HashSet<tbl_REL_ProyectoSitio>();
             this.tbl_CAT_Usuarios = new HashSet<tbl_CAT_Usuarios>();
+            this.tbl_DET_Sitio = new HashSet<tbl_DET_Sitio>();
         }
     
         public int id_Sitio { get; set; }
@@ -47,5 +48,6 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public virtual ICollection<tbl_RegistroSitio> tbl_RegistroSitio { get; set; }
         public virtual ICollection<tbl_REL_ProyectoSitio> tbl_REL_ProyectoSitio { get; set; }
         public virtual ICollection<tbl_CAT_Usuarios> tbl_CAT_Usuarios { get; set; }
+        public virtual ICollection<tbl_DET_Sitio> tbl_DET_Sitio { get; set; }
     }
 }

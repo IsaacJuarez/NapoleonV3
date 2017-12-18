@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbNapoleon.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\stp_getEstudiosEnviarServer_Result.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\stp_getEstudiosEnviar_Result.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
@@ -111,6 +114,9 @@
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_DET_ServicioSitio.cs">
+      <DependentUpon>dbNapoleon.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\tbl_DET_Sitio.cs">
       <DependentUpon>dbNapoleon.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\tbl_MST_Estudio.cs">

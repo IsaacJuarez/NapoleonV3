@@ -201,11 +201,46 @@ namespace _3.FUJI.Napoleon.Site
                             upModal.Update();
                         }
                         break;
+                    case "Configuracion":
+                        id_Site = Convert.ToInt32(e.CommandArgument.ToString());
+                        tbl_DET_Sitio mdlDetalle = new tbl_DET_Sitio();
+                        mdlDetalle = NapoleonDA.getDetalleSitio(id_Site);
+                        if (mdlDetalle != null)
+                        {
+                            Control ctl = e.CommandSource as Control;
+                            GridViewRow CurrentRow = ctl.NamingContainer as GridViewRow;
+                            Label1.Text = grvBusqueda.DataKeys[CurrentRow.RowIndex].Values["vchNombreSitio"].ToString(); //vchNombreSitio
+                            lblIDSite.Text = id_Site.ToString();
+                            fillDetallleSitio(mdlDetalle);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "ConfigModal", "$('#ConfigModal').modal();", true);
+                            upConfigModal.Update();
+                        }
+                        break;
                 }
             }
             catch (Exception eRC)
             {
                 Log.EscribeLog("Existe un error en grvBusqueda_RowCommand: " + eRC.Message);
+            }
+        }
+
+        private void fillDetallleSitio(tbl_DET_Sitio mdlDetalle)
+        {
+            try
+            {
+                Label2.Text = mdlDetalle.intDETSitioID.ToString();
+                txtSCULocal.Text = mdlDetalle.vchAETitleSCU;
+                txtSCPVNA.Text = mdlDetalle.vchAETitleSCP;
+                string[] ipformato = mdlDetalle.vchVNAIP.Split('.');
+                txtIPVNA1.Text = ipformato[0].ToString();
+                txtIPVNA2.Text = ipformato[1].ToString();
+                txtIPVNA3.Text = ipformato[2].ToString();
+                txtIPVNA4.Text = ipformato[3].ToString();
+                txtPuertoVNA.Text = mdlDetalle.intPuertoSCP.ToString();
+            }
+            catch(Exception efDS)
+            {
+                Log.EscribeLog("Existe un error en frmConfigSites en fillDetallleSitio: " + efDS.Message);
             }
         }
 
@@ -260,6 +295,87 @@ namespace _3.FUJI.Napoleon.Site
             catch (Exception ex)
             {
                 ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_container");
+            }
+        }
+
+        protected void btnGuardarDetalle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                tbl_DET_Sitio mdlDetalle = new tbl_DET_Sitio();
+                mdlDetalle = obtenerDetalle();
+                if (mdlDetalle != null)
+                {
+                    bool valido = false;
+                    valido = NapoleonDA.setDetalleSitioEdicion(mdlDetalle);
+                    if (valido)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "ConfigModal", "$('#ConfigModal').modal('hide');", true);
+                        ShowMessage("Se actualizó correctamente los datos.", MessageType.Correcto, "alert_container");
+                    }
+                    else
+                    {
+                        ShowMessage("Existe un error, favor de verificar la información", MessageType.Error, "alert_container");
+                    }
+                }
+            }
+            catch (Exception eBCD)
+            {
+                Log.EscribeLog("Existe un error en btnGuardarDetalle_Click: " + eBCD.Message);
+            }
+        }
+
+        private tbl_DET_Sitio obtenerDetalle()
+        {
+            tbl_DET_Sitio mdl = new tbl_DET_Sitio();
+            try
+            {
+                mdl.bitActivo = true;
+                mdl.datFecha = DateTime.Now;
+                mdl.id_Sitio = Convert.ToInt32(lblIDSite.Text);
+                mdl.intDETSitioID = Convert.ToInt32(Label2.Text);
+                mdl.intPuertoSCP = Convert.ToInt32(txtPuertoVNA.Text);
+                mdl.vchAETitleSCP = txtSCPVNA.Text;
+                mdl.vchAETitleSCU = txtSCULocal.Text;
+                mdl.vchUserAdmin = user.vchUsuario;
+                mdl.vchVNAIP = txtIPVNA1.Text + "." + txtIPVNA2.Text + "." + txtIPVNA3.Text + "." + txtIPVNA4.Text;
+            }
+            catch (Exception eBCD)
+            {
+                mdl = null;
+                Log.EscribeLog("Existe un error en obtenerDetalle: " + eBCD.Message);
+            }
+            return mdl;
+        }
+
+        protected void btnCancelDetalle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                limpiarControlesDetalle();
+            }
+            catch(Exception eBCD)
+            {
+                Log.EscribeLog("Existe un error en btnCancelDetalle_Click: " + eBCD.Message);
+            }
+        }
+
+        private void limpiarControlesDetalle()
+        {
+            try
+            {
+                Label2.Text = "";
+                txtSCULocal.Text = "";
+                txtSCPVNA.Text = "";
+                txtIPVNA1.Text = "";
+                txtIPVNA2.Text = "";
+                txtIPVNA3.Text = "";
+                txtIPVNA4.Text = "";
+                txtPuertoVNA.Text = "";
+            }
+            catch (Exception eBCD)
+            {
+                Log.EscribeLog("Existe un error en limpiarControlesDetalle: " + eBCD.Message);
             }
         }
     }

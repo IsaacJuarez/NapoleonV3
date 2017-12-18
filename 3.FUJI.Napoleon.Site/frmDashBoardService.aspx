@@ -35,7 +35,7 @@
                                                 <asp:BoundField DataField="id_sitio"  HeaderText="ID" ReadOnly="true" />
                                                 <asp:BoundField DataField="vchClaveSitio"  HeaderText="Clave de Sitio" ReadOnly="true" />
                                                 <asp:BoundField DataField="vchNombreSitio"  HeaderText="Sitio" ReadOnly="true" />
-                                                <asp:TemplateField HeaderText="SCP" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Recepción de Estudios" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <center>
                                                         <table style="width:100%" width="100%">
@@ -67,7 +67,7 @@
                                                         </center>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Sync" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Sincronización" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <center>
                                                         <table style="width:100%" width="100%">
@@ -99,7 +99,7 @@
                                                         </center>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="SCU" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Envío de Estudios" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <center>
                                                         <table style="width:100%" width="100%">

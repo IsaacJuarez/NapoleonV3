@@ -33,6 +33,22 @@ namespace _3.FUJI.Napoleon.Site.Services
            RequestFormat = WebMessageFormat.Json
         )]
         [OperationContract]
+        tbl_DET_Sitio getDetalleSitio(int id_Sitio);
+
+        [WebInvoke(Method = "POST",
+           BodyStyle = WebMessageBodyStyle.WrappedRequest,
+           ResponseFormat = WebMessageFormat.Json,
+           RequestFormat = WebMessageFormat.Json
+        )]
+        [OperationContract]
+        bool setDetalleSitioEdicion(tbl_DET_Sitio detalle);
+
+        [WebInvoke(Method = "POST",
+           BodyStyle = WebMessageBodyStyle.WrappedRequest,
+           ResponseFormat = WebMessageFormat.Json,
+           RequestFormat = WebMessageFormat.Json
+        )]
+        [OperationContract]
         List<tbl_CAT_Proyecto> getProyectos();
 
         [WebInvoke(Method = "POST",
@@ -271,6 +287,9 @@ namespace _3.FUJI.Napoleon.Site.Services
         ClienteF2CResponse getEstudiosEnviar(ClienteF2CRequest request);
 
         [OperationContract]
+        ClienteF2CResponse getEstudiosEnviarServer(ClienteF2CRequest request);
+
+        [OperationContract]
         ClienteF2CResponse getEstudiosTransmitir(ClienteF2CRequest request);
 
         [OperationContract]
@@ -293,6 +312,9 @@ namespace _3.FUJI.Napoleon.Site.Services
 
         [OperationContract]
         ClienteF2CResponse getXMLFileConfig(ClienteF2CRequest request);
+
+        [OperationContract]
+        bool getPingServer();
 
         #endregion ClienteF2C
 

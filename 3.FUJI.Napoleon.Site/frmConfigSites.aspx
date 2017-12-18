@@ -20,7 +20,10 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1">
+
+                            </div>
+                            <div class="col-lg-8 col-md-10 col-sm-10 col-xs-10">
                                 <div class="panel" runat="server"  id="divSitios">
                                     <div class="row">
                                         <div class="title_right">
@@ -40,7 +43,7 @@
                                                 <asp:Panel runat="server" ID="pnlGrid">
                                                     <asp:GridView ID="grvBusqueda" runat="server" AllowPaging="true" CssClass="table table-striped table-bordered"
                                                         PageSize="5" AutoGenerateColumns="false" OnRowDataBound="grvBusqueda_RowDataBound" Font-Size="10px"
-                                                        OnPageIndexChanging="grvBusqueda_PageIndexChanging"
+                                                        OnPageIndexChanging="grvBusqueda_PageIndexChanging" DataKeyNames="vchNombreSitio"
                                                         OnRowCommand="grvBusqueda_RowCommand"
                                                         EmptyDataText="No hay resultado bajo el criterio de búsqueda.">
                                                         <Columns>
@@ -52,11 +55,18 @@
                                                             <asp:BoundField DataField="intPuertoCliente" HeaderText="Puerto" ReadOnly="true" HeaderStyle-CssClass=" hidden-xs" ItemStyle-CssClass=" hidden-xs"/>
                                                             <asp:BoundField DataField="vchAETitle" HeaderText="AETitle" ReadOnly="true" HeaderStyle-CssClass=" hidden-xs" ItemStyle-CssClass=" hidden-xs"/>
                                                             <asp:BoundField DataField="vchPathLocal" HeaderText="Folder Local" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
-                                                            <asp:BoundField DataField="vchIPServidor" HeaderText="IP Servidor" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <%--<asp:BoundField DataField="vchIPServidor" HeaderText="IP Servidor" ReadOnly="true" HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                             <asp:BoundField DataField="in_tPuertoServer" HeaderText="Puerto Servidor" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                             <asp:BoundField DataField="vchAETitleServer" HeaderText="AETitle Servidor" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
                                                             <asp:BoundField DataField="datFechaSistema" DataFormatString="{0:MM/dd/yyyy}" HeaderText="Fecha" ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
-                                                            <asp:BoundField DataField="vchUserAdmin" HeaderText="Usuario de Act." ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>
+                                                            <asp:BoundField DataField="vchUserAdmin" HeaderText="Usuario de Act." ReadOnly="true"  HeaderStyle-CssClass="hidden-md hidden-xs" ItemStyle-CssClass="hidden-md hidden-xs"/>--%>
+                                                            <asp:TemplateField HeaderText="Configuraciones" ItemStyle-HorizontalAlign="Center">
+                                                                <ItemTemplate>
+                                                                    <asp:LinkButton ID="btnConfig" CausesValidation="false" CommandName="Configuracion" CommandArgument='<%#Eval("id_Sitio") %>' runat="server">
+                                                                        <i class="fa fa-cogs green" aria-hidden="true" title="Editar las Configuraciones" style="font-size:25px;"></i>
+                                                                    </asp:LinkButton>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Contacto">
                                                                 <ItemTemplate>
                                                                     <center>
@@ -97,6 +107,9 @@
                                         </asp:UpdatePanel>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1">
+
                             </div>
                         </div>
                     </div>
@@ -158,6 +171,99 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <h1>Configuraciones</h1>
+            <asp:UpdatePanel ID="upConfigModal" runat="server" ChildrenAsTriggers="false" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2><asp:Label Text="Sitio: " runat="server"></asp:Label><small><asp:Label runat="server" ID="Label1" ForeColor="Green"></asp:Label></small></h2>
+                                        <asp:Label runat="server" ID="Label2" ForeColor="Green" Visible="false"></asp:Label>
+                                        <asp:Label runat="server" ID="lblIDSite" ForeColor="Green" Visible="false"></asp:Label>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                                    <asp:Label runat="server" Text="AETitle Local (SCU)" ForeColor="DarkGreen" ></asp:Label>
+                                                </div>
+                                                <div class="col-lg-8 col-md-12 col-sm-12">
+                                                    <asp:TextBox ID="txtSCULocal" runat="server" Text="" CssClass="form-control" placeholder="AETitle Local (SCU)" ></asp:TextBox>
+                                                    <asp:RequiredFieldValidator runat="server" ID="rfvSCULocal" ControlToValidate="txtSCULocal" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <asp:Label runat="server" Text="AETitle VNA (SCP)" ForeColor="DarkGreen" ></asp:Label>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <asp:TextBox ID="txtSCPVNA" runat="server" Text="" CssClass="form-control" placeholder="AETitle VNA (SCP)" ></asp:TextBox>
+                                                    <asp:RequiredFieldValidator runat="server" ID="rfvSCPVNA" ControlToValidate="txtSCPVNA" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <asp:Label runat="server" Text="IP VNA (SCP)" ForeColor="DarkGreen" ></asp:Label>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                                            <asp:TextBox ID="txtIPVNA1" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator runat="server" ID="rfvIPVNA1" ControlToValidate="txtIPVNA1" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                                            <asp:TextBox ID="txtIPVNA2" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator runat="server" ID="rfvIPVNA2" ControlToValidate="txtIPVNA2" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                                            <asp:TextBox ID="txtIPVNA3" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator runat="server" ID="rfvIPVNA3" ControlToValidate="txtIPVNA3" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                                            <asp:TextBox ID="txtIPVNA4" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator runat="server" ID="rfvIPVNA4" ControlToValidate="txtIPVNA4" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <asp:Label runat="server" Text="Puerto VNA (SCP)" ForeColor="DarkGreen" ></asp:Label>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <asp:TextBox ID="txtPuertoVNA" runat="server" Text="" CssClass="form-control"></asp:TextBox>
+                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ControlToValidate="txtPuertoVNA" runat="server" ErrorMessage="Solo numeros" ValidationExpression="\d+">
+                                                    </asp:RegularExpressionValidator>
+                                                    <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtPuertoVNA" ErrorMessage="*" Text="*" ValidationGroup="vgServerConfig" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button runat="server" ID="btnCancelDetalle" class="btn btn-info" data-dismiss="modal" aria-hidden="true" OnClick="btnCancelDetalle_Click" Text="Cerrar"></asp:Button>
+                            <asp:Button runat="server" ID="btnGuardarDetalle" OnClick="btnGuardarDetalle_Click" CssClass="btn btn-success" Text="Guardar" ValidationGroup="vgServerConfig" />
                         </div>
                     </div>
                 </ContentTemplate>

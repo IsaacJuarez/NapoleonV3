@@ -38,6 +38,8 @@
         <AssociationConnector Association="NAPOLEONModel.FK_CAT_TipoUsuarios_CAT_Usuarios" />
         <AssociationConnector Association="NAPOLEONModel.FK_ConfigSitio_CAT_Usuario" />
         <EntityTypeShape EntityType="NAPOLEONModel.tbl_CAT_Feed2Version" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NAPOLEONModel.tbl_DET_Sitio" Width="1.5" PointX="3" PointY="31.875" />
+        <AssociationConnector Association="NAPOLEONModel.FK_DET_Sitio_ConfigSitio" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -28,6 +28,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.DataAccess
         public string vchStudyInstanceUID { get; set; }
         public Nullable<System.DateTime> datFecha { get; set; }
         public Nullable<bool> bitFileComplete { get; set; }
+        public string vchPathServidor { get; set; }
     
         public virtual tbl_CAT_Estatus tbl_CAT_Estatus { get; set; }
         public virtual ICollection<tbl_DET_Estudio_AUD> tbl_DET_Estudio_AUD { get; set; }
