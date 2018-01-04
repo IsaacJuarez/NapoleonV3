@@ -2209,16 +2209,19 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         int intEstudioID = NapoleonDA.tbl_MST_Estudio.First(x => x.id_Sitio == _estudio.id_Sitio && x.vchAccessionNumber == _estudio.vchAccessionNumber).intEstudioID;
                         if (intEstudioID > 0)
                         {
-                            tbl_DET_Estudio mdl = new tbl_DET_Estudio();
-                            mdl.datFecha = _estudio.datFecha;
-                            mdl.intEstatusID = _estudio.intEstatusID;
-                            mdl.intEstudioID = intEstudioID;
-                            mdl.intSizeFile = _estudio.intSizeFile;
-                            mdl.vchNameFile = _estudio.vchNameFile;
-                            mdl.vchPathFile = _estudio.vchPathFile;
-                            mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
-                            NapoleonDA.tbl_DET_Estudio.Add(mdl);
-                            NapoleonDA.SaveChanges();
+                            if (!NapoleonDA.tbl_DET_Estudio.Any(x => x.intEstudioID == _estudio.intEstudioID && x.intSizeFile == _estudio.intSizeFile && x.vchNameFile == _estudio.vchNameFile && x.vchPathFile == _estudio.vchPathFile && x.vchStudyInstanceUID == _estudio.vchStudyInstanceUID))
+                            {
+                                tbl_DET_Estudio mdl = new tbl_DET_Estudio();
+                                mdl.datFecha = _estudio.datFecha;
+                                mdl.intEstatusID = _estudio.intEstatusID;
+                                mdl.intEstudioID = intEstudioID;
+                                mdl.intSizeFile = _estudio.intSizeFile;
+                                mdl.vchNameFile = _estudio.vchNameFile;
+                                mdl.vchPathFile = _estudio.vchPathFile;
+                                mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
+                                NapoleonDA.tbl_DET_Estudio.Add(mdl);
+                                NapoleonDA.SaveChanges();
+                            }
                             valido = true;
                         }
                     }
@@ -2238,20 +2241,24 @@ namespace _2.FUJI.Napoleon.AccesoDatos
                         NapoleonDA.SaveChanges();
                         if (MST.intEstudioID > 0)
                         {
-                            tbl_DET_Estudio mdl = new tbl_DET_Estudio();
-                            mdl.datFecha = _estudio.datFecha;
-                            mdl.intEstatusID = _estudio.intEstatusID;
-                            mdl.intEstudioID = MST.intEstudioID;
-                            mdl.intSizeFile = _estudio.intSizeFile;
-                            mdl.vchNameFile = _estudio.vchNameFile;
-                            mdl.vchPathFile = _estudio.vchPathFile;
-                            mdl.bitFileComplete = false;
-                            mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
-                            NapoleonDA.tbl_DET_Estudio.Add(mdl);
-                            NapoleonDA.SaveChanges();
+                            if (!NapoleonDA.tbl_DET_Estudio.Any(x => x.intEstudioID == _estudio.intEstudioID && x.intSizeFile == _estudio.intSizeFile && x.vchNameFile == _estudio.vchNameFile && x.vchPathFile == _estudio.vchPathFile && x.vchStudyInstanceUID == _estudio.vchStudyInstanceUID))
+                            {
+                                tbl_DET_Estudio mdl = new tbl_DET_Estudio();
+                                mdl.datFecha = _estudio.datFecha;
+                                mdl.intEstatusID = _estudio.intEstatusID;
+                                mdl.intEstudioID = MST.intEstudioID;
+                                mdl.intSizeFile = _estudio.intSizeFile;
+                                mdl.vchNameFile = _estudio.vchNameFile;
+                                mdl.vchPathFile = _estudio.vchPathFile;
+                                mdl.bitFileComplete = false;
+                                mdl.vchStudyInstanceUID = _estudio.vchStudyInstanceUID;
+                                NapoleonDA.tbl_DET_Estudio.Add(mdl);
+                                NapoleonDA.SaveChanges();
+                            }
                             valido = true;
                         }
                     }
+                    NapoleonDA.Dispose();
                 }
             }
             catch (Exception esES)
@@ -2312,6 +2319,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos
             {
                 using (NapoleonDA = new NAPOLEONEntities())
                 {
+                    Log.EscribeLog("Detalle actualizado: " + intDetEstudioID.ToString());
                     tbl_DET_Estudio det = NapoleonDA.tbl_DET_Estudio.First(x => x.intDetEstudioID == intDetEstudioID);
                     det.bitFileComplete = true;
                     det.intEstatusID = 2;

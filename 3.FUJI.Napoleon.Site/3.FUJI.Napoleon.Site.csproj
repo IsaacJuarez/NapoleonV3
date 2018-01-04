@@ -98,6 +98,7 @@
     <Content Include="frmDownLoad.aspx" />
     <Content Include="frmGeneral.aspx" />
     <Content Include="frmHelp.aspx" />
+    <Content Include="frmManual.aspx" />
     <Content Include="frmPrioridadSitio.aspx" />
     <Content Include="frmUpdateUser.aspx" />
     <Content Include="frmVersionFeed2.aspx" />
@@ -542,6 +543,8 @@
     <Content Include="vendors\pivot\dist\pivot_spec.min.js.map" />
     <Content Include="Site.Master" />
     <Content Include="Content\daterangepicker.scss" />
+    <Content Include="Data\ManualFeed2Cloud_Install.doc" />
+    <Content Include="Data\SQLManualFeed2Cloud.doc" />
     <None Include="Properties\PublishProfiles\NapoleonZak.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2209,6 +2212,13 @@
     </Compile>
     <Compile Include="frmLogin.aspx.designer.cs">
       <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmManual.aspx.cs">
+      <DependentUpon>frmManual.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmManual.aspx.designer.cs">
+      <DependentUpon>frmManual.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmPrioridadSitio.aspx.cs">
       <DependentUpon>frmPrioridadSitio.aspx</DependentUpon>

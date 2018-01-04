@@ -788,6 +788,7 @@ namespace _3.FUJI.Napoleon.Site.Services
                 {
                     NapoleonDataAccess controller = new NapoleonDataAccess();
                     string mensaje = "";
+                    Log.EscribeLog("Sitio para transmitir: " + request.id_Sitio);
                     response.lstEstudio = controller.getEstudiosTransmitir(request.id_Sitio, ref mensaje);
                     response.message = mensaje;
                 }

@@ -346,5 +346,33 @@ namespace _3.FUJI.Napoleon.Site
                 ShowMessage("Existe un error: " + ex.Message, MessageType.Error, "alert_container");
             }
         }
+
+        protected void btnPreRequisitos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string urlabrir = "";
+                urlabrir = URL + "/frmManual.aspx?ID=" + Security.Encrypt("2");
+                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Cerrar", "javascript:Redirecciona('" + urlabrir + "');", true);
+            }
+            catch(Exception ePre)
+            {
+                Log.EscribeLog("Existe un error en btnPreRequisitos_Click: " + ePre.Message);
+            }
+        }
+
+        protected void btnFeed2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string urlabrir = "";
+                urlabrir = URL + "/frmManual.aspx?ID=" + Security.Encrypt("1");
+                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Cerrar", "javascript:Redirecciona('" + urlabrir + "');", true);
+            }
+            catch (Exception ePre)
+            {
+                Log.EscribeLog("Existe un error en btnPreRequisitos_Click: " + ePre.Message);
+            }
+        }
     }
 }

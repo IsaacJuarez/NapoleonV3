@@ -7,9 +7,9 @@
     <div class="row">
         <div class="messagealert" id="alert_container">
         </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
+        <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1">
         </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
+        <div class="col-lg-8 col-md-10 col-sm-8 col-xs-8">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Feed2Cloud Desktop</h2>
@@ -131,12 +131,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <h2>Manuales de Usuario <small></small></h2>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-right">
+                                    <asp:LinkButton ID="btnPreRequisitos" OnClick="btnPreRequisitos_Click" runat="server">
+                                        <i class="fa fa-book green" aria-hidden="true" title="Manual de Pre-requisitos" style="font-size:25px;"></i>
+                                    </asp:LinkButton>
+                                    <asp:LinkButton ID="btnFeed2" OnClick="btnFeed2_Click" runat="server">
+                                        <i class="fa fa-book blue" aria-hidden="true" title="Manual de Feed2" style="font-size:25px;"></i>
+                                    </asp:LinkButton>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
+        <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1">
         </div>  
     </div>
 

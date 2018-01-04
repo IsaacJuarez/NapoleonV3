@@ -19,7 +19,7 @@ namespace _2.FUJI.Napoleon.AccesoDatos.Extensions
                     Directory.CreateDirectory(LogDirectory);
                 DateTime Fecha = DateTime.Now;
                 string content = "[" + Fecha.ToString("yyyy/MM/dd HH:mm:ss") + "]" + " " + Mensaje;
-                string ArchivoLog = LogDirectory + Fecha.ToShortDateString().Replace("/", "-") + ".txt";
+                string ArchivoLog = LogDirectory + "Napoleon[" +  Fecha.ToShortDateString().Replace("/", "-") + "].txt";
                 using (StreamWriter file = new StreamWriter(ArchivoLog, true))
                 {
                     file.WriteLine(content);
